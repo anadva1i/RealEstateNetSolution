@@ -1,0 +1,720 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<section class="home-one home1-overlay home1_bgi1">
+    <div class="container">
+        <div class="row posr">
+            <div class="col-lg-12">
+                <div class="home_content">
+                    <div class="home-text text-center">
+                        <h2 class="fz55">Find Your Dream Home</h2>
+                        <p class="fz18 color-white">From as low as $10 per day with limited time offer discounts.</p>
+                    </div>
+                    @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    {
+                        <div class="home_adv_srch_opt">
+                            <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                @{int i = 0;}
+                                @foreach (var status in Model.Status)
+                                {
+                                    string active = "";
+                                    if (i == 0)
+                                    {
+                                        active = "active";
+                                    }
+                                <li class="nav-item">
+                                    <a class="nav-link @active" id="pills-home-tab" onclick="changeStatus('@status')" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">@status</a>
+                                    @if (active == "active")
+                                    {
+                                        <input id="input-status" name="status" value="@status" style="display: none" />
+                                    }
+                                </li>
+                                    i++;
+                                }
+                            </ul>
+                            <div class="tab-content home1_adsrchfrm" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                    <div class="home1-advnc-search">
+                                        <ul class="h1ads_1st_list mb0">
+                                            <li class="list-inline-item">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="exampleInputName1" placeholder="Enter keyword..." name="keyword">
+                                                </div>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <div class="search_option_two">
+                                                    <div class="candidate_revew_select">
+                                                        <select name="type" class="selectpicker w100 show-tick">
+                                                            <option>Property Type</option>
+                                                            @foreach (var type in Model.Type)
+                                                            {
+                                                                <option>@type</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="exampleInputEmail" placeholder="Location" name="location">
+                                                    <label for="exampleInputEmail"><span class="flaticon-maps-and-flags"></span></label>
+                                                </div>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <div class="small_dropdown2">
+                                                    <div id="prncgs" class="btn dd_btn">
+                                                        <span>Price</span>
+                                                        <label for="exampleInputEmail2"><span class="fa fa-angle-down"></span></label>
+                                                    </div>
+                                                    <div class="dd_content2">
+                                                        <div class="pricing_acontent">
+                                                            <input type="text" class="amount" placeholder="0" name="minPrice" value="0">
+                                                            <input type="text" class="amount2" placeholder="100000" name="maxPrice" value="100000">
+                                                            <div class="slider-range"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="custome_fields_520 list-inline-item">
+                                                <div class="navbered">
+                                                    <div class="mega-dropdown">
+                                                        <span id="show_advbtn" class="dropbtn">Advanced <i class="flaticon-more pl10 flr-520"></i></span>
+                                                        <div class="dropdown-content">
+                                                            <div class="row p15">
+                                                                <div class="col-lg-12">
+                                                                    <h4 class="text-thm3">Amenities</h4>
+                                                                </div>
+                                                                @for (int a = 1; a <= 5; a++)
+                                                                {
+                                                                    <div class="col-xxs-6 col-sm col-lg col-xl">
+                                                                        <ul class="ui_kit_checkbox selectable-list">
+                                                                            @for (int a2 = 1; a2 <= 2; a2++)
+                                                                            {
+                                                                                int element = a2 * a;
+                                                                                if (element <= Model.Amenity.Count)
+                                                                                {
+                                                                                    <li>
+                                                                                        <div class="custom-control custom-checkbox">
+                                                                                            <input name="feature" type="checkbox" class="custom-control-input" id="input-@a-@a2">
+                                                                                            <label class="custom-control-label" for="input-@a-@a2">@Model.Amenity[element]</label>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                }
+
+                                                                            }
+
+                                                                        </ul>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                            <div class="row p15 pt0-xsd">
+                                                                <div class="col-lg-11 col-xl-10">
+                                                                    <ul class="apeartment_area_list mb0">
+                                                                        <li class="list-inline-item">
+                                                                            <div class="candidate_revew_select">
+                                                                                <select name="bathrooms" class="selectpicker w100 show-tick">
+                                                                                    <option>Bathrooms</option>
+                                                                                    <option>1</option>
+                                                                                    <option>2</option>
+                                                                                    <option>3</option>
+                                                                                    <option>4</option>
+                                                                                    <option>5</option>
+                                                                                    <option>6</option>
+                                                                                    <option>7</option>
+                                                                                    <option>8</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-inline-item">
+                                                                            <div class="candidate_revew_select">
+                                                                                <select name="bedrooms" class="selectpicker w100 show-tick">
+                                                                                    <option>Bedrooms</option>
+                                                                                    <option>1</option>
+                                                                                    <option>2</option>
+                                                                                    <option>3</option>
+                                                                                    <option>4</option>
+                                                                                    <option>5</option>
+                                                                                    <option>6</option>
+                                                                                    <option>7</option>
+                                                                                    <option>8</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-inline-item">
+                                                                            <div class="candidate_revew_select">
+                                                                                <select name="state" class="selectpicker w100 show-tick">
+                                                                                    <option>State</option>
+                                                                                    @foreach (var state in Model.States)
+                                                                                    {
+                                                                                        <option>@state</option>
+                                                                                    }
+                                                                                </select>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="list-inline-item">
+                                                                            <div class="candidate_revew_select">
+                                                                                <select name="city" class="selectpicker w100 show-tick">
+                                                                                    <option>Built-up Area</option>
+                                                                                    @foreach (var city in Model.Cities)
+                                                                                    {
+                                                                                        <option>@city</option>
+                                                                                    }
+                                                                                </select>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1 col-xl-2">
+                                                                    <div class="mega_dropdown_content_closer">
+                                                                        <h5 class="text-thm text-right mt15"><span id="hide_advbtn" class="curp">Hide</span></h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <div class="search_option_button">
+                                                    <button type="submit" class="btn btn-thm">Search</button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Properties -->
+<section id="feature-property" class="feature-property bgc-f7">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <a href="#feature-property">
+                    <div class="mouse_scroll">
+                        <div class="icon">
+                            <h4>Scroll Down</h4>
+                            <p>to discover more</p>
+                        </div>
+                        <div class="thumb">
+                            <img src="../../Content/images/resource/mouse.png" alt="mouse.png">
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="container ovh">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="main-title text-center mb40">
+                    <h2>VIP</h2>
+                    <p>Handpicked properties by our team.</p>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="feature_property_slider">
+                    @foreach (var vip in Model.VIP)
+                    {
+                        <div class="item" onclick="PropertyUrl(@vip.Id)">
+                            <div class="feat_property">
+                                <div class="thumb">
+                                    <img class="img-whp" src="@vip.ImageUrl" alt="fp1.jpg">
+                                    <div class="thmb_cntnt">
+                                        <ul class="tag mb0">
+                                            <li class="list-inline-item"><a href="#">@vip.Status</a></li>
+                                            <li class="list-inline-item"><a href="#">VIP</a></li>
+                                        </ul>
+                                        <ul class="icon mb0">
+                                            <li class="list-inline-item"><a href="#"><span class="flaticon-transfer-1"></span></a></li>
+                                            <li class="list-inline-item"><a href="#"><span class="flaticon-heart"></span></a></li>
+                                        </ul>
+                                        <a class="fp_price" href="#">@vip.Price<small>/mo</small></a>
+                                    </div>
+                                </div>
+                                <div class="details">
+                                    <div class="tc_content">
+                                        <p class="text-thm">@vip.Type</p>
+                                        <h4>@vip.Name</h4>
+                                        <p><span class="flaticon-placeholder"></span>@vip.Address</p>
+                                        <ul class="prop_details mb0">
+                                            <li class="list-inline-item"><a href="#">Beds: @vip.Beds</a></li>
+                                            <li class="list-inline-item"><a href="#">Baths: @vip.Baths</a></li>
+                                            <li class="list-inline-item"><a href="#">Sq Ft: @vip.Area</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="fp_footer">
+                                        <ul class="fp_meta float-left mb0">
+                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; border-radius: 50%"></a></li>
+                                            <li class="list-inline-item"><a href="#">@vip.AgentName</a></li>
+                                        </ul>
+                                        <div class="fp_pdate float-right">@vip.DatePublished</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <br /><br />
+    <div class="container ovh">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="main-title text-center mb40">
+                    <h2>Super VIP</h2>
+                    <p>Handpicked properties by our team.</p>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="feature_property_slider">
+                    @foreach (var vip in Model.SuperVIP)
+                    {
+                        <div class="item" onclick="PropertyUrl(@vip.Id)">
+                            <div class="feat_property">
+                                <div class="thumb">
+                                    <img class="img-whp" src="@vip.ImageUrl" alt="fp1.jpg">
+                                    <div class="thmb_cntnt">
+                                        <ul class="tag mb0">
+                                            <li class="list-inline-item"><a href="#">@vip.Status</a></li>
+                                            <li class="list-inline-item"><a href="#">Super VIP</a></li>
+                                        </ul>
+                                        <ul class="icon mb0">
+                                            <li class="list-inline-item"><a href="#"><span class="flaticon-transfer-1"></span></a></li>
+                                            <li class="list-inline-item"><a href="#"><span class="flaticon-heart"></span></a></li>
+                                        </ul>
+                                        <a class="fp_price" href="#">@vip.Price<small>/mo</small></a>
+                                    </div>
+                                </div>
+                                <div class="details">
+                                    <div class="tc_content">
+                                        <p class="text-thm">@vip.Type</p>
+                                        <h4>Renovated Apartment</h4>
+                                        <p><span class="flaticon-placeholder"></span>@vip.Address</p>
+                                        <ul class="prop_details mb0">
+                                            <li class="list-inline-item"><a href="#">Beds: @vip.Beds</a></li>
+                                            <li class="list-inline-item"><a href="#">Baths: @vip.Baths</a></li>
+                                            <li class="list-inline-item"><a href="#">Sq Ft: @vip.Area</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="fp_footer">
+                                        <ul class="fp_meta float-left mb0">
+                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; border-radius: 50%"></a></li>
+                                            <li class="list-inline-item"><a href="#">@vip.AgentName</a></li>
+                                        </ul>
+                                        <div class="fp_pdate float-right">@vip.DatePublished</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <br /><br />
+    <div class="container ovh">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="main-title text-center mb40">
+                    <h2>VIP+</h2>
+                    <p>Handpicked properties by our team.</p>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="feature_property_slider">
+                    @foreach (var vip in Model.VIP_Plus)
+                    {
+                        <div class="item" onclick="PropertyUrl(@vip.Id)">
+                            <div class="feat_property">
+                                <div class="thumb">
+                                    <img class="img-whp" src="@vip.ImageUrl" alt="fp1.jpg">
+                                    <div class="thmb_cntnt">
+                                        <ul class="tag mb0">
+                                            <li class="list-inline-item"><a href="#">@vip.Status</a></li>
+                                            <li class="list-inline-item"><a href="#">VIP+</a></li>
+                                        </ul>
+                                        <ul class="icon mb0">
+                                            <li class="list-inline-item"><a href="#"><span class="flaticon-transfer-1"></span></a></li>
+                                            <li class="list-inline-item"><a href="#"><span class="flaticon-heart"></span></a></li>
+                                        </ul>
+                                        <a class="fp_price" href="#">@vip.Price<small>/mo</small></a>
+                                    </div>
+                                </div>
+                                <div class="details">
+                                    <div class="tc_content">
+                                        <p class="text-thm">@vip.Type</p>
+                                        <h4>Renovated Apartment</h4>
+                                        <p><span class="flaticon-placeholder"></span>@vip.Address</p>
+                                        <ul class="prop_details mb0">
+                                            <li class="list-inline-item"><a href="#">Beds: @vip.Beds</a></li>
+                                            <li class="list-inline-item"><a href="#">Baths: @vip.Baths</a></li>
+                                            <li class="list-inline-item"><a href="#">Sq Ft: @vip.Area</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="fp_footer">
+                                        <ul class="fp_meta float-left mb0">
+                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; border-radius: 50%"></a></li>
+                                            <li class="list-inline-item"><a href="#">@vip.AgentName</a></li>
+                                        </ul>
+                                        <div class="fp_pdate float-right">@vip.DatePublished</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <br /><br />
+    <div class="container ovh">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="main-title text-center mb40">
+                    <h2>
+                        Selling urgently
+                    </h2>
+                    <p>Handpicked properties by our team.</p>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="feature_property_slider">
+                    @foreach (var vip in Model.Urgently)
+                    {
+                        <div class="item" onclick="PropertyUrl(@vip.Id)">
+                            <div class="feat_property">
+                                <div class="thumb">
+                                    <img class="img-whp" src="@vip.ImageUrl" alt="fp1.jpg">
+                                    <div class="thmb_cntnt">
+                                        <ul class="tag mb0">
+                                            <li class="list-inline-item"><a href="#">@vip.Status</a></li>
+                                            <li class="list-inline-item"><a href="#">Urgent</a></li>
+                                        </ul>
+                                        <ul class="icon mb0">
+                                            <li class="list-inline-item"><a href="#"><span class="flaticon-transfer-1"></span></a></li>
+                                            <li class="list-inline-item"><a href="#"><span class="flaticon-heart"></span></a></li>
+                                        </ul>
+                                        <a class="fp_price" href="#">@vip.Price<small>/mo</small></a>
+                                    </div>
+                                </div>
+                                <div class="details">
+                                    <div class="tc_content">
+                                        <p class="text-thm">@vip.Type</p>
+                                        <h4>Renovated Apartment</h4>
+                                        <p><span class="flaticon-placeholder"></span>@vip.Address</p>
+                                        <ul class="prop_details mb0">
+                                            <li class="list-inline-item"><a href="#">Beds: @vip.Beds</a></li>
+                                            <li class="list-inline-item"><a href="#">Baths: @vip.Baths</a></li>
+                                            <li class="list-inline-item"><a href="#">Sq Ft: @vip.Area</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="fp_footer">
+                                        <ul class="fp_meta float-left mb0">
+                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; border-radius: 50%"></a></li>
+                                            <li class="list-inline-item"><a href="#">@vip.AgentName</a></li>
+                                        </ul>
+                                        <div class="fp_pdate float-right">@vip.DatePublished</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Property Cities -->
+<section id="property-city" class="property-city pb30">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="main-title text-center">
+                    <h2>Find Properties in These Cities</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-xl-4">
+                <div class="properti_city">
+                    <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/mtskheta.jpg" alt="pc1.jpg"></div>
+                    <div class="overlay">
+                        <div class="details">
+                            <h4>@Model.Mtskheta.Name</h4>
+                            <p>@Model.Mtskheta.Properties Properties</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-xl-8">
+                <div class="properti_city">
+                    <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/tbilisi.jpg" alt="pc2.jpg"></div>
+                    <div class="overlay">
+                        <div class="details">
+                            <h4>@Model.Tbilisi.Name</h4>
+                            <p>@Model.Tbilisi.Properties Properties</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-xl-8">
+                <div class="properti_city">
+                    <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/batumi.jpg" alt="pc3.jpg"></div>
+                    <div class="overlay">
+                        <div class="details">
+                            <h4>@Model.Batumi.Name</h4>
+                            <p>@Model.Batumi.Properties Properties</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-xl-4">
+                <div class="properti_city">
+                    <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/kutaisi.jpg" alt="pc4.jpg"></div>
+                    <div class="overlay">
+                        <div class="details">
+                            <h4>@Model.Kutaisi.Name</h4>
+                            <p>@Model.Kutaisi.Properties Properties</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Chose Us -->
+<section id="why-chose" class="whychose_us bgc-f7 pb30">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="main-title text-center">
+                    <h2>Why Choose Us</h2>
+                    <p>We provide full service at every step.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-4 col-xl-4">
+                <div class="why_chose_us">
+                    <div class="icon">
+                        <span class="flaticon-high-five"></span>
+                    </div>
+                    <div class="details">
+                        <h4>Trusted By Thousands</h4>
+                        <p>Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-4">
+                <div class="why_chose_us">
+                    <div class="icon">
+                        <span class="flaticon-home-1"></span>
+                    </div>
+                    <div class="details">
+                        <h4>Wide Renge Of Properties</h4>
+                        <p>Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-4">
+                <div class="why_chose_us">
+                    <div class="icon">
+                        <span class="flaticon-profit"></span>
+                    </div>
+                    <div class="details">
+                        <h4>Financing Made Easy</h4>
+                        <p>Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Testimonials -->
+<section id="our-testimonials" class="our-testimonial">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="main-title text-center">
+                    <h2 class="color-white">Testimonials</h2>
+                    <p class="color-white">Here could be a nice sub title</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="testimonial_grid_slider">
+                    <div class="item">
+                        <div class="testimonial_grid">
+                            <div class="thumb">
+                                <img src="../../Content/images/testimonial/1.jpg" alt="1.jpg">
+                            </div>
+                            <div class="details">
+                                <h4>Augusta Silva</h4>
+                                <p>Sales Manager</p>
+                                <p class="mt25">Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonial_grid">
+                            <div class="thumb">
+                                <img src="../../Content/images/testimonial/1.jpg" alt="1.jpg">
+                            </div>
+                            <div class="details">
+                                <h4>Augusta Silva</h4>
+                                <p>Sales Manager</p>
+                                <p class="mt25">Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonial_grid">
+                            <div class="thumb">
+                                <img src="../../Content/images/testimonial/1.jpg" alt="1.jpg">
+                            </div>
+                            <div class="details">
+                                <h4>Augusta Silva</h4>
+                                <p>Sales Manager</p>
+                                <p class="mt25">Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonial_grid">
+                            <div class="thumb">
+                                <img src="../../Content/images/testimonial/1.jpg" alt="1.jpg">
+                            </div>
+                            <div class="details">
+                                <h4>Augusta Silva</h4>
+                                <p>Sales Manager</p>
+                                <p class="mt25">Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonial_grid">
+                            <div class="thumb">
+                                <img src="../../Content/images/testimonial/1.jpg" alt="1.jpg">
+                            </div>
+                            <div class="details">
+                                <h4>Augusta Silva</h4>
+                                <p>Sales Manager</p>
+                                <p class="mt25">Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Blog -->
+<section class="our-blog bgc-f7 pb30">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="main-title text-center">
+                    <h2>Articles & Tips</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-4 col-xl-4">
+                <div class="for_blog feat_property">
+                    <div class="thumb">
+                        <img class="img-whp" src="../../Content/images/blog/bh1.jpg" alt="bh1.jpg">
+                    </div>
+                    <div class="details">
+                        <div class="tc_content">
+                            <p class="text-thm">Business</p>
+                            <h4>Skills That You Can Learn In The Real Estate Market</h4>
+                        </div>
+                        <div class="fp_footer">
+                            <ul class="fp_meta float-left mb0">
+                                <li class="list-inline-item"><a href="#"><img src="../../Content/images/property/pposter1.png" alt="pposter1.png"></a></li>
+                                <li class="list-inline-item"><a href="#">Ali Tufan</a></li>
+                            </ul>
+                            <a class="fp_pdate float-right" href="#">7 August 2019</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-4">
+                <div class="for_blog feat_property">
+                    <div class="thumb">
+                        <img class="img-whp" src="../../Content/images/blog/bh2.jpg" alt="bh2.jpg">
+                    </div>
+                    <div class="details">
+                        <div class="tc_content">
+                            <p class="text-thm">Business</p>
+                            <h4>Bedroom Colors You’ll Never <br class="dn-1199"> Regret</h4>
+                        </div>
+                        <div class="fp_footer">
+                            <ul class="fp_meta float-left mb0">
+                                <li class="list-inline-item"><a href="#"><img src="../../Content/images/property/pposter1.png" alt="pposter1.png"></a></li>
+                                <li class="list-inline-item"><a href="#">Ali Tufan</a></li>
+                            </ul>
+                            <a class="fp_pdate float-right" href="#">7 August 2019</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-4">
+                <div class="for_blog feat_property">
+                    <div class="thumb">
+                        <img class="img-whp" src="../../Content/images/blog/bh3.jpg" alt="bh3.jpg">
+                    </div>
+                    <div class="details">
+                        <div class="tc_content">
+                            <p class="text-thm">Business</p>
+                            <h4>5 Essential Steps for Buying an Investment</h4>
+                        </div>
+                        <div class="fp_footer">
+                            <ul class="fp_meta float-left mb0">
+                                <li class="list-inline-item"><a href="#"><img src="../../Content/images/property/pposter1.png" alt="pposter1.png"></a></li>
+                                <li class="list-inline-item"><a href="#">Ali Tufan</a></li>
+                            </ul>
+                            <a class="fp_pdate float-right" href="#">7 August 2019</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Start Partners -->
+<section class="start-partners bgc-thm pt50 pb50">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="start_partner tac-smd">
+                    <h2>Become a Real Estate Agent</h2>
+                    <p>We only work with the best companies around the globe</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="parner_reg_btn text-right tac-smd">
+                    <a class="btn btn-thm2" href="#">Register Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

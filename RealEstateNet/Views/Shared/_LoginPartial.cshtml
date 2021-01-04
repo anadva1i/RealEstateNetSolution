@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    @*<li class="list-inline-item add_listing"><a href="page-add-new-property.html"><span class="flaticon-plus"></span><span class="dn-lg"> Create Listing</span></a></li>*@
+
+
+    @*<ul class="nav nav-inverse navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>*@
+    <li class="user_setting">
+        <div class="dropdown">
+            <a class="btn dropdown-toggle" href="#" data-toggle="dropdown"><img class="rounded-circle" src="../../Content/images/user.png" alt="e1.png"><span class="dn-1199"></span></a>
+            <div class="dropdown-menu">
+                <div class="user_set_header">
+                    <img class="float-left" src="../../Content/images/user.png" alt="e1.png">
+                    <p>Name Lastname <br><span class="address">@User.Identity.GetUserName()</span></p>
+                </div>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="user_setting_content">
+                        <a class="dropdown-item active" href="#">My Profile</a>
+                        <a class="dropdown-item" href="#">Messages</a>
+                        <a class="dropdown-item" href="#">Purchase history</a>
+                        <a class="dropdown-item" href="#">Help</a>
+                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </li>
+    <li class="list-inline-item add_listing"><a href="~/Dashboard/AddNewProperty"><span class="flaticon-plus"></span><span class="dn-lg"> Create Listing</span></a></li>
+}
+else
+{
+    <li class="list-inline-item list_s"><a href="../Account/Register" class="btn flaticon-user"> <span class="dn-lg">Login/Register</span></a></li>
+    @*<ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        </ul>*@
+}
