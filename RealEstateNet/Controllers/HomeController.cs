@@ -13,6 +13,7 @@ namespace RealEstateNet.Controllers
     public class HomeController : Controller
     {
         private string language = "EN";
+        Similars similar;
         public ActionResult Index(string lang)
         {
             if (lang == null)
@@ -58,6 +59,7 @@ namespace RealEstateNet.Controllers
             model.Details = GetPropertyDetails(property, lang);
             model.Features = GetPropertyFeatures(property, lang);
             model.Agent = GetAgent(property);
+            model.Similars = GetsimilarProperties(lang);
             return View(model);
         }
 
@@ -114,6 +116,7 @@ namespace RealEstateNet.Controllers
         private SinglePropertyView GetPropertyDetails(int propertyId, string lang)
         {
             SinglePropertyView property = new SinglePropertyView();
+            similar = new Similars();
             using (var context = new DB_RealEstateEntities())
             {
                 var db_property = context.Properties.FirstOrDefault(c => c.Id == propertyId);
@@ -121,10 +124,15 @@ namespace RealEstateNet.Controllers
                 var contentTitle = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + propertyId)).Id;
                 var contentDescription = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingDescription" + propertyId)).Id;
                 var contentAddress = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + propertyId)).Id;
+                var location = context.Locations.FirstOrDefault(c => c.ContentId == contentAddress).CityId;
+                var city = context.Cities.FirstOrDefault(c => c.Id == location).ContentId;
+                var cityText = context.Translations.FirstOrDefault(c => c.ContentId == city && c.LanguageId == langId).Text;
                 property.Title = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentTitle).Text;
                 property.Description = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentDescription).Text;
                 property.Address = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentAddress).Text;
                 property.Price = db_property.Price;
+                similar.Price = db_property.Price;
+                similar.City = cityText;
                 property.CadastralCode = db_property.CadastralCode;
                 property.PropertySize = db_property.PropertySize;
                 property.Bedrooms = db_property.Bedrooms;
@@ -133,7 +141,9 @@ namespace RealEstateNet.Controllers
                 property.CeilingSize = db_property.CeilingSize;
                 var propertyTypeId = db_property.PropertyTypeId;
                 var propertyTypeContent = context.PropertyTypes.FirstOrDefault(c => c.Id == propertyTypeId).ContentId;
-                property.PropertyType = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == propertyTypeContent).Text;
+                var propertyType = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == propertyTypeContent).Text;
+                property.PropertyType = propertyType;
+                similar.Type = propertyType;
                 var propertyStateId = db_property.StateId;
                 var propertyStateContent = context.States.FirstOrDefault(c => c.Id == propertyStateId).ContentId;
                 property.PropertyState = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == propertyStateContent).Text;
@@ -484,52 +494,105 @@ namespace RealEstateNet.Controllers
             return properties;
         }
 
-        private List<PropertySmallView> GetsimilarProperties(string type, string lang)
+        private List<PropertySmallView> GetsimilarProperties(string lang)
         {
             List<PropertySmallView> properties = new List<PropertySmallView>();
             using (var context = new DB_RealEstateEntities())
             {
-                var ServiceContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ServiceUrgently")).Id;
-                var Service = context.Services.FirstOrDefault(c => c.ContentId == ServiceContent).Id;
-                var PropertyServices = context.PropertyServices.Where(c => c.ServicesId == Service && c.Active == true);
-                foreach (var service in PropertyServices)
+                string type = similar.Type;
+                string city = similar.City;
+                decimal price = similar.Price;
+                var ContentId = context.Translations.FirstOrDefault(c=>c.Text.Equals(type)).ContentId;
+                var PropertyType = context.PropertyTypes.FirstOrDefault(c => c.ContentId == ContentId).Id;
+                var cityContent = context.Translations.FirstOrDefault(c => c.Text.Equals(city)).ContentId;
+                var cityId = context.Cities.FirstOrDefault(c => c.ContentId == cityContent).Id;
+                var locationId = context.Locations.Where(c => c.CityId == cityId);
+                if(locationId.Count() > 4)
                 {
-                    PropertySmallView property = new PropertySmallView();
-                    var PropertyId = service.PropertyId;
-                    var DbProperty = context.Properties.FirstOrDefault(c => c.Id == PropertyId);
-                    var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
-                    var PropertyTypeId = DbProperty.PropertyTypeId;
-                    bool hasContent = context.PropertyContents.Any(c => c.propertyId == PropertyId);
-                    bool hasMedia = context.Media.Any(c => c.PropertyId == PropertyId);
-                    var TypeContent = context.PropertyTypes.FirstOrDefault(c => c.Id == PropertyTypeId).ContentId;
-                    var PropertyType = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == TypeContent).Text;
-                    var PropertyStatusId = DbProperty.StatusId;
-                    var StatusContent = context.Status.FirstOrDefault(c => c.Id == PropertyStatusId).ContentId;
-                    var PropertyStatus = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == StatusContent).Text;
-                    if (hasContent)
+                    foreach (var l in locationId)
                     {
-                        var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + PropertyId)).Id;
-                        var PropertyAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + PropertyId)).Id;
-                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == PropertyNameId && c.LanguageId == langId).Text;
-                        property.Address = context.Translations.FirstOrDefault(c => c.ContentId == PropertyAddressId && c.LanguageId == langId).Text;
+                        var minPrice = price - 10000;
+                        var maxPrice = price + 10000;
+                        var Properties = context.Properties.Where(c => c.PropertyTypeId == PropertyType && c.LocationId == l.Id && c.Price >= minPrice && c.Price <= maxPrice);
+                        foreach (var p in Properties)
+                        {
+                            PropertySmallView property = new PropertySmallView();
+                            var PropertyId = p.Id;
+                            var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                            bool hasContent = context.PropertyContents.Any(c => c.propertyId == PropertyId);
+                            bool hasMedia = context.Media.Any(c => c.PropertyId == PropertyId);
+                            var TypeContent = context.PropertyTypes.FirstOrDefault(c => c.Id == PropertyType).ContentId;
+                            var PropertyStatusId = p.StatusId;
+                            var StatusContent = context.Status.FirstOrDefault(c => c.Id == PropertyStatusId).ContentId;
+                            var PropertyStatus = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == StatusContent).Text;
+                            if (hasContent)
+                            {
+                                var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + PropertyId)).Id;
+                                var PropertyAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + PropertyId)).Id;
+                                property.Name = context.Translations.FirstOrDefault(c => c.ContentId == PropertyNameId && c.LanguageId == langId).Text;
+                                property.Address = context.Translations.FirstOrDefault(c => c.ContentId == PropertyAddressId && c.LanguageId == langId).Text;
+                            }
+                            var AgentId = p.UserDetailsId;
+                            var Agent = context.UserDetails.FirstOrDefault(c => c.Id == AgentId);
+
+                            property.Id = PropertyId;
+                            if (hasMedia)
+                                property.ImageUrl = context.Media.FirstOrDefault(c => c.PropertyId == PropertyId).MediaUrl;
+                            property.Type = type;
+                            property.Status = PropertyStatus;
+                            property.Beds = p.Bedrooms;
+                            property.Baths = p.Bathrooms;
+                            property.Area = p.PropertySize;
+                            property.Price = p.Price;
+                            property.AgentName = Agent.Name + " " + Agent.LastName;
+                            property.AgentPic = Agent.Picture;
+                            property.DatePublished = p.DatePublished.ToString("MMMM dd");
+                            properties.Add(property);
+                        }
                     }
-                    var AgentId = DbProperty.UserDetailsId;
-                    var Agent = context.UserDetails.FirstOrDefault(c => c.Id == AgentId);
+                }
+                else
+                {
+                    foreach(var l in locationId)
+                    {
+                        var Properties = context.Properties.Where(c => c.PropertyTypeId == PropertyType && c.LocationId == l.Id);
+                        foreach (var p in Properties)
+                        {
+                            PropertySmallView property = new PropertySmallView();
+                            var PropertyId = p.Id;
+                            var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                            bool hasContent = context.PropertyContents.Any(c => c.propertyId == PropertyId);
+                            bool hasMedia = context.Media.Any(c => c.PropertyId == PropertyId);
+                            var TypeContent = context.PropertyTypes.FirstOrDefault(c => c.Id == PropertyType).ContentId;
+                            var PropertyStatusId = p.StatusId;
+                            var StatusContent = context.Status.FirstOrDefault(c => c.Id == PropertyStatusId).ContentId;
+                            var PropertyStatus = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == StatusContent).Text;
+                            if (hasContent)
+                            {
+                                var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + PropertyId)).Id;
+                                var PropertyAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + PropertyId)).Id;
+                                property.Name = context.Translations.FirstOrDefault(c => c.ContentId == PropertyNameId && c.LanguageId == langId).Text;
+                                property.Address = context.Translations.FirstOrDefault(c => c.ContentId == PropertyAddressId && c.LanguageId == langId).Text;
+                            }
+                            var AgentId = p.UserDetailsId;
+                            var Agent = context.UserDetails.FirstOrDefault(c => c.Id == AgentId);
 
-
-                    property.Id = PropertyId;
-                    if (hasMedia)
-                        property.ImageUrl = context.Media.FirstOrDefault(c => c.PropertyId == PropertyId).MediaUrl;
-                    property.Type = PropertyType;
-                    property.Status = PropertyStatus;
-                    property.Beds = DbProperty.Bedrooms;
-                    property.Baths = DbProperty.Bathrooms;
-                    property.Area = DbProperty.PropertySize;
-                    property.Price = DbProperty.Price;
-                    property.AgentName = Agent.Name + " " + Agent.LastName;
-                    property.AgentPic = Agent.Picture;
-                    property.DatePublished = DbProperty.DatePublished.ToString("MMMM dd");
-                    properties.Add(property);
+                            property.Id = PropertyId;
+                            if (hasMedia)
+                                property.ImageUrl = context.Media.FirstOrDefault(c => c.PropertyId == PropertyId).MediaUrl;
+                            property.Type = type;
+                            property.Status = PropertyStatus;
+                            property.Beds = p.Bedrooms;
+                            property.Baths = p.Bathrooms;
+                            property.Area = p.PropertySize;
+                            property.Price = p.Price;
+                            property.AgentName = Agent.Name + " " + Agent.LastName;
+                            property.AgentPic = Agent.Picture;
+                            property.DatePublished = p.DatePublished.ToString("MMMM dd");
+                            properties.Add(property);
+                        }
+                    }
+                
                 }
 
             }

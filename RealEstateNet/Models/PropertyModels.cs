@@ -186,4 +186,11 @@ namespace RealEstateNet.Models
         public string Email { get; set; }
         public string Image { get; set; }
     }
+
+    public class Similars
+    {
+        public string Type { get; set; }
+        public string City { get; set; }
+        public decimal Price { get; set; }
+    }
 }
