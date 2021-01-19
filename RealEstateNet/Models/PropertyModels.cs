@@ -193,4 +193,15 @@ namespace RealEstateNet.Models
         public string City { get; set; }
         public decimal Price { get; set; }
     }
+
+    public class RecentlyViewed
+    {
+        public int Id { get; set; }
+        public string Image { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public int Beds { get; set; }
+        public int? Baths { get; set; }
+        public decimal Area { get; set; }
+    }
 }
