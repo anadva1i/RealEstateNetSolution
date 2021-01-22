@@ -1091,7 +1091,7 @@ function imgDelete(index) {
 }
 
 function PropertyUrl(id) {
-    window.location = "../Home/Property?property=" + id;
+    window.location = "../Property/" + id;
 }
 
 function changeStatus(value) {

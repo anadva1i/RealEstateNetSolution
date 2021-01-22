@@ -204,4 +204,11 @@ namespace RealEstateNet.Models
         public int? Baths { get; set; }
         public decimal Area { get; set; }
     }
+
+    public class ReviewModel
+    {
+        public int Id { get; set; }
+        public int Rating { get; set; }
+        public string Comment { get; set; }
+    }
 }

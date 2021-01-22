@@ -2,7 +2,7 @@
 @model dynamic
 @{
     ViewBag.Title = "Property";
-}
+} 
 <div class="single_page_listing_tab">
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="slider_tabs" role="tabpanel" aria-labelledby="slider-tab">
@@ -537,36 +537,43 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12">
-                        <div class="product_single_content">
-                            <div class="mbp_pagination_comments mt30">
-                                <div class="mbp_comment_form style2">
-                                    <h4>Write a Review</h4>
-                                    <ul class="sspd_review">
-                                        <li class="list-inline-item">
-                                            <ul class="mb0">
-                                                <li class="list-inline-item"><a href="#"><i class="fa fa-star"></i></a></li>
-                                                <li class="list-inline-item"><a href="#"><i class="fa fa-star"></i></a></li>
-                                                <li class="list-inline-item"><a href="#"><i class="fa fa-star"></i></a></li>
-                                                <li class="list-inline-item"><a href="#"><i class="fa fa-star"></i></a></li>
-                                                <li class="list-inline-item"><a href="#"><i class="fa fa-star"></i></a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="list-inline-item review_rating_para">Your Rating & Review</li>
-                                    </ul>
-                                    <form class="comments_form">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="exampleInputName1" aria-describedby="textHelp" placeholder="Review Title">
-                                        </div>
-                                        <div class="form-group">
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="12" placeholder="Your Review"></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-thm">Submit Review <span class="flaticon-right-arrow-1"></span></button>
-                                    </form>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <div class="col-lg-12">
+                            <div class="product_single_content">
+                                <div class="mbp_pagination_comments mt30">
+                                    <div class="mbp_comment_form style2">
+                                        <h4>Write a Review</h4>
+                                        @using (Html.BeginForm("AddReview", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "comments-form", role = "form" }))
+                                        {
+                                            <input type="hidden" name="Id" value="@Model.PropertyId">
+                                            <div class="star-rating">
+                                                <div class="star-rating__wrap">
+                                                    <input class="star-rating__input" id="star-rating-5" type="radio" name="Rating" value="5">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-5" title="5 out of 5 stars"></label>
+                                                    <input class="star-rating__input" id="star-rating-4" type="radio" name="Rating" value="4">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-4" title="4 out of 5 stars"></label>
+                                                    <input class="star-rating__input" id="star-rating-3" type="radio" name="Rating" value="3">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-3" title="3 out of 5 stars"></label>
+                                                    <input class="star-rating__input" id="star-rating-2" type="radio" name="Rating" value="2">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-2" title="2 out of 5 stars"></label>
+                                                    <input class="star-rating__input" id="star-rating-1" type="radio" name="Rating" value="1">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-1" title="1 out of 5 stars"></label>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="form-group">
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="12" placeholder="Your Review" name="Comment"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-thm">Submit Review <span class="flaticon-right-arrow-1"></span></button>
+                                        }
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
+
                     <div class="col-lg-12">
                         <h4 class="mt30 mb30">Similar Properties</h4>
                     </div>

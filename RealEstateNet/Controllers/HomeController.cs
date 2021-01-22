@@ -11,6 +11,7 @@ using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using WebGrease.Css.Extensions;
 using System.IO;
+using Microsoft.AspNet.Identity;
 
 namespace RealEstateNet.Controllers
 {
@@ -54,18 +55,19 @@ namespace RealEstateNet.Controllers
             return View();
         }
 
-        public ActionResult Property(int property, string lang)
+        public ActionResult Property(int id, string lang)
         {
             dynamic model = new ExpandoObject();
-            if (lang == null)
+            if (String.IsNullOrWhiteSpace(lang))
                 lang = "EN";
-            model.Media = GetMedia(property);
-            model.Details = GetPropertyDetails(property, lang);
-            model.Features = GetPropertyFeatures(property, lang);
-            model.Agent = GetAgent(property);
+            model.Media = GetMedia(id);
+            model.Details = GetPropertyDetails(id, lang);
+            model.Features = GetPropertyFeatures(id, lang);
+            model.Agent = GetAgent(id);
             model.Similars = GetsimilarProperties(lang);
             var ip = getIP();
-            model.Recently = GetRecentlyViewed(ip, property, lang);
+            model.Recently = GetRecentlyViewed(ip, id, lang);
+            model.PropertyId = id;
             return View(model);
         }
 
@@ -620,6 +622,33 @@ namespace RealEstateNet.Controllers
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        public String AddReview(ReviewModel review)
+        {
+            try
+            {
+                using (var context = new DB_RealEstateEntities())
+                {
+                    var userId = User.Identity.GetUserId();
+                    var user = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
+                    Review newReview = new Review();
+                    int id = review.Id;
+                    newReview.PropertyId = id;
+                    newReview.ReviewDate = DateTime.Now;
+                    newReview.Stars = review.Rating;
+                    newReview.Comment = review.Comment;
+                    newReview.UserDetailsId = user;
+                    context.Reviews.Add(newReview);
+                    context.SaveChanges();
+                    return "Review Added Successfully";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return "Something went wrong, please try again later";
             }
         }
 
