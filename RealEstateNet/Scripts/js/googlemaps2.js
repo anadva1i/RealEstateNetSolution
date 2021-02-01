@@ -90,9 +90,13 @@ function initialize() {
             }
         ]
     }
-];
-  var myGent = new google.maps.LatLng(40.6946703,-73.9280182);
-  var Kine = new google.maps.LatLng(40.6946703,-73.9280182);
+  ];
+    var latitude = $("#latitude").text();
+    var longitude = $("#longitude").text();
+    var address = $("#address").text();
+    console.log("address: " + latitude, longitude)
+  var myGent = new google.maps.LatLng(latitude,longitude);
+  var Kine = new google.maps.LatLng(latitude,longitude);
   var mapOptions = {
     zoom: 11,
     mapTypeControl: true,
@@ -112,15 +116,14 @@ function initialize() {
     name: 'style_KINESB'
   };
 
-var image = 'image url';
   var marker = new google.maps.Marker({
       position: Kine,
       map: map,
-animation: google.maps.Animation.DROP,
-      title: 'B4318, Gumfreston SA70 8RA, United Kingdom',
-icon: image
+      animation: google.maps.Animation.DROP,
+      title: address,
+      icon: marker
   });
-
+    
   var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
   map.mapTypes.set(MY_MAPTYPE_ID, customMapType);
 

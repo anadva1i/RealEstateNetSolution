@@ -295,19 +295,13 @@ namespace RealEstateNet.Controllers
                         Translation addressEN = new Translation();
                         addressEN.ContentId = contentAddress.Id;
                         addressEN.LanguageId = engId;
-                        if (model.AddressEN != null)
-                            addressEN.Text = model.AddressEN;
-                        else
-                            addressEN.Text = model.AddressGE;
+                        addressEN.Text = model.AddressGE;
                         context.Translations.Add(addressEN);
 
                         Translation addressRU = new Translation();
                         addressRU.ContentId = contentAddress.Id;
                         addressRU.LanguageId = rusId;
-                        if (model.AddressRU != null)
-                            addressRU.Text = model.AddressRU;
-                        else
-                            addressRU.Text = model.AddressGE;
+                        addressRU.Text = model.AddressGE;
                         context.Translations.Add(addressRU);
                         context.SaveChanges();
 
@@ -415,9 +409,9 @@ namespace RealEstateNet.Controllers
 
                         scope.Complete();
                         if(language.Equals("EN"))
-                            return RedirectToAction("Property", "Home", new { property = property.Id });
+                            return RedirectToAction("Property", "Home", new { id = property.Id });
                         else
-                            return RedirectToAction("Property", "Home", new { property = property.Id, lang = language });
+                            return RedirectToAction("Property", "Home", new { id = property.Id, lang = language });
                     }
                 }
             }

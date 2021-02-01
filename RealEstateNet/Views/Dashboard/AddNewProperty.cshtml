@@ -130,24 +130,12 @@
                                     <div class="col-lg-12">
                                         <h4 class="mb30">@Model.PageModel.Location</h4>
                                     </div>
-                                    <div class="col-lg-4 col-xl-4">
+                                    <div class="col-lg-12 col-xl-12">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="propertyAddress">@Model.PageModel.AddressGE</label>
-                                            <input type="text" class="form-control" id="propertyAddress" name="AddressGE" required>
+                                            <input type="text" class="form-control" id="propertyAddressGE" name="AddressGE" placeholder="Drag map marker to get the address" readonly="true" required>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-4 col-xl-4">
-                                        <div class="my_profile_setting_input form-group">
-                                            <label for="propertyAddress">@Model.PageModel.AddressEN</label>
-                                            <input type="text" class="form-control" id="propertyAddress" name="AddressEN">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-xl-4">
-                                        <div class="my_profile_setting_input form-group">
-                                            <label for="propertyAddress">@Model.PageModel.AddressRU</label>
-                                            <input type="text" class="form-control" id="propertyAddress" name="AddressRU">
-                                        </div>
-                                    </div>
+                                    </div>                                   
                                     <div class="col-lg-6 col-xl-6">
                                         <div class="my_profile_setting_input ui_kit_select_search form-group">
                                             <label>@Model.PageModel.Country</label>
@@ -337,6 +325,7 @@
                                         <h4 class="mb30">@Model.PageModel.PropertyMedia</h4>
                                     </div>
                                     <div class="col-lg-12">
+                                        <ul class="mb0" id="ul-images">
                                         <ul class="mb0" id="ul-images">
                                             @*<li class="list-inline-item">
                                                 <div class="portfolio_item">

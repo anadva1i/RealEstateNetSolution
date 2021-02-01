@@ -35,7 +35,7 @@
             <div class="h600" id="map-canvas"></div>
         </div>
         <div class="tab-pane fade" id="street_view" role="tabpanel" aria-labelledby="street-view-tab">
-            <iframe class="h600 w100" src="https://www.google.com/maps/embed?pb=!4v1553797194458!6m8!1m7!1sR4K_5Z2wRHTk9el8KLTh9Q!2m2!1d36.82551718071267!2d-76.34864590837246!3f305.15097!4f0!5f0.7820865974627469" frameborder="0" allowfullscreen></iframe>
+            <iframe class="h600 w100"  src="https://maps.google.com/maps?q='+@Model.Details.Latitude+','+@Model.Details.Longitude+'&hl=es&z=14&amp;output=embed" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
 </div>
@@ -423,9 +423,11 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="application_statics mt30">
-                            <h4 class="mb30">Location <small class="float-right">@Model.Details.Address</small></h4>
+                            <h4 class="mb30">Location <small id="address" class="float-right">@Model.Details.Address</small></h4>
                             <div class="property_video p0">
-                                <div class="thumb">
+                                <div class="thumb">                                    
+                                    <span id="latitude" style="display: none">@Model.Details.Latitude</span>
+                                    <span id="longitude" style="display: none">@Model.Details.Longitude</span>
                                     <div class="h400" id="map-canvas2"></div>
                                     <div class="overlay_icon">
                                         <a href="#"><img class="map_img_icon" src="../../Content/images/header-logo.png" alt="header-logo.png"></a>

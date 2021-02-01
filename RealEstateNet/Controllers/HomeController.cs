@@ -134,13 +134,15 @@ namespace RealEstateNet.Controllers
                 var contentTitle = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + propertyId)).Id;
                 var contentDescription = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingDescription" + propertyId)).Id;
                 var contentAddress = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + propertyId)).Id;
-                var location = context.Locations.FirstOrDefault(c => c.ContentId == contentAddress).CityId;
-                var city = context.Cities.FirstOrDefault(c => c.Id == location).ContentId;
+                var location = context.Locations.FirstOrDefault(c => c.ContentId == contentAddress);
+                var city = context.Cities.FirstOrDefault(c => c.Id == location.CityId).ContentId;
                 var cityText = context.Translations.FirstOrDefault(c => c.ContentId == city && c.LanguageId == langId).Text;
                 property.Title = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentTitle).Text;
                 property.Description = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentDescription).Text;
                 property.Address = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentAddress).Text;
                 property.Price = db_property.Price;
+                property.Latitude = location.Latitude;
+                property.Longitude = location.Longitude;
                 similar.Price = db_property.Price;
                 similar.City = cityText;
                 property.CadastralCode = db_property.CadastralCode;

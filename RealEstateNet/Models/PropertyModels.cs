@@ -121,6 +121,8 @@ namespace RealEstateNet.Models
         public int? Garage { get; set; }
         public decimal CeilingSize { get; set; }
         public string PropertyStatus { get; set; }
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
     }
 
     public class SinglePropertyFeature
@@ -136,6 +138,8 @@ namespace RealEstateNet.Models
         public string PropertyDetails { get; set; }
         public string Features { get; set; }
         public string Location { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
         public string Reviews { get; set; }
     }
 
