@@ -994,12 +994,13 @@
 
     });
 
-/* ======
-   When document is ready, do
-   ====== */
+ //======
+ //  When document is ready, do
+ //  ====== 
     $(document).on('ready', function() {
         // add your functions
-        
+        var last = $("#last");
+        LoadPager(parseInt(last.text()))
         $("input:file").change(function () {
             var files = document.getElementById("select-files");
             var totalfiles = files.files.length;
@@ -1096,4 +1097,145 @@ function PropertyUrl(id) {
 
 function changeStatus(value) {
     $("#input-status").val(value)
+}
+
+//----------PAGER------------
+$(".page-item").click(function () {
+    var previous = $("#previous");
+    var mid3 = $("#mid-third");
+    var next = $("#next");
+    var last = $("#last");
+    var currentPage;
+    var activeLi = $('li.page-item.active');
+    var activeNum = parseInt(activeLi.text());
+    if ($(this).is("#previous")) {
+        currentPage = activeNum - 1;
+    }
+    else if ($(this).is("#next")) {
+        currentPage = activeNum + 1;
+    }
+    else {
+        currentPage = parseInt($(this).text());
+    }
+    console.log("current: " + currentPage)
+    if (parseInt(last.text()) > 5) {
+        pagerState(currentPage, parseInt(last.text()), mid3, previous, next); 
+        PagerNumbers(currentPage, parseInt(last.text()));
+    }       
+    ActivatePage(currentPage);
+    
+});
+
+function pagerState(page, last, mid3, previous, next) {
+    var leftDots = $("#left-dots");
+    var rightDots = $("#right-dots");
+    if (page > 3 && page < last - 2) {
+        leftDots.css("display", "inline-block");
+        rightDots.css("display", "inline-block");
+        mid3.css("display", "inline-block");
+        previous.css("pointer-events", "inherit")
+        next.css("pointer-events", "inherit")
+    }
+    else if (page <= 3) {
+        leftDots.css("display", "none");
+        rightDots.css("display", "inline-block");
+        mid3.css("display", "none");
+        if(page == 1)
+            previous.css("pointer-events", "none")
+        next.css("pointer-events", "inherit")
+    }
+    else if (page >= last - 2) {
+        rightDots.css("display", "none");
+        leftDots.css("display", "inline-block");
+        mid3.css("display", "none");
+        previous.css("pointer-events", "inherit")
+        if(page == last)
+            next.css("pointer-events", "none")
+    }
+}
+
+function PagerNumbers(page, last){
+    var mid1 = $("#mid-first");
+    var mid2 = $("#mid-second");
+    var mid3 = $("#mid-third");
+    var list = []; 
+    console.log(page)
+    $("li.page-item").each(function () {
+        if ($(this).is(':visible')) {
+            var num = parseInt($(this).text(), 0);
+            list.push(num);
+        }
+    });
+    var includes = (list.indexOf(page) > -1);    
+    console.log(list)
+    if (!includes) {
+        mid1.children("a").text(page);
+        mid2.children("a").text(page + 1);
+        mid3.children("a").text(page + 2);
+    }
+    if (page == last) {
+        mid1.children("a").text(page - 2);
+        mid2.children("a").text(page - 1);
+    }
+    else if (page == 1) {
+        mid1.children("a").text(page + 1);
+        mid2.children("a").text(page + 2);
+    }
+}
+
+function ActivatePage(page) {
+    $("li.page-item").removeClass(" active");
+    $("li.page-item").each(function () {
+        var num = parseInt($(this).text(), 0);
+        if (num == page)
+            $(this).addClass("active");
+    });
+}
+
+function LoadPager(last) {
+    switch (last) {
+        case 1:
+            $("#previous").css("display", "none");
+            $("#left-dots").css("display", "none");
+            $("#mid-first").css("display", "none");
+            $("#mid-second").css("display", "none");
+            $("#mid-third").css("display", "none");
+            $("#right-dots").css("display", "none");
+            $("#last").css("display", "none");
+            $("#next").css("display", "none");
+            break;
+        case 2:
+            $("#previous").css("display", "none");
+            $("#left-dots").css("display", "none");
+            $("#mid-second").css("display", "none");
+            $("#mid-third").css("display", "none");
+            $("#right-dots").css("display", "none");
+            $("#last").css("display", "none");
+            $("#next").css("display", "none");
+            break;
+        case 3:
+            $("#previous").css("display", "none");
+            $("#left-dots").css("display", "none");
+            $("#mid-third").css("display", "none");
+            $("#right-dots").css("display", "none");
+            $("#last").css("display", "none");
+            $("#next").css("display", "none");
+            break;
+        case 4:
+            $("#previous").css("display", "none");
+            $("#left-dots").css("display", "none");
+            $("#right-dots").css("display", "none");
+            $("#last").css("display", "none");
+            $("#next").css("display", "none");
+            break;
+        case 5:
+            $("#previous").css("display", "none");
+            $("#left-dots").css("display", "none");
+            $("#right-dots").css("display", "none");
+            $("#next").css("display", "none");
+            break;
+        default:
+            $("#mid-third").css("display", "none");
+            break;
+    }
 }

@@ -827,7 +827,8 @@ namespace RealEstateNet.Controllers
                                join pc in context.PropertyContents on content.Id equals pc.contentId
                                join p in property on pc.propertyId equals p.Id
                                join translation in context.Translations on content.Id equals translation.ContentId
-                               where translation.Text.Equals(searchModel.keyword)
+                               join l in context.Languages on translation.LanguageId equals l.Id
+                               where translation.Text.Equals(searchModel.keyword) && l.Abbr.Equals(lang)
                                select p;
                 if(!searchModel.city.Equals("Built-up Area"))
                     property = from city in context.Cities
