@@ -1239,5 +1239,3 @@ function LoadPager(last) {
             break;
     }
 }
-
-//test comment

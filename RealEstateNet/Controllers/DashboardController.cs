@@ -45,6 +45,38 @@ namespace RealEstateNet.Controllers
             return View(model);
         }
 
+        public ActionResult Message(string lang)
+        {
+            if (lang == null)
+                lang = "EN";
+            language = lang;
+            return View();
+        }
+
+        public ActionResult Favorites(string lang)
+        {
+            if (lang == null)
+                lang = "EN";
+            language = lang;
+            return View();
+        }
+
+        public ActionResult Packages(string lang)
+        {
+            if (lang == null)
+                lang = "EN";
+            language = lang;
+            return View();
+        }
+
+        public ActionResult My_Profile(string lang)
+        {
+            if (lang == null)
+                lang = "EN";
+            language = lang;
+            return View();
+        }
+
         private List<string> GetCountries(string lang)
         {
             List<string> countries = new List<string>();

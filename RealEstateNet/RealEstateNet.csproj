@@ -638,9 +638,12 @@
     <Content Include="Views\Shared\_DashboardSidebar.cshtml" />
     <Content Include="Views\Shared\_DashboardFooter.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
-    <Content Include="Views\Dashboard\CreateListing.cshtml" />
     <Content Include="Views\Home\Property.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Dashboard\Message.cshtml" />
+    <Content Include="Views\Dashboard\Favorites.cshtml" />
+    <Content Include="Views\Dashboard\Packages.cshtml" />
+    <Content Include="Views\Dashboard\My_Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
