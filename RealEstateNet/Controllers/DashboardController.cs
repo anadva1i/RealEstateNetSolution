@@ -1,4 +1,5 @@
 ﻿using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RealEstateNet.Models;
@@ -17,6 +18,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.Security;
 
 namespace RealEstateNet.Controllers
 {
@@ -74,7 +76,20 @@ namespace RealEstateNet.Controllers
             if (lang == null)
                 lang = "EN";
             language = lang;
-            return View();
+            dynamic model = new ExpandoObject();
+            model.Role = GetUserRole();
+            return View(model);
+        }
+
+        private string GetUserRole()
+        {
+            string role;
+            var UserID = User.Identity.GetUserId();
+            var context = new DB_RealEstateEntities();
+            var thisUser = context.AspNetUsers.Where(c => c.Id.Equals(UserID));
+            var userRoles = thisUser.Select(user => user.AspNetRoles.Select(r => r.Name)).ToList();
+            role = userRoles.First().First();
+            return role;
         }
 
         private List<string> GetCountries(string lang)
