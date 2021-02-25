@@ -143,7 +143,6 @@ namespace RealEstateNet.Controllers
             return View();
         }
 
-        //
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
@@ -386,14 +385,26 @@ namespace RealEstateNet.Controllers
                     return View("ExternalLoginFailure");
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                //var context = new DB_RealEstateEntities();
+                //var roleStore = new RoleStore<IdentityRole>(context);
+                //var roleManager = new RoleManager<IdentityRole>(roleStore);
+                //var userStore = new UserStore<ApplicationUser>(context);
+                //var userManager = new UserManager<ApplicationUser>(userStore);
+                //userManager.AddToRole(user.Id, "Single User");
+
                 var result = await UserManager.CreateAsync(user);
+
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
+                        result = await UserManager.AddToRoleAsync(user.Id, "Single User");
+                        if (result.Succeeded)
+                        {
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            return RedirectToLocal(returnUrl);
+                        }
                     }
                 }
                 AddErrors(result);

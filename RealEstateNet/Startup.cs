@@ -1,7 +1,9 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Owin;
 using Owin;
+using RealEstateNet.Models;
 
-[assembly: OwinStartupAttribute(typeof(RealEstateNet.Startup))]
 namespace RealEstateNet
 {
     public partial class Startup
@@ -9,6 +11,6 @@ namespace RealEstateNet
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-        }
+        }        
     }
 }

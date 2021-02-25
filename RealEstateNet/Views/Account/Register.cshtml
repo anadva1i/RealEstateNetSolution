@@ -1,7 +1,7 @@
-﻿@model RealEstateNet.Models.RegisterViewModel
+﻿@using RealEstateNet.Models
+@model RealEstateNet.Models.RegisterViewModel
 @{
     ViewBag.Title = "Register";
-
 }
 
 <!-- Inner Page Breadcrumb -->
@@ -70,15 +70,8 @@
                                 <span class="lf_divider"></span>
                                 <hr>
                             </div>
-                            <div class="row mt40">
-                                <div class="col-lg">
-                                    <button type="submit" class="btn btn-block color-white bgc-fb mb0" style="background: #3B5998"><i class="fa fa-facebook float-left mt5"></i> Facebook</button>
-                                </div>
-                                <div class="col-lg">
-                                    <button type="submit" class="btn btn2 btn-block color-white bgc-gogle mb0" style="background: #EA4335"><i class="fa fa-google float-left mt5"></i> Google</button>
-                                </div>
-                            </div>
                         }
+                        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
                     </div>
                 </div>
             </div>

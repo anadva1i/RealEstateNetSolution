@@ -58,11 +58,11 @@ namespace RealEstateNet
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "976790916262-oesdh1oo2rr6d7iqj0tmftrtpv0flqlj.apps.googleusercontent.com",
+                ClientSecret = "Pylb40UmC9P9m9DyPaBwX71n"
+            });
         }
     }
 }
