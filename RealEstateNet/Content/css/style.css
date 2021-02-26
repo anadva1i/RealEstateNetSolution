@@ -2234,7 +2234,8 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu > li.last{
   border-bottom: none;
   margin: 0 auto;
   text-align: center;
-  width: 375px;
+  width: auto;
+  padding-left: 29%;
 }
 .home_adv_srch_opt.home3{
   margin-top: -17px;
@@ -2251,6 +2252,7 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu > li.last{
   margin: 0;
 }
 .home_adv_srch_opt .nav-pills li.nav-item a.nav-link:first-child{
+  
   margin-right: 15px;
 }
 .home_adv_srch_opt .nav-pills li.nav-item a.nav-link{
@@ -7089,7 +7091,6 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
   padding-bottom: 0;
 }
 .footer_qlink_widget{
-  padding-left: 70px;
 }
 .footer_about_widget h4,
 .footer_qlink_widget h4,
