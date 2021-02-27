@@ -43,56 +43,60 @@
                                     <h4>Profile Information</h4>
                                 </div>
                                 <div class="col-xl-10">
+
+                                    @using (Html.BeginForm("EditProfile", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                                    {
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="wrap-custom-file">
-                                                <input type="file" name="image1" id="image1" accept=".gif, .jpg, .png" />
-                                                <label for="image1">
+                                                <input type="file" name="Picture" id="agentPic" accept=".jpg, .png" />
+                                                <label for="agentPic">
                                                     <span><i class="flaticon-download"></i> Upload Photo </span>
                                                 </label>
                                             </div>
                                             <p>*minimum 260px x 260px</p>
                                         </div>
+                                        @if(@Model.Role == "Single User" || @Model.Role == "Agent")
+                                        {
                                         <div class="col-lg-6 col-xl-6">
                                             <div class="my_profile_setting_input form-group">
                                                 <label for="formGroupExampleInput3">First Name</label>
-                                                <input type="text" class="form-control" id="formGroupExampleInput3">
+                                                <input name="Name" type="text" class="form-control" id="formGroupExampleInput3" value="@Model.UserDetails.Name" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-xl-6">
                                             <div class="my_profile_setting_input form-group">
                                                 <label for="formGroupExampleInput4">Last Name</label>
-                                                <input type="text" class="form-control" id="formGroupExampleInput4">
+                                                <input name="LastName" type="text" class="form-control" id="formGroupExampleInput4" value="@Model.UserDetails.LastName" required>
                                             </div>
                                         </div>
+                                        }
                                         <div class="col-lg-6 col-xl-6">
                                             <div class="my_profile_setting_input form-group">
                                                 <label for="formGroupExampleInput8">Phone</label>
-                                                <input type="text" class="form-control" id="formGroupExampleInput8">
+                                                <input name="Phone" type="text" class="form-control" id="formGroupExampleInput8" value="@Model.UserDetails.Phone" required>
                                             </div>
                                         </div>
+                                        @if (@Model.Role == "Multi User" || @Model.Role == "Agent")
+                                        {
                                         <div class="col-lg-6 col-xl-6">
                                             <div class="my_profile_setting_input form-group">
                                                 <label for="formGroupExampleInput12">Company Name</label>
-                                                <input type="text" class="form-control" id="formGroupExampleInput12">
+                                                <input name="CompanyName" type="text" class="form-control" id="formGroupExampleInput12" value="@Model.UserDetails.CompanyName" required>
                                             </div>
                                         </div>
-                                        <div class="col-xl-12">
-                                            <div class="my_profile_setting_input form-group">
-                                                <label for="formGroupExampleInput13">Address</label>
-                                                <input type="text" class="form-control" id="formGroupExampleInput13">
-                                            </div>
-                                        </div>
+                                        }
                                         <div class="col-xl-12 text-right">
                                             <div class="my_profile_setting_input">
                                                 <button class="btn btn2">Update Profile</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                            }
+                                        
+                                    </div>
                             </div>
                         </div>
-                        <span>@Model.Role</span>
                         @*<div class="my_dashboard_review mt30">
             <div class="row">
                 <div class="col-xl-2">

@@ -12463,23 +12463,26 @@ a.btn.btn_error{
   overflow: hidden;
   opacity: 0;
 }
-.wrap-custom-file label {
-  z-index: 1;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  overflow: hidden;
-  cursor: pointer;
-  background-image: url(../images/team/upload_photo.jpg);
-  border-radius: 5px;
-  -webkit-transition: -webkit-transform 0.4s;
-  transition: -webkit-transform 0.4s;
-  transition: transform 0.4s;
-  transition: transform 0.4s, -webkit-transform 0.4s;
-}
+    .wrap-custom-file label {
+        z-index: 1;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        overflow: hidden;
+        cursor: pointer;
+        background-image: url(../images/user.png);
+        background-position: center; /* Center the image */
+        background-repeat: no-repeat; /* Do not repeat the image */
+        background-size: cover; /* Resize the background image to cover the entire container */
+        border-radius: 5px;
+        -webkit-transition: -webkit-transform 0.4s;
+        transition: -webkit-transform 0.4s;
+        transition: transform 0.4s;
+        transition: transform 0.4s, -webkit-transform 0.4s;
+    }
 .wrap-custom-file label span {
   border-radius: 8px;
   background-color: #ffffff;

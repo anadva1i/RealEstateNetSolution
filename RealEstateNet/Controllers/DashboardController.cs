@@ -44,6 +44,7 @@ namespace RealEstateNet.Controllers
             model.Countries = GetCountries(lang);
             model.Cities = GetCities(lang);
             model.FeaturesModel = getFeatures(lang);
+            model.Registered = RegisteredUser();
             return View(model);
         }
 
@@ -78,7 +79,74 @@ namespace RealEstateNet.Controllers
             language = lang;
             dynamic model = new ExpandoObject();
             model.Role = GetUserRole();
+            model.UserDetails = GetAgent();
             return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditProfile(AgentModel agent)
+        {
+            AgentModel newAgent = new AgentModel();
+            var userId = User.Identity.GetUserId();
+            using(var context = new DB_RealEstateEntities())
+            {
+                var userDetails = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId));
+                if(userDetails == null)
+                {
+                    UserDetail newUser = new UserDetail();
+                    newUser.UserId = userId;
+                    if(agent.Name != null)
+                    {
+                        newUser.Name = agent.Name;
+                    }
+                    else
+                    {
+                        newUser.Name = agent.CompanyName;
+                    }
+                    newUser.LastName = agent.LastName;
+                    newUser.Phone = agent.Phone;
+                    context.UserDetails.Add(newUser);
+                }
+                else
+                {
+                    if (agent.Name != null)
+                    {
+                        userDetails.Name = agent.Name;
+                    }
+                    else
+                    {
+                        userDetails.Name = agent.CompanyName;
+                    }
+                    userDetails.LastName = agent.LastName;
+                    userDetails.Phone = agent.Phone;
+                }
+                context.SaveChanges();
+            }
+            return View("Success");
+        }
+
+        private AgentModel GetAgent()
+        {
+            AgentModel agent = new AgentModel();
+            var userId = User.Identity.GetUserId();
+            var context = new DB_RealEstateEntities();
+            var userDetails = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId));
+            agent.Name = userDetails.Name;
+            agent.LastName = userDetails.LastName;
+            agent.Phone = userDetails.Phone;
+            agent.Picture = userDetails.Picture;
+            agent.CompanyName = userDetails.Name;
+            return agent;
+        }
+
+        private bool RegisteredUser()
+        {
+            bool registered = false;
+            var userId = User.Identity.GetUserId();
+            var context = new DB_RealEstateEntities();
+            var userDetails = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId));
+            if (userDetails != null)
+                registered = true;
+            return registered;
         }
 
         private string GetUserRole()

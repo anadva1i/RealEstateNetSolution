@@ -2,7 +2,10 @@
 @{
     ViewBag.Title = "AddNewProperty";
 }
-
+@if (!Model.Registered)
+{
+    @Html.Partial("_ModalUserDetails")
+}
 <!-- Our Dashbord -->
 <section class="our-dashbord dashbord bgc-f7 pb50">
     <div class="container-fluid ovh">
@@ -135,7 +138,7 @@
                                             <label for="propertyAddress">@Model.PageModel.AddressGE</label>
                                             <input type="text" class="form-control" id="propertyAddressGE" name="AddressGE" placeholder="Drag map marker to get the address" readonly="true" required>
                                         </div>
-                                    </div>                                   
+                                    </div>
                                     <div class="col-lg-6 col-xl-6">
                                         <div class="my_profile_setting_input ui_kit_select_search form-group">
                                             <label>@Model.PageModel.Country</label>
@@ -187,11 +190,11 @@
                                     </div>
 
                                     @*<div class="col-xl-12">
-                            <div class="my_profile_setting_input">
-                                <button class="btn btn1 float-left">Back</button>
-                                <button class="btn btn2 float-right">Next</button>
-                            </div>
-                        </div>*@
+                                            <div class="my_profile_setting_input">
+                                                <button class="btn btn1 float-left">Back</button>
+                                                <button class="btn btn2 float-right">Next</button>
+                                            </div>
+                                        </div>*@
                                 </div>
                             </div>
                             <div class="my_dashboard_review mt30">
@@ -312,11 +315,11 @@
                                         </ul>
                                     </div>
                                     @*<div class="col-xl-12">
-                            <div class="my_profile_setting_input">
-                                <button class="btn btn1 float-left">Back</button>
-                                <button class="btn btn2 float-right">Next</button>
-                            </div>
-                        </div>*@
+                                            <div class="my_profile_setting_input">
+                                                <button class="btn btn1 float-left">Back</button>
+                                                <button class="btn btn2 float-right">Next</button>
+                                            </div>
+                                        </div>*@
                                 </div>
                             </div>
                             <div class="my_dashboard_review mt30">
@@ -326,18 +329,18 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <ul class="mb0" id="ul-images">
-                                        <ul class="mb0" id="ul-images">
-                                            @*<li class="list-inline-item">
-                                                <div class="portfolio_item">
-                                                    <img class="img-fluid" id="myImg" style="width: 200px; height: 200px; object-fit: cover">
-                                                    <div class="edu_stats_list" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><a href="#"><span class="flaticon-garbage"></span></a></div>
-                                                </div>
-                                            </li>*@    
-                                        </ul>
+                                            <ul class="mb0" id="ul-images">
+                                                @*<li class="list-inline-item">
+                                                        <div class="portfolio_item">
+                                                            <img class="img-fluid" id="myImg" style="width: 200px; height: 200px; object-fit: cover">
+                                                            <div class="edu_stats_list" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><a href="#"><span class="flaticon-garbage"></span></a></div>
+                                                        </div>
+                                                    </li>*@
+                                            </ul>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="portfolio_upload">
-                                            <input style="cursor: pointer;" id="select-files" type="file" accept="image/x-png,image/jpeg" multiple=""/>
+                                            <input style="cursor: pointer;" id="select-files" type="file" accept="image/x-png,image/jpeg" multiple="" />
                                             <div class="icon"><span class="flaticon-download"></span></div>
                                             <p>Select images</p>
                                         </div>
@@ -353,7 +356,7 @@
                             </div>
                         </div>
                     }
-                    </div>                    
+                </div>
                 @Html.Partial("_DashboardFooter")
             </div>
         </div>

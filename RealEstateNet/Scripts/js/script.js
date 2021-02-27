@@ -110,7 +110,8 @@
     });
 
     /* ----- Menu Cart Button Dropdown ----- */
-    $(document).on('ready', function() {
+    $(document).on('ready', function () {
+        
         // Loop through each nav item
         $('.cart_btn').children('ul.cart').children('li').each(function(indexCount){
             // loop through each dropdown, count children and apply a animation delay based on their index value
@@ -124,7 +125,14 @@
     });
 
     /* Menu Search Popup */
-    jQuery(document).ready(function($) {
+    jQuery(document).ready(function ($) {
+        // Opem modal
+        $("#userDetailsModal").modal('show');
+        //$('#userDetailsModal').modal({
+        //    backdrop: 'static',
+        //    keyboard: false
+        //});
+
         var wHeight = window.innerHeight;
         /* search bar middle alignment */
         $('#mk-fullscreen-searchform').css('top', wHeight / 2);
@@ -1002,14 +1010,23 @@
         var last = $("#last");
         LoadPager(parseInt(last.text()))
         $("input:file").change(function () {
-            var files = document.getElementById("select-files");
-            var totalfiles = files.files.length;
-            console.log(files.files)
-            for (var index = 0; index < totalfiles; index++) {
-                if (this.files && this.files[index]) {
-                    var reader = new FileReader();
-                    reader.onload = imageIsLoaded;
-                    reader.readAsDataURL(this.files[index]);
+            var path = window.location.pathname;
+            if (path.includes("Profile")) {
+                var file = this.files[0];
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    $('.wrap-custom-file label').css('background-image', 'url("' + reader.result + '")');
+                }
+            }
+            else {
+                var files = document.getElementById("select-files");
+                var totalfiles = files.files.length;
+                for (var index = 0; index < totalfiles; index++) {
+                    if (this.files && this.files[index]) {
+                        var reader = new FileReader();
+                        reader.onload = imageIsLoaded;
+                        reader.readAsDataURL(this.files[index]);
+                    }
                 }
             }
         });

@@ -183,6 +183,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AgentModel.cs" />
     <Compile Include="Models\AspNetRole.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -647,6 +648,7 @@
     <Content Include="Views\Dashboard\Favorites.cshtml" />
     <Content Include="Views\Dashboard\Packages.cshtml" />
     <Content Include="Views\Dashboard\My_Profile.cshtml" />
+    <Content Include="Views\Shared\_ModalUserDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
