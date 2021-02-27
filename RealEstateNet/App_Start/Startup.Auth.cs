@@ -54,9 +54,9 @@ namespace RealEstateNet
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "377010236188022",
+               appSecret: "789b34ee5ce13dc5c24191ab1311e0cd");
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
