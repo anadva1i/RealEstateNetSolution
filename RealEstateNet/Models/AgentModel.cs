@@ -7,7 +7,8 @@ namespace RealEstateNet.Models
 {
     public class AgentModel
     {
-        public string Picture { get; set; }
+        public HttpPostedFileBase Picture { get; set; }
+        public string PictureURL { get; set; }
         public string CompanyName { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }

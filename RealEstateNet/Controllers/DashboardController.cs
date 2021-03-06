@@ -90,7 +90,13 @@ namespace RealEstateNet.Controllers
             using(var context = new DB_RealEstateEntities())
             {
                 var userDetails = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId));
-                if(userDetails == null)
+                if (agent.Picture != null)
+                {
+                    string ImageName = System.IO.Path.GetFileName(agent.Picture.FileName);
+                    string physicalPath = Server.MapPath("~/Content/images/agents/" + ImageName);
+                    agent.Picture.SaveAs(physicalPath);
+                }
+                if (userDetails == null)
                 {
                     UserDetail newUser = new UserDetail();
                     newUser.UserId = userId;
@@ -104,6 +110,8 @@ namespace RealEstateNet.Controllers
                     }
                     newUser.LastName = agent.LastName;
                     newUser.Phone = agent.Phone;
+                    if(agent.Picture != null)
+                        newUser.Picture = "../../Content/images/agents/" + agent.Picture.FileName;
                     context.UserDetails.Add(newUser);
                 }
                 else
@@ -118,6 +126,8 @@ namespace RealEstateNet.Controllers
                     }
                     userDetails.LastName = agent.LastName;
                     userDetails.Phone = agent.Phone;
+                    if (agent.Picture != null)
+                        userDetails.Picture = "../../Content/images/agents/" + agent.Picture.FileName;
                 }
                 context.SaveChanges();
             }
@@ -130,11 +140,15 @@ namespace RealEstateNet.Controllers
             var userId = User.Identity.GetUserId();
             var context = new DB_RealEstateEntities();
             var userDetails = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId));
-            agent.Name = userDetails.Name;
-            agent.LastName = userDetails.LastName;
-            agent.Phone = userDetails.Phone;
-            agent.Picture = userDetails.Picture;
-            agent.CompanyName = userDetails.Name;
+            if(userDetails != null)
+            {
+                agent.Name = userDetails.Name;
+                agent.LastName = userDetails.LastName;
+                agent.Phone = userDetails.Phone;
+                agent.PictureURL = userDetails.Picture;
+                agent.CompanyName = userDetails.Name;
+            }
+            
             return agent;
         }
 
@@ -316,6 +330,8 @@ namespace RealEstateNet.Controllers
                         var statusId = context.Status.FirstOrDefault(c => c.ContentId == statusType).Id;
                         var propertyState = context.Translations.FirstOrDefault(c => c.Text.Equals(model.State)).ContentId;
                         var stateId = context.States.FirstOrDefault(c => c.ContentId == propertyState).Id;
+                        var userId = User.Identity.GetUserId();
+                        int userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
                         property.PropertyTypeId = propertyTypeId;
                         property.StatusId = statusId;
                         property.StateId = stateId;
@@ -327,7 +343,7 @@ namespace RealEstateNet.Controllers
                         property.Bathrooms = model.Bathrooms;
                         property.Garages = model.Garages;
                         property.CeilingSize = model.CeilingSize;
-                        property.UserDetailsId = 1;
+                        property.UserDetailsId = userDetailsId;
                         property.Active = true;
                         property.DatePublished = DateTime.Now;
                         property.WholePrice = model.Price;
@@ -570,39 +586,36 @@ namespace RealEstateNet.Controllers
             }
         }
 
-        //public void saveAgentPicture(string picture)
-        //{
-        //    var model = JsonConvert.DeserializeObject<List<Picture>>(picture);
-        //    foreach (var m in model)
-        //    {
-        //        int startIndex = m.pic.IndexOf('/');
-        //        int endIndex = m.pic.IndexOf(';');
-        //        var ext = m.pic.Substring(startIndex + 1, endIndex - startIndex - 1);
-        //        var path = Path.Combine(Server.MapPath("~/Content/images/property"));
-        //        Directory.CreateDirectory(path);
-        //        DirectoryInfo d = new DirectoryInfo(path);
-        //        FileInfo[] Files = d.GetFiles("*");
-        //        int counter = 1;
-        //        foreach (FileInfo file in Files)
-        //        {
-        //            string fileName = file.Name.Substring(0, file.Name.IndexOf('.'));
-        //            bool result = int.TryParse(fileName, out counter);
-        //            counter++;
-        //        }
-        //        path = Path.Combine(path, counter + "." + ext);
-        //        string imageCode = m.pic.Substring(m.pic.IndexOf(',') + 1);
-        //        byte[] bytes = Convert.FromBase64String(imageCode);
-        //        System.IO.File.WriteAllBytes(path, bytes);
-        //        using (var context = new DB_RealEstateEntities())
-        //        {
-        //            Medium media = new Medium();
-        //            media.MediaUrl = "../../Content/images/property/" + folderName + "/" + counter + "." + ext;
-        //            media.PropertyId = int.Parse(folderName);
-        //            context.Media.Add(media);
-        //            context.SaveChanges();
-        //        }
-        //    }
-        //}
+        public void saveAgentPicture(string picture, int id)
+        {
+            var model = JsonConvert.DeserializeObject<List<Picture>>(picture);
+            foreach (var m in model)
+            {
+                int startIndex = m.pic.IndexOf('/');
+                int endIndex = m.pic.IndexOf(';');
+                var ext = m.pic.Substring(startIndex + 1, endIndex - startIndex - 1);
+                var path = Path.Combine(Server.MapPath("~/Content/images/property"));
+                Directory.CreateDirectory(path);
+                DirectoryInfo d = new DirectoryInfo(path);
+                FileInfo[] Files = d.GetFiles("*");
+                //int counter = 1;
+                string fileName = "";
+                foreach (FileInfo file in Files)
+                {
+                    fileName = file.Name.Substring(0, file.Name.IndexOf('.'));
+                }
+                path = Path.Combine(path, fileName + "." + ext);
+                string imageCode = m.pic.Substring(m.pic.IndexOf(',') + 1);
+                byte[] bytes = Convert.FromBase64String(imageCode);
+                System.IO.File.WriteAllBytes(path, bytes);
+                using (var context = new DB_RealEstateEntities())
+                {
+                    var user = context.UserDetails.FirstOrDefault(c=>c.Id==id);
+                    user.Picture = "../../Content/images/agents/" + fileName + "." + ext;
+                    context.SaveChanges();
+                }
+            }
+        }
 
     }
 }

@@ -1005,14 +1005,17 @@
  //======
  //  When document is ready, do
  //  ====== 
-    $(document).on('ready', function() {
+    $(document).on('ready', function () {
+        var pic = $("#agent-pic").text();
+        if(pic != "")
+            $('.wrap-custom-file label').css('background-image', 'url("' + pic + '")');
         // add your functions
         var last = $("#last");
         LoadPager(parseInt(last.text()))
         $("input:file").change(function () {
             var path = window.location.pathname;
             if (path.includes("Profile")) {
-                var file = this.files[0];
+                //var file = this.files[0];
                 var reader = new FileReader();
                 reader.onloadend = function () {
                     $('.wrap-custom-file label').css('background-image', 'url("' + reader.result + '")');
