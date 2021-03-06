@@ -570,6 +570,39 @@ namespace RealEstateNet.Controllers
             }
         }
 
+        //public void saveAgentPicture(string picture)
+        //{
+        //    var model = JsonConvert.DeserializeObject<List<Picture>>(picture);
+        //    foreach (var m in model)
+        //    {
+        //        int startIndex = m.pic.IndexOf('/');
+        //        int endIndex = m.pic.IndexOf(';');
+        //        var ext = m.pic.Substring(startIndex + 1, endIndex - startIndex - 1);
+        //        var path = Path.Combine(Server.MapPath("~/Content/images/property"));
+        //        Directory.CreateDirectory(path);
+        //        DirectoryInfo d = new DirectoryInfo(path);
+        //        FileInfo[] Files = d.GetFiles("*");
+        //        int counter = 1;
+        //        foreach (FileInfo file in Files)
+        //        {
+        //            string fileName = file.Name.Substring(0, file.Name.IndexOf('.'));
+        //            bool result = int.TryParse(fileName, out counter);
+        //            counter++;
+        //        }
+        //        path = Path.Combine(path, counter + "." + ext);
+        //        string imageCode = m.pic.Substring(m.pic.IndexOf(',') + 1);
+        //        byte[] bytes = Convert.FromBase64String(imageCode);
+        //        System.IO.File.WriteAllBytes(path, bytes);
+        //        using (var context = new DB_RealEstateEntities())
+        //        {
+        //            Medium media = new Medium();
+        //            media.MediaUrl = "../../Content/images/property/" + folderName + "/" + counter + "." + ext;
+        //            media.PropertyId = int.Parse(folderName);
+        //            context.Media.Add(media);
+        //            context.SaveChanges();
+        //        }
+        //    }
+        //}
 
     }
 }

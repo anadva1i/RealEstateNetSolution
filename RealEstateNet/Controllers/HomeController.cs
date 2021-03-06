@@ -12,6 +12,7 @@ using System.Net.NetworkInformation;
 using WebGrease.Css.Extensions;
 using System.IO;
 using Microsoft.AspNet.Identity;
+using System.Globalization;
 
 namespace RealEstateNet.Controllers
 {
@@ -68,6 +69,8 @@ namespace RealEstateNet.Controllers
             var ip = getIP();
             model.Recently = GetRecentlyViewed(ip, id, lang);
             model.PropertyId = id;
+            model.TotalReviews = GetTotalReviews(id);
+            model.ExistedReviews = GetExistedReviews(id);
             return View(model);
         }
 
@@ -79,6 +82,45 @@ namespace RealEstateNet.Controllers
                 lang = "EN";
             model.Result = SearchedResult(lang, search);
             return View(model);
+        }
+
+        private TotalReviews GetTotalReviews(int id)
+        {
+            TotalReviews totalReviews = new TotalReviews();
+            using(var context = new DB_RealEstateEntities())
+            {
+                var reviews = context.Reviews.Where(c => c.PropertyId == id);
+                totalReviews.Total = reviews.Count();
+                var sum = 0;
+                foreach(var r in reviews)
+                {
+                    sum += r.Stars;
+                }
+                if(sum > 0)
+                    totalReviews.Stars = sum / totalReviews.Total;
+            }
+            return totalReviews;
+        }
+
+        private List<ExistedReview> GetExistedReviews(int id)
+        {
+            List<ExistedReview> existedReviews = new List<ExistedReview>();
+            using (var context = new DB_RealEstateEntities())
+            {
+                var reviews = context.Reviews.Where(c=>c.PropertyId == id);
+                foreach(var r in reviews)
+                {
+                    ExistedReview existedReview = new ExistedReview();
+                    var user = context.UserDetails.FirstOrDefault(c => c.Id == r.UserDetailsId);
+                    existedReview.Picture = user.Picture;
+                    existedReview.Name = user.Name +" "+ user.LastName;
+                    existedReview.Comment = r.Comment;
+                    existedReview.Stars = r.Stars;
+                    existedReview.ReviewDate = r.ReviewDate.ToString("MMMM d, yyyy");
+                    existedReviews.Add(existedReview);
+                }
+            }
+            return existedReviews;
         }
 
         public void SendEmail(string mail_from, string mail_to, string subject, string body)

@@ -215,4 +215,19 @@ namespace RealEstateNet.Models
         public int Rating { get; set; }
         public string Comment { get; set; }
     }
+
+    public class TotalReviews
+    {
+        public int Total { get; set; }
+        public int Stars { get; set; } 
+    }
+
+    public class ExistedReview
+    {
+        public string Picture { get; set; }
+        public string Name { get; set; }
+        public int Stars { get; set; }
+        public string ReviewDate { get; set; }
+        public string Comment { get; set; }
+    }
 }
