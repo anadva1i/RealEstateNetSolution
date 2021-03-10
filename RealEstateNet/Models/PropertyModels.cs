@@ -193,9 +193,14 @@ namespace RealEstateNet.Models
 
     public class Similars
     {
+        public int Id { get; set; }
         public string Type { get; set; }
         public string City { get; set; }
         public decimal Price { get; set; }
+        public string Status { get; set; }
+        public decimal Size { get; set; }
+        public int Bedrooms { get; set; }
+
     }
 
     public class RecentlyViewed
