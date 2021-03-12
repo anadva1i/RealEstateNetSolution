@@ -39,6 +39,7 @@ namespace RealEstateNet.Controllers
             model.Mtskheta = GetCity(lang, "Mtskheta");
             model.Kutaisi = GetCity(lang, "Kutaisi");
             model.Batumi = GetCity(lang, "Batumi");
+            model.Language = lang;
             return View(model);
         }
 
@@ -82,6 +83,54 @@ namespace RealEstateNet.Controllers
                 lang = "EN";
             model.Result = SearchedResult(lang, search);
             return View(model);
+        }
+
+        public ActionResult City(string lang, string city)
+        {
+            dynamic model = new ExpandoObject();
+            model.Result = GetPropertiesByCity(lang, city);
+            return View(model);
+        }
+
+        private List<PropertySmallView> GetPropertiesByCity(string lang, string city)
+        {
+            List<PropertySmallView> properties = new List<PropertySmallView>();
+            using(var context = new DB_RealEstateEntities())
+            {
+                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                var cityContentId = context.Contents.FirstOrDefault(c => c.Type.Equals(city)).Id;
+                var cityId = context.Cities.FirstOrDefault(c => c.ContentId == cityContentId).Id;
+                var locations = context.Locations.Where(c => c.CityId == cityId);
+                foreach(var l in locations)
+                {
+                    PropertySmallView property = new PropertySmallView();
+                    var db_property = context.Properties.FirstOrDefault(c => c.LocationId == l.Id);
+                    property.Id = db_property.Id;
+                    property.Price = db_property.Price;
+                    property.Area = db_property.PropertySize;
+                    property.Baths = db_property.Bathrooms;
+                    property.Beds = db_property.Bedrooms;
+                    property.DatePublished = db_property.DatePublished.ToString("MMMM dd");
+                    var media = context.Media.FirstOrDefault(c => c.PropertyId == db_property.Id);
+                    property.ImageUrl = media.MediaUrl;
+                    var typeContentId = context.PropertyTypes.FirstOrDefault(c => c.Id == db_property.PropertyTypeId).ContentId;
+                    var type = context.Translations.FirstOrDefault(c => c.ContentId == typeContentId && c.LanguageId == langId).Text;
+                    property.Type = type;
+                    var statusContentId = context.Status.FirstOrDefault(c => c.Id == db_property.StatusId).ContentId;
+                    var status = context.Translations.FirstOrDefault(c => c.ContentId == statusContentId && c.LanguageId == langId).Text;
+                    property.Status = status;
+                    var contentNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + db_property.Id)).Id;
+                    var contentAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + db_property.Id)).Id;
+                    property.Name = context.Translations.FirstOrDefault(c => c.ContentId == contentNameId && c.LanguageId == langId).Text;
+                    property.Address = context.Translations.FirstOrDefault(c => c.ContentId == contentAddressId && c.LanguageId == langId).Text;
+                    var userId = db_property.UserDetailsId;
+                    var user = context.UserDetails.FirstOrDefault(c => c.Id == userId);
+                    property.AgentName = user.Name + " " + user.LastName;
+                    property.AgentPic = user.Picture;
+                    properties.Add(property);
+                }
+            }
+            return properties;
         }
 
         private TotalReviews GetTotalReviews(int id)
