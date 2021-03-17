@@ -74,7 +74,6 @@ function DrawMyChart(advance_payment, principal_amount, rate) {
                 showScale: true
             }]
         },
-
         // Configuration options go here
         options: {}
     });

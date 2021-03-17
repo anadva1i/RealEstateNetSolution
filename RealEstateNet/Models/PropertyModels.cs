@@ -182,6 +182,7 @@ namespace RealEstateNet.Models
         public string Fireplace { get; set; }
         public string TV { get; set; }
         public string Refrigirator { get; set; }
+        public string type { get; set; }
     }
     public class Agent
     {

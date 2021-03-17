@@ -1259,3 +1259,9 @@ function LoadPager(last) {
             break;
     }
 }
+
+function Search(city) {
+    console.log(city)
+    $("#cityName").val(city);
+    $("#formSearch").trigger("click");
+}

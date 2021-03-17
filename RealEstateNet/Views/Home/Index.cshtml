@@ -155,7 +155,7 @@
                                                                         </li>
                                                                         <li class="list-inline-item">
                                                                             <div class="candidate_revew_select">
-                                                                                <select name="city" class="selectpicker w100 show-tick">
+                                                                                <select id="cityName"  name="city" class="selectpicker w100 show-tick">
                                                                                     <option>Built-up Area</option>
                                                                                     @foreach (var city in Model.Cities)
                                                                                     {
@@ -178,7 +178,7 @@
                                             </li>
                                             <li class="list-inline-item">
                                                 <div class="search_option_button">
-                                                    <button type="submit" class="btn btn-thm">Search</button>
+                                                    <button id="formSearch" type="submit" class="btn btn-thm">Search</button>
                                                 </div>
                                             </li>
                                         </ul>
@@ -448,8 +448,7 @@
         </div>
         <div class="row">
             <div class="col-lg-4 col-xl-4">
-                <a href="@Url.Action("City", "Home", new { lang = Model.Language, city = "Mtskheta"})">
-                    <div class="properti_city">
+                    <div class="properti_city" onclick="Search('@Model.Mtskheta.Name')">
                         <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/mtskheta.jpg" alt="pc1.jpg"></div>
                         <div class="overlay">
                             <div class="details">
@@ -458,11 +457,9 @@
                             </div>
                         </div>
                     </div>
-                </a>
             </div>
             <div class="col-lg-8 col-xl-8">
-                <a href="@Url.Action("City", "Home", new { lang = Model.Language, city = "Tbilisi"})">
-                    <div class="properti_city">
+                    <div class="properti_city" onclick="Search('@Model.Tbilisi.Name')">
                         <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/tbilisi.jpg" alt="pc2.jpg"></div>
                         <div class="overlay">
                             <div class="details">
@@ -471,11 +468,9 @@
                             </div>
                         </div>
                     </div>
-                    </a>
             </div>
             <div class="col-lg-8 col-xl-8">
-                <a href="@Url.Action("City", "Home", new { lang = Model.Language, city = "Batumi"})">
-                    <div class="properti_city">
+                    <div class="properti_city"  onclick="Search('@Model.Batumi.Name')">
                         <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/batumi.jpg" alt="pc3.jpg"></div>
                         <div class="overlay">
                             <div class="details">
@@ -484,11 +479,9 @@
                             </div>
                         </div>
                     </div>
-                    </a>
             </div>
             <div class="col-lg-4 col-xl-4">
-                <a href="@Url.Action("City", "Home", new { lang = Model.Language, city = "Kutaisi"})">
-                    <div class="properti_city">
+                    <div class="properti_city"  onclick="Search('@Model.Kutaisi.Name')">
                         <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/kutaisi.jpg" alt="pc4.jpg"></div>
                         <div class="overlay">
                             <div class="details">
@@ -497,7 +490,6 @@
                             </div>
                         </div>
                     </div>
-                    </a>
             </div>
         </div>
     </div>

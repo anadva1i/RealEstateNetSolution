@@ -82,13 +82,12 @@ namespace RealEstateNet.Controllers
             if (lang == null)
                 lang = "EN";
             model.Result = SearchedResult(lang, search);
-            return View(model);
-        }
-
-        public ActionResult City(string lang, string city)
-        {
-            dynamic model = new ExpandoObject();
-            model.Result = GetPropertiesByCity(lang, city);
+            model.Status = GetStatuses(lang);
+            model.Type = GetTypes(lang);
+            model.Amenity = GetAmenities(lang);
+            model.Cities = GetCities(lang);
+            model.States = GetState(lang);
+            model.SearchResult = search;
             return View(model);
         }
 
