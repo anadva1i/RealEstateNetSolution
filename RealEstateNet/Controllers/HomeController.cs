@@ -171,7 +171,8 @@ namespace RealEstateNet.Controllers
             return existedReviews;
         }
 
-        public void SendEmail(string mail_from, string mail_to, string subject, string body)
+        [HttpPost]
+        public String SendEmail(string mail_from, string mail_to, string subject, string body)
         {
             MailAddress to = new MailAddress(mail_to);
             MailAddress from = new MailAddress(mail_from);
@@ -189,10 +190,12 @@ namespace RealEstateNet.Controllers
             try
             {
                 client.Send(message);
+                return "Email was sent successfully!";
             }
             catch (SmtpException ex)
             {
                 Console.WriteLine(ex.ToString());
+                return "Unfortunately your email could not be sent. Please try again later";
             }
         } 
 
