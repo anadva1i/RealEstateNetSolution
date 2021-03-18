@@ -49,6 +49,7 @@ window.onload = function() {
     AdvancedAmount();
 };
 var chart;
+
 function DrawMyChart(advance_payment, principal_amount, rate) {
     if (chart) {
         chart.destroy();
@@ -75,7 +76,30 @@ function DrawMyChart(advance_payment, principal_amount, rate) {
             }]
         },
         // Configuration options go here
-        options: {}
+        options: {
+            plugins: {
+                datalabels: {
+                    display: true,
+                    backgroundColor: '#ccc',
+                    borderRadius: 3,
+                    font: {
+                        color: 'red',
+                        weight: 'bold',
+                    }
+                },
+                doughnutlabel: {
+                    labels: [{
+                        text: total,
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        }
+                    }, {
+                        text: 'total (₾)'
+                    }]
+                }
+            }
+        }
     });
 }
 
@@ -163,7 +187,7 @@ Chart.Bar('chart', {
   options: options,
   data: data
 });
-
+var total = 0;
 function PMT(interest, months, loan) {
     return interest * loan * Math.pow((1 + interest), months) / (1 - Math.pow((1 + interest), months));
 }
@@ -173,11 +197,13 @@ function Calculate() {
     var months = $("#formGroupYear").val() * 12 + +$("#formGroupMonth").val();
     var loan = $("#propertyPrice").text() - $("#formGroupGEL").val();
     var pmt = PMT(interest, months, -loan)
-    var total = pmt * months;
+    total = pmt * months;
+    total = total.toFixed(2);
     var advance_payment = $("#formGroupGEL").val();
     var principal_amount = $("#propertyPrice").text() - advance_payment;
     var sum = +advance_payment + +principal_amount;
     var rate = total - sum;
+    rate = rate.toFixed(2);
     DrawMyChart(advance_payment, principal_amount, rate);
 }
 
@@ -185,7 +211,7 @@ function AdvancedAmount() {
     var totalPrice = $("#propertyPrice").text();
     var rate = $("#formGroupRate").val();
     var advanced = totalPrice * rate / 100;
-    $("#formGroupGEL").val(advanced);
+    $("#formGroupGEL").val(advanced.toFixed(2));
     Calculate();
 }
 
@@ -193,6 +219,6 @@ function AdvancedRate() {
     var totalPrice = $("#propertyPrice").text();
     var advanced = $("#formGroupGEL").val();
     var rate = advanced * 100 / totalPrice;
-    $("#formGroupRate").val(rate);
+    $("#formGroupRate").val(rate.toFixed(2));
     Calculate();
 }
