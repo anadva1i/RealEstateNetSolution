@@ -42,6 +42,7 @@
             animationSpeed: 'fast', //slow, medium, fast
             accoridonExpAll: false //Expands all the accordion menu on click
         });
+        HeartIcon();
     });
 
     function mobileNavToggle() {
@@ -1294,5 +1295,62 @@ function sendEmail() {
             $("#body").val("");
         }
     });
-    
+}
+var favorite = false;
+
+function addFavorite(id) {
+    $.ajax({
+        url: '../../Home/AddFavorite',
+        dataType: "json",
+        type: "POST",
+        cache: false,
+        data: { propertyId: id },
+        complete: function (data) {
+            if (data.responseText == "True") {
+                favorite = true;
+                $("#flaticon").css("color", "#ff5a5f");
+                $("#flaticon").toggleClass('flaticon-heart flaticon-heartbeat');
+            }
+        }
+    });
+}
+
+function removeFavorite(id) {
+    $.ajax({
+        url: '../../Home/RemoveFavorite',
+        dataType: "json",
+        type: "POST",
+        cache: false,
+        data: { propertyId: id },
+        complete: function (data) {
+            if (data.responseText == "True") {
+                favorite = false;
+                var url = window.location.href;
+                console.log(url)
+                if (url.includes("Dashboard"))
+                    location.reload();
+                else {
+                    $("#flaticon").css("color", "white");
+                    $("#flaticon").toggleClass('flaticon-heartbeat flaticon-heart');
+                }
+            }
+        }
+    });
+}
+
+function switchFavorite(id) {
+    if (!favorite)
+        addFavorite(id)
+    else
+        removeFavorite(id)
+}
+
+function HeartIcon() {
+    var isFavorite = $("#favorite").text();
+    if (isFavorite == "True") {
+        favorite = true;
+        $("#flaticon").css("color", "#ff5a5f");
+        $("#flaticon").toggleClass('flaticon-heart flaticon-heartbeat');
+    }
+        
 }

@@ -67,6 +67,9 @@
         <AssociationConnector Association="DB_RealEstateModel.FK_Reviews_UserDetails" ManuallyRouted="false" />
         <AssociationConnector Association="DB_RealEstateModel.FK_UserDetails_UserDetails" ManuallyRouted="false" />
         <AssociationConnector Association="DB_RealEstateModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.Favorite" Width="1.5" PointX="15" PointY="16.75" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_Favorites_Property" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_Favorites_UserDetails" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

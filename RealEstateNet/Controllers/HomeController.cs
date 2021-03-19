@@ -197,7 +197,52 @@ namespace RealEstateNet.Controllers
                 Console.WriteLine(ex.ToString());
                 return "Unfortunately your email could not be sent. Please try again later";
             }
-        } 
+        }
+
+        [HttpPost]
+        public bool AddFavorite(int propertyId)
+        {
+            using(var context = new DB_RealEstateEntities())
+            {
+                var user = User.Identity.GetUserId();
+                var userId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(user)).Id;
+                Favorite favorite = new Favorite();
+                favorite.PropertyId = propertyId;
+                favorite.UserId = userId;
+                try
+                {
+                    context.Favorites.Add(favorite);
+                    context.SaveChanges();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
+        [HttpPost]
+        public bool RemoveFavorite(int propertyId)
+        {
+            using (var context = new DB_RealEstateEntities())
+            {
+                var user = User.Identity.GetUserId();
+                var userId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(user)).Id;
+                var favorite = context.Favorites.FirstOrDefault(c => c.PropertyId == propertyId && c.UserId == userId);
+                try
+                {
+                    if(favorite != null)
+                        context.Favorites.Remove(favorite);
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
 
         private List<string> GetMedia(int propertyId)
         {
@@ -232,6 +277,13 @@ namespace RealEstateNet.Controllers
                 var cityText = context.Translations.FirstOrDefault(c => c.ContentId == city && c.LanguageId == langId).Text;
                 var statusContent = context.Status.FirstOrDefault(c => c.Id == db_property.StatusId).ContentId;
                 var status = context.Translations.FirstOrDefault(c => c.ContentId == statusContent && c.LanguageId == langId).Text;
+                var user = User.Identity.GetUserId();
+                var userId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(user)).Id;
+                var favorite = context.Favorites.FirstOrDefault(c => c.PropertyId == propertyId && c.UserId == userId);
+                property.IsFavorite = false;
+                if (favorite != null)
+                    property.IsFavorite = true;
+                property.Id = propertyId;
                 property.Title = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentTitle).Text;
                 property.Description = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentDescription).Text;
                 property.Address = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentAddress).Text;

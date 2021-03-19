@@ -322,9 +322,10 @@
                         <h2>₾<span id="propertyPrice">@Model.Details.Price</span></h2>
                     </div>
                     <div class="spss mt20 text-right tal-400">
+                        <span id="favorite" style="display: none">@Model.Details.IsFavorite</span>
                         <ul class="mb0">
                             <li class="list-inline-item"><a href="#"><span class="flaticon-transfer-1"></span></a></li>
-                            <li class="list-inline-item"><a href="#"><span class="flaticon-heart"></span></a></li>
+                            <li class="list-inline-item" onclick="switchFavorite(@Model.Details.Id)" style="cursor: pointer"><span id="flaticon" class="flaticon-heart" style="color: white"></span></li>
                             <li class="list-inline-item"><a href="#"><span class="flaticon-share"></span></a></li>
                         </ul>
                     </div>

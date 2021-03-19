@@ -21,6 +21,7 @@ namespace RealEstateNet.Models
             this.Properties = new HashSet<Property>();
             this.Reviews = new HashSet<Review>();
             this.UserDetails1 = new HashSet<UserDetail>();
+            this.Favorites = new HashSet<Favorite>();
         }
     
         public int Id { get; set; }
@@ -45,5 +46,7 @@ namespace RealEstateNet.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserDetail> UserDetails1 { get; set; }
         public virtual UserDetail UserDetail1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Favorite> Favorites { get; set; }
     }
 }

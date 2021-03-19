@@ -211,6 +211,9 @@
     <Compile Include="Models\C__MigrationHistory.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Favorite.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Feature.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DB_RealEstateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DB_RealEstateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -98,6 +98,14 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ContentId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Favorites">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="PropertyId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Features">
           <Key>
@@ -373,6 +381,30 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favorites_Property">
+          <End Role="Property" Type="Self.Property" Multiplicity="1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favorites_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Favorites">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -724,6 +756,7 @@
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Favorites" EntityType="Self.Favorites" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Features" EntityType="Self.Features" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IPs" EntityType="Self.IPs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Language" EntityType="Self.Language" Schema="dbo" store:Type="Tables" />
@@ -773,6 +806,14 @@
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favorites_Property" Association="Self.FK_Favorites_Property">
+            <End Role="Property" EntitySet="Property" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favorites_UserDetails" Association="Self.FK_Favorites_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="Favorites" EntitySet="Favorites" />
           </AssociationSet>
           <AssociationSet Name="FK_Features_Content" Association="Self.FK_Features_Content">
             <End Role="Content" EntitySet="Content" />
@@ -887,8 +928,7 @@
             <End Role="UserDetails" EntitySet="UserDetails" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DB_RealEstateModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1087,6 +1127,7 @@
           <NavigationProperty Name="PropertyServices" Relationship="Self.FK_PropertyServices_Property" FromRole="Property" ToRole="PropertyServices" />
           <NavigationProperty Name="PropertyViews" Relationship="Self.FK_PropertyViews_Property" FromRole="Property" ToRole="PropertyViews" />
           <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Property" FromRole="Property" ToRole="Reviews" />
+          <NavigationProperty Name="Favorites" Relationship="DB_RealEstateModel.FK_Favorites_Property" FromRole="Property" ToRole="Favorite" />
         </EntityType>
         <EntityType Name="PropertyContent">
           <Key>
@@ -1221,6 +1262,7 @@
           <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_UserDetails" FromRole="UserDetails" ToRole="Reviews" />
           <NavigationProperty Name="UserDetails1" Relationship="Self.FK_UserDetails_UserDetails" FromRole="UserDetails" ToRole="UserDetails1" />
           <NavigationProperty Name="UserDetail1" Relationship="Self.FK_UserDetails_UserDetails" FromRole="UserDetails1" ToRole="UserDetails" />
+          <NavigationProperty Name="Favorites" Relationship="DB_RealEstateModel.FK_Favorites_UserDetails" FromRole="UserDetail" ToRole="Favorite" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -1806,7 +1848,50 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="Favorites" EntityType="DB_RealEstateModel.Favorite" />
+          <AssociationSet Name="FK_Favorites_Property" Association="DB_RealEstateModel.FK_Favorites_Property">
+            <End Role="Property" EntitySet="Properties" />
+            <End Role="Favorite" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favorites_UserDetails" Association="DB_RealEstateModel.FK_Favorites_UserDetails">
+            <End Role="UserDetail" EntitySet="UserDetails" />
+            <End Role="Favorite" EntitySet="Favorites" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Favorite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="PropertyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Property" Relationship="DB_RealEstateModel.FK_Favorites_Property" FromRole="Favorite" ToRole="Property" />
+          <NavigationProperty Name="UserDetail" Relationship="DB_RealEstateModel.FK_Favorites_UserDetails" FromRole="Favorite" ToRole="UserDetail" />
+        </EntityType>
+        <Association Name="FK_Favorites_Property">
+          <End Type="DB_RealEstateModel.Property" Role="Property" Multiplicity="1" />
+          <End Type="DB_RealEstateModel.Favorite" Role="Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Favorite">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favorites_UserDetails">
+          <End Type="DB_RealEstateModel.UserDetail" Role="UserDetail" Multiplicity="1" />
+          <End Type="DB_RealEstateModel.Favorite" Role="Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetail">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Favorite">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2105,6 +2190,15 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Favorites">
+            <EntityTypeMapping TypeName="DB_RealEstateModel.Favorite">
+              <MappingFragment StoreEntitySet="Favorites">
+                <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

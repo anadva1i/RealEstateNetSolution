@@ -108,6 +108,8 @@ namespace RealEstateNet.Models
 
     public class SinglePropertyView
     {
+        public int Id { get; set; }
+        public bool IsFavorite { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
@@ -235,5 +237,15 @@ namespace RealEstateNet.Models
         public int Stars { get; set; }
         public string ReviewDate { get; set; }
         public string Comment { get; set; }
+    }
+
+    public class FavoriteView
+    {
+        public int Id { get; set; }
+        public string Status { get; set; }
+        public string ImageUrl { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public decimal Price { get; set; }
     }
 }
