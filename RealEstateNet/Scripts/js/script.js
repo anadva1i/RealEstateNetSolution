@@ -1,4 +1,4 @@
-(function ($) {
+﻿(function ($) {
     
     "use strict";
 
@@ -1353,4 +1353,56 @@ function HeartIcon() {
         $("#flaticon").toggleClass('flaticon-heart flaticon-heartbeat');
     }
         
+}
+
+$("#searchFavorites").keyup(function (event) {
+    if (event.which === 13) {
+        SearchFavorites();
+    }
+});
+
+function SearchFavorites() {
+    var keyword = $("#searchFavorites").val();
+    $(".favorite_item_list").empty();
+    $.ajax({
+        url: '../../Dashboard/SearchFavorites',
+        dataType: "json",
+        type: "POST",
+        cache: false,
+        data: { keyword: keyword },
+        complete: function (data) {
+            var json = data.responseText;
+            $.each(JSON.parse(json), function (key, row) {
+                console.log(row)
+                SearchedFavorite(row.Id, row.Status, row.ImageUrl, row.Name, row.Address, row.Price);
+            });            
+        }
+    });
+}
+
+function SearchedFavorite(id, status, image, name, address, price) {
+    var div_property =  '<div class="feat_property list favorite_page">'+
+                                        '<div class="thumb">'+
+                                            '<img class="img-whp" src="'+image+'" alt="fp1.jpg">'+
+                                            '<div class="thmb_cntnt">'+
+                                                '<ul class="tag mb0">'+
+                                                    '<li class="list-inline-item dn"></li>'+
+                                                    '<li class="list-inline-item"><a href="#">'+status+'</a></li>'+
+                                                '</ul>'+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<div class="details">'+
+                                            '<div class="tc_content">'+
+                                                '<h4>'+name+'</h4>'+
+                                                '<p><span class="flaticon-placeholder"></span>'+address+'</p>'+
+                                               '<a class="fp_price text-thm" href="#">'+price+' ₾<small></small></a>'+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<ul class="view_edit_delete_list mb0 mt35">'+
+                                            '<li class="list-inline-item" data-toggle="tooltip" data-placement="top" title="Delete"><a href="#" onclick="removeFavorite('+id+')"><span class="flaticon-garbage"></span></a></li>'+
+                                        '</ul>'+
+    '</div>';
+
+
+    $(".favorite_item_list").append(div_property);   
 }

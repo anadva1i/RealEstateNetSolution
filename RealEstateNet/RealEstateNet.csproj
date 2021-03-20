@@ -652,6 +652,7 @@
     <Content Include="Views\Dashboard\Packages.cshtml" />
     <Content Include="Views\Dashboard\My_Profile.cshtml" />
     <Content Include="Views\Shared\_ModalUserDetails.cshtml" />
+    <Content Include="Views\Dashboard\Properties.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

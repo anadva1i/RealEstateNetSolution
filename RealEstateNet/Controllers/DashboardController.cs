@@ -56,6 +56,14 @@ namespace RealEstateNet.Controllers
             return View();
         }
 
+        public ActionResult Properties(string lang)
+        {
+            if (lang == null)
+                lang = "EN";
+            language = lang;
+            return View();
+        }
+
         public ActionResult Favorites(string lang)
         {
             if (lang == null)
@@ -181,6 +189,45 @@ namespace RealEstateNet.Controllers
                 }
             }
             return favorites;
+        }
+
+        [HttpPost]
+        public ActionResult SearchFavorites(string keyword)
+        {
+            List<FavoriteView> favorites = new List<FavoriteView>();
+            using (var context = new DB_RealEstateEntities())
+            {
+                var user = User.Identity.GetUserId();
+                var userId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(user)).Id;
+                var userFavorites = context.Favorites.Where(c => c.UserId == userId);
+                List<Property> properties = new List<Property>();
+                foreach (var f in userFavorites)
+                {
+                    var property = context.Properties.FirstOrDefault(c => c.Id == f.PropertyId);
+                    properties.Add(property);
+                    var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
+                    var nameContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + property.Id)).Id;
+                    var locationId = property.LocationId;
+                    var locationContent = context.Locations.FirstOrDefault(c => c.Id == locationId).ContentId;
+                    var statusContent = context.Status.FirstOrDefault(c => c.Id == property.StatusId).ContentId;
+                    var Name = context.Translations.FirstOrDefault(c => c.ContentId == nameContent && c.LanguageId == langId).Text;
+                    var Address = context.Translations.FirstOrDefault(c => c.ContentId == locationContent && c.LanguageId == langId).Text;
+                    var Status = context.Translations.FirstOrDefault(c => c.ContentId == statusContent && c.LanguageId == langId).Text;
+                    if(Name.Contains(keyword) || Address.Contains(keyword) || Status.Contains(keyword))
+                    {
+                        FavoriteView favorite = new FavoriteView();
+                        favorite.Id = property.Id;
+                        favorite.Price = property.Price;
+                        favorite.Name = Name;
+                        favorite.Address = Address;
+                        favorite.ImageUrl = context.Media.FirstOrDefault(c => c.PropertyId == property.Id).MediaUrl;
+                        favorite.Status = Status;
+                        favorites.Add(favorite);
+                    }
+                }
+            }
+
+            return Json(favorites);
         }
 
         private bool RegisteredUser()
