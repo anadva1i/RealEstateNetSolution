@@ -24,13 +24,13 @@
                                     {
                                         active = "active";
                                     }
-                                <li class="nav-item">
-                                    <a class="nav-link @active" id="pills-home-tab" onclick="changeStatus('@status')" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">@status</a>
-                                    @if (active == "active")
-                                    {
-                                        <input id="input-status" name="status" value="@status" style="display: none" />
-                                    }
-                                </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link @active" id="pills-home-tab" onclick="changeStatus('@status')" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">@status</a>
+                                        @if (active == "active")
+                                        {
+                                            <input id="input-status" name="status" value="@status" style="display: none" />
+                                        }
+                                    </li>
                                     i++;
                                 }
                             </ul>
@@ -155,7 +155,7 @@
                                                                         </li>
                                                                         <li class="list-inline-item">
                                                                             <div class="candidate_revew_select">
-                                                                                <select id="cityName"  name="city" class="selectpicker w100 show-tick">
+                                                                                <select id="cityName" name="city" class="selectpicker w100 show-tick">
                                                                                     <option>Built-up Area</option>
                                                                                     @foreach (var city in Model.Cities)
                                                                                     {
@@ -186,7 +186,7 @@
                                 </div>
                             </div>
                         </div>
-                     }
+                    }
                 </div>
             </div>
         </div>
@@ -448,48 +448,48 @@
         </div>
         <div class="row">
             <div class="col-lg-4 col-xl-4">
-                    <div class="properti_city" onclick="Search('@Model.Mtskheta.Name')">
-                        <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/mtskheta.jpg" alt="pc1.jpg"></div>
-                        <div class="overlay">
-                            <div class="details">
-                                <h4>@Model.Mtskheta.Name</h4>
-                                <p>@Model.Mtskheta.Properties Properties</p>
-                            </div>
+                <div class="properti_city" onclick="Search('@Model.Mtskheta.Name')">
+                    <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/mtskheta.jpg" alt="pc1.jpg"></div>
+                    <div class="overlay">
+                        <div class="details">
+                            <h4>@Model.Mtskheta.Name</h4>
+                            <p>@Model.Mtskheta.Properties Properties</p>
                         </div>
                     </div>
+                </div>
             </div>
             <div class="col-lg-8 col-xl-8">
-                    <div class="properti_city" onclick="Search('@Model.Tbilisi.Name')">
-                        <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/tbilisi.jpg" alt="pc2.jpg"></div>
-                        <div class="overlay">
-                            <div class="details">
-                                <h4>@Model.Tbilisi.Name</h4>
-                                <p>@Model.Tbilisi.Properties Properties</p>
-                            </div>
+                <div class="properti_city" onclick="Search('@Model.Tbilisi.Name')">
+                    <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/tbilisi.jpg" alt="pc2.jpg"></div>
+                    <div class="overlay">
+                        <div class="details">
+                            <h4>@Model.Tbilisi.Name</h4>
+                            <p>@Model.Tbilisi.Properties Properties</p>
                         </div>
                     </div>
+                </div>
             </div>
             <div class="col-lg-8 col-xl-8">
-                    <div class="properti_city"  onclick="Search('@Model.Batumi.Name')">
-                        <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/batumi.jpg" alt="pc3.jpg"></div>
-                        <div class="overlay">
-                            <div class="details">
-                                <h4>@Model.Batumi.Name</h4>
-                                <p>@Model.Batumi.Properties Properties</p>
-                            </div>
+                <div class="properti_city" onclick="Search('@Model.Batumi.Name')">
+                    <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/batumi.jpg" alt="pc3.jpg"></div>
+                    <div class="overlay">
+                        <div class="details">
+                            <h4>@Model.Batumi.Name</h4>
+                            <p>@Model.Batumi.Properties Properties</p>
                         </div>
                     </div>
+                </div>
             </div>
             <div class="col-lg-4 col-xl-4">
-                    <div class="properti_city"  onclick="Search('@Model.Kutaisi.Name')">
-                        <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/kutaisi.jpg" alt="pc4.jpg"></div>
-                        <div class="overlay">
-                            <div class="details">
-                                <h4>@Model.Kutaisi.Name</h4>
-                                <p>@Model.Kutaisi.Properties Properties</p>
-                            </div>
+                <div class="properti_city" onclick="Search('@Model.Kutaisi.Name')">
+                    <div class="thumb"><img class="img-fluid w100" src="../../Content/images/property/kutaisi.jpg" alt="pc4.jpg"></div>
+                    <div class="overlay">
+                        <div class="details">
+                            <h4>@Model.Kutaisi.Name</h4>
+                            <p>@Model.Kutaisi.Properties Properties</p>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
@@ -701,20 +701,23 @@
 </section>
 
 <!-- Start Partners -->
-<section class="start-partners bgc-thm pt50 pb50">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="start_partner tac-smd">
-                    <h2>Become a Real Estate Agent</h2>
-                    <p>We only work with the best companies around the globe</p>
+@if (!Request.IsAuthenticated)
+{
+    <section class="start-partners bgc-thm pt50 pb50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="start_partner tac-smd">
+                        <h2>Become a Real Estate Agent</h2>
+                        <p>We only work with the best companies around the globe</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="parner_reg_btn text-right tac-smd">
-                    <a class="btn btn-thm2" href="#">Register Now</a>
+                <div class="col-lg-4">
+                    <div class="parner_reg_btn text-right tac-smd">
+                        <a class="btn btn-thm2" href="#">Register Now</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+}
