@@ -26,6 +26,7 @@ namespace RealEstateNet.Controllers
     public class DashboardController : Controller
     {
         private string language = "EN";
+        private int favoritesPages = 1;
         // GET: Dashboard
         public ActionResult Index()
         {
@@ -72,6 +73,7 @@ namespace RealEstateNet.Controllers
             language = lang;
             dynamic model = new ExpandoObject();
             model.Favorites = GetFavorites(page);
+            model.Page = favoritesPages;
             return View(model);
         }
 
@@ -187,9 +189,13 @@ namespace RealEstateNet.Controllers
                     var statusContent = context.Status.FirstOrDefault(c => c.Id == property.StatusId).ContentId;
                     favorite.Status = context.Translations.FirstOrDefault(c => c.ContentId == statusContent && c.LanguageId == langId).Text;
                     favorites.Add(favorite);
+                    
                 }
             }
-            return favorites.AsEnumerable().ToPagedList(page, 6);
+            int records = favorites.Count;
+            int recordsPerPage = 6;
+            favoritesPages = (records + recordsPerPage - 1) / recordsPerPage;
+            return favorites.AsEnumerable().ToPagedList(page, recordsPerPage);
         }
 
         [HttpPost]

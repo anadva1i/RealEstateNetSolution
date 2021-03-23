@@ -78,7 +78,6 @@
                                         </ul>
                                     </div>
                                 }
-                           @* <span>@(Model.Favorites.Count%6)</span>*@
                                 <div class="mbp_pagination">
                                     <ul class="page_navigation">
                                         <li class="page-item" id="previous" style="pointer-events: none;">
@@ -90,7 +89,7 @@
                                         <li class="page-item" id="mid-second"><a class="page-link" href="#">3</a></li>
                                         <li class="page-item" id="mid-third"><a class="page-link" href="#">4</a></li>
                                         <li class="page-item disabled" id="right-dots" style="pointer-events: none;"><a class="page-link" href="#">...</a></li>
-                                        <li class="page-item" id="last"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item" id="last"><a class="page-link" href="#">@Model.Page</a></li>
                                         <li class="page-item" id="next">
                                             <a class="page-link" href="#"><span class="flaticon-right-arrow"></span></a>
                                         </li>
