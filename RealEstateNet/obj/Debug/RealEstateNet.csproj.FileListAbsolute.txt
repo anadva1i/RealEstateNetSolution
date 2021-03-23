@@ -326,3 +326,5 @@ C:\Users\HP\Desktop\RealEstate\RealEstateNetSolution\RealEstateNet\obj\Debug\Rea
 C:\Users\HP\Desktop\RealEstate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.csproj.CopyComplete
 C:\Users\HP\Desktop\RealEstate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.dll
 C:\Users\HP\Desktop\RealEstate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.pdb
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\bin\PagedList.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\bin\PagedList.xml

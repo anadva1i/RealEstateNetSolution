@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PagedList;
 using RealEstateNet.Models;
 using System;
 using System.Activities.Debugger;
@@ -64,13 +65,13 @@ namespace RealEstateNet.Controllers
             return View();
         }
 
-        public ActionResult Favorites(string lang)
+        public ActionResult Favorites(string lang, int page)
         {
             if (lang == null)
                 lang = "EN";
             language = lang;
             dynamic model = new ExpandoObject();
-            model.Favorites = GetFavorites();
+            model.Favorites = GetFavorites(page);
             return View(model);
         }
 
@@ -162,7 +163,7 @@ namespace RealEstateNet.Controllers
             return agent;
         }
 
-        private List<FavoriteView> GetFavorites()
+        private IEnumerable<FavoriteView> GetFavorites(int page)
         {
             List<FavoriteView> favorites = new List<FavoriteView>();
             using(var context = new DB_RealEstateEntities())
@@ -188,7 +189,7 @@ namespace RealEstateNet.Controllers
                     favorites.Add(favorite);
                 }
             }
-            return favorites;
+            return favorites.AsEnumerable().ToPagedList(page, 6);
         }
 
         [HttpPost]

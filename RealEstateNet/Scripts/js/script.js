@@ -1138,13 +1138,12 @@ $(".page-item").click(function () {
     else {
         currentPage = parseInt($(this).text());
     }
-    console.log("current: " + currentPage)
     if (parseInt(last.text()) > 5) {
         pagerState(currentPage, parseInt(last.text()), mid3, previous, next); 
         PagerNumbers(currentPage, parseInt(last.text()));
     }       
     ActivatePage(currentPage);
-    
+    location.href = "?page=" + currentPage;
 });
 
 function pagerState(page, last, mid3, previous, next) {
@@ -1180,7 +1179,6 @@ function PagerNumbers(page, last){
     var mid2 = $("#mid-second");
     var mid3 = $("#mid-third");
     var list = []; 
-    console.log(page)
     $("li.page-item").each(function () {
         if ($(this).is(':visible')) {
             var num = parseInt($(this).text(), 0);
@@ -1188,7 +1186,6 @@ function PagerNumbers(page, last){
         }
     });
     var includes = (list.indexOf(page) > -1);    
-    console.log(list)
     if (!includes) {
         mid1.children("a").text(page);
         mid2.children("a").text(page + 1);
@@ -1214,16 +1211,15 @@ function ActivatePage(page) {
 }
 
 function LoadPager(last) {
+    var url = window.location.href;
+    var currentPage = url.substring(url.indexOf("=") + 1, url.length);
+    ActivatePage(currentPage);
     switch (last) {
+        case 0:
+            $(".mbp_pagination").css("display", "none");
+            break;
         case 1:
-            $("#previous").css("display", "none");
-            $("#left-dots").css("display", "none");
-            $("#mid-first").css("display", "none");
-            $("#mid-second").css("display", "none");
-            $("#mid-third").css("display", "none");
-            $("#right-dots").css("display", "none");
-            $("#last").css("display", "none");
-            $("#next").css("display", "none");
+            $(".mbp_pagination").css("display", "none");
             break;
         case 2:
             $("#previous").css("display", "none");
