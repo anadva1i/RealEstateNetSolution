@@ -1275,22 +1275,21 @@ function sendEmail() {
         cache: false,
         data: { mail_from: mail_from, mail_to: mail_to, subject: subject, body: body },
         success: function (data) {
-            $("#alertMessage").html(data);
-            $('.alert').show();
-            $("#mail_from").val("");
-            $("#mail_to").val("");
-            $("#subject").val("");
-            $("#body").val("");
+            showMessage(data.responseText);
         },
         error: function (data) {
-            $("#alertMessage").html(data.responseText);
-            $('.alert').show();
-            $("#mail_from").val("");
-            $("#mail_to").val("");
-            $("#subject").val("");
-            $("#body").val("");
+            showMessage(data.responseText);
         }
     });
+}
+
+function showMessage(text) {
+    $("#alertMessage").html(text);
+    $('.alert').show();
+    $("#mail_from").val("");
+    $("#mail_to").val("");
+    $("#subject").val("");
+    $("#body").val("");
 }
 var favorite = false;
 

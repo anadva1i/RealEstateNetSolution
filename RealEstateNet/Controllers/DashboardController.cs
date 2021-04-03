@@ -96,7 +96,7 @@ namespace RealEstateNet.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult EditProfile(AgentModel agent)
+        public ActionResult My_Profile(AgentModel agent)
         {
             AgentModel newAgent = new AgentModel();
             var userId = User.Identity.GetUserId();
@@ -144,7 +144,7 @@ namespace RealEstateNet.Controllers
                 }
                 context.SaveChanges();
             }
-            return View("Success");
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
         private AgentModel GetAgent()
@@ -397,7 +397,7 @@ namespace RealEstateNet.Controllers
             return featuresModel;
         }
 
-        //We have left client's id
+        
         [HttpPost]
         public ActionResult CreateListing(CreateListingModel model)
         {            
