@@ -248,4 +248,17 @@ namespace RealEstateNet.Models
         public string Address { get; set; }
         public decimal Price { get; set; }
     }
+
+    public class MyPropertiesView
+    {
+        public int Id { get; set; }
+        public string Status { get; set; }
+        public string ImageUrl { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public decimal Price { get; set; }
+        public string DatePublished { get; set; }
+        public string CurrentStatus { get; set; }
+        public int Views { get; set; }
+    }
 }

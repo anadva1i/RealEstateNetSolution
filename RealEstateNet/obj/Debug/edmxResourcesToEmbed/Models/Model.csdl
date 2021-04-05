@@ -99,6 +99,7 @@
     <NavigationProperty Name="States" Relationship="Self.FK_State_Content" FromRole="Content" ToRole="State" />
     <NavigationProperty Name="Status" Relationship="Self.FK_Status_Content" FromRole="Content" ToRole="Status" />
     <NavigationProperty Name="Translations" Relationship="Self.FK_Translations_Content" FromRole="Content" ToRole="Translations" />
+    <NavigationProperty Name="CurrentStatus" Relationship="DB_RealEstateModel.FK_CurrentStatus_Content" FromRole="Content" ToRole="CurrentStatu" />
   </EntityType>
   <EntityType Name="Country">
     <Key>
@@ -196,6 +197,8 @@
     <NavigationProperty Name="PropertyViews" Relationship="Self.FK_PropertyViews_Property" FromRole="Property" ToRole="PropertyViews" />
     <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Property" FromRole="Property" ToRole="Reviews" />
     <NavigationProperty Name="Favorites" Relationship="DB_RealEstateModel.FK_Favorites_Property" FromRole="Property" ToRole="Favorite" />
+    <Property Name="CurrentStatusId" Type="Int32" />
+    <NavigationProperty Name="CurrentStatu" Relationship="DB_RealEstateModel.FK_Property_CurrentStatus" FromRole="Property" ToRole="CurrentStatu" />
   </EntityType>
   <EntityType Name="PropertyContent">
     <Key>
@@ -925,6 +928,15 @@
       <End Role="UserDetail" EntitySet="UserDetails" />
       <End Role="Favorite" EntitySet="Favorites" />
     </AssociationSet>
+    <EntitySet Name="CurrentStatus" EntityType="DB_RealEstateModel.CurrentStatu" />
+    <AssociationSet Name="FK_CurrentStatus_Content" Association="DB_RealEstateModel.FK_CurrentStatus_Content">
+      <End Role="Content" EntitySet="Contents" />
+      <End Role="CurrentStatu" EntitySet="CurrentStatus" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Property_CurrentStatus" Association="DB_RealEstateModel.FK_Property_CurrentStatus">
+      <End Role="CurrentStatu" EntitySet="CurrentStatus" />
+      <End Role="Property" EntitySet="Properties" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Favorite">
     <Key>
@@ -957,6 +969,40 @@
       </Principal>
       <Dependent Role="Favorite">
         <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CurrentStatu">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ContentId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Content" Relationship="DB_RealEstateModel.FK_CurrentStatus_Content" FromRole="CurrentStatu" ToRole="Content" />
+    <NavigationProperty Name="Properties" Relationship="DB_RealEstateModel.FK_Property_CurrentStatus" FromRole="CurrentStatu" ToRole="Property" />
+  </EntityType>
+  <Association Name="FK_CurrentStatus_Content">
+    <End Type="DB_RealEstateModel.Content" Role="Content" Multiplicity="1" />
+    <End Type="DB_RealEstateModel.CurrentStatu" Role="CurrentStatu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Content">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CurrentStatu">
+        <PropertyRef Name="ContentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Property_CurrentStatus">
+    <End Type="DB_RealEstateModel.CurrentStatu" Role="CurrentStatu" Multiplicity="0..1" />
+    <End Type="DB_RealEstateModel.Property" Role="Property" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CurrentStatu">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Property">
+        <PropertyRef Name="CurrentStatusId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

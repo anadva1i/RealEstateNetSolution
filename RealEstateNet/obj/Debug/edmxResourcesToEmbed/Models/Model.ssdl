@@ -94,6 +94,14 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ContentId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="CurrentStatus">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ContentId" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="Favorites">
     <Key>
       <PropertyRef Name="Id" />
@@ -168,6 +176,7 @@
     <Property Name="Bathrooms" Type="int" />
     <Property Name="Garages" Type="int" />
     <Property Name="LocationId" Type="int" />
+    <Property Name="CurrentStatusId" Type="int" />
   </EntityType>
   <EntityType Name="PropertyContent">
     <Key>
@@ -324,6 +333,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_CurrentStatus_Content">
+    <End Role="Content" Type="Self.Content" Multiplicity="1" />
+    <End Role="CurrentStatus" Type="Self.CurrentStatus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Content">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CurrentStatus">
+        <PropertyRef Name="ContentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
     <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -449,6 +470,18 @@
       </Principal>
       <Dependent Role="Media">
         <PropertyRef Name="PropertyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Property_CurrentStatus">
+    <End Role="CurrentStatus" Type="Self.CurrentStatus" Multiplicity="0..1" />
+    <End Role="Property" Type="Self.Property" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CurrentStatus">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Property">
+        <PropertyRef Name="CurrentStatusId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -751,6 +784,7 @@
     <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CurrentStatus" EntityType="Self.CurrentStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Favorites" EntityType="Self.Favorites" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Features" EntityType="Self.Features" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="IPs" EntityType="Self.IPs" Schema="dbo" store:Type="Tables" />
@@ -785,6 +819,10 @@
     <AssociationSet Name="FK_Countries_Content" Association="Self.FK_Countries_Content">
       <End Role="Content" EntitySet="Content" />
       <End Role="Countries" EntitySet="Countries" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CurrentStatus_Content" Association="Self.FK_CurrentStatus_Content">
+      <End Role="Content" EntitySet="Content" />
+      <End Role="CurrentStatus" EntitySet="CurrentStatus" />
     </AssociationSet>
     <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -825,6 +863,10 @@
     <AssociationSet Name="FK_Media_Property" Association="Self.FK_Media_Property">
       <End Role="Property" EntitySet="Property" />
       <End Role="Media" EntitySet="Media" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Property_CurrentStatus" Association="Self.FK_Property_CurrentStatus">
+      <End Role="CurrentStatus" EntitySet="CurrentStatus" />
+      <End Role="Property" EntitySet="Property" />
     </AssociationSet>
     <AssociationSet Name="FK_Property_Location" Association="Self.FK_Property_Location">
       <End Role="Location" EntitySet="Location" />

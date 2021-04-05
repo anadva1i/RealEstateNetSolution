@@ -46,6 +46,7 @@ namespace RealEstateNet.Models
         public Nullable<int> Bathrooms { get; set; }
         public Nullable<int> Garages { get; set; }
         public Nullable<int> LocationId { get; set; }
+        public Nullable<int> CurrentStatusId { get; set; }
     
         public virtual Location Location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -66,5 +67,6 @@ namespace RealEstateNet.Models
         public virtual ICollection<Review> Reviews { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Favorite> Favorites { get; set; }
+        public virtual CurrentStatu CurrentStatu { get; set; }
     }
 }

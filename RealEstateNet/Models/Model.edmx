@@ -99,6 +99,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ContentId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CurrentStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ContentId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Favorites">
           <Key>
             <PropertyRef Name="Id" />
@@ -173,6 +181,7 @@
           <Property Name="Bathrooms" Type="int" />
           <Property Name="Garages" Type="int" />
           <Property Name="LocationId" Type="int" />
+          <Property Name="CurrentStatusId" Type="int" />
         </EntityType>
         <EntityType Name="PropertyContent">
           <Key>
@@ -329,6 +338,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CurrentStatus_Content">
+          <End Role="Content" Type="Self.Content" Multiplicity="1" />
+          <End Role="CurrentStatus" Type="Self.CurrentStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Content">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CurrentStatus">
+              <PropertyRef Name="ContentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -454,6 +475,18 @@
             </Principal>
             <Dependent Role="Media">
               <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Property_CurrentStatus">
+          <End Role="CurrentStatus" Type="Self.CurrentStatus" Multiplicity="0..1" />
+          <End Role="Property" Type="Self.Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrentStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Property">
+              <PropertyRef Name="CurrentStatusId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -756,6 +789,7 @@
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CurrentStatus" EntityType="Self.CurrentStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Favorites" EntityType="Self.Favorites" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Features" EntityType="Self.Features" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IPs" EntityType="Self.IPs" Schema="dbo" store:Type="Tables" />
@@ -790,6 +824,10 @@
           <AssociationSet Name="FK_Countries_Content" Association="Self.FK_Countries_Content">
             <End Role="Content" EntitySet="Content" />
             <End Role="Countries" EntitySet="Countries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CurrentStatus_Content" Association="Self.FK_CurrentStatus_Content">
+            <End Role="Content" EntitySet="Content" />
+            <End Role="CurrentStatus" EntitySet="CurrentStatus" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -830,6 +868,10 @@
           <AssociationSet Name="FK_Media_Property" Association="Self.FK_Media_Property">
             <End Role="Property" EntitySet="Property" />
             <End Role="Media" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Property_CurrentStatus" Association="Self.FK_Property_CurrentStatus">
+            <End Role="CurrentStatus" EntitySet="CurrentStatus" />
+            <End Role="Property" EntitySet="Property" />
           </AssociationSet>
           <AssociationSet Name="FK_Property_Location" Association="Self.FK_Property_Location">
             <End Role="Location" EntitySet="Location" />
@@ -1031,6 +1073,7 @@
           <NavigationProperty Name="States" Relationship="Self.FK_State_Content" FromRole="Content" ToRole="State" />
           <NavigationProperty Name="Status" Relationship="Self.FK_Status_Content" FromRole="Content" ToRole="Status" />
           <NavigationProperty Name="Translations" Relationship="Self.FK_Translations_Content" FromRole="Content" ToRole="Translations" />
+          <NavigationProperty Name="CurrentStatus" Relationship="DB_RealEstateModel.FK_CurrentStatus_Content" FromRole="Content" ToRole="CurrentStatu" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -1128,6 +1171,8 @@
           <NavigationProperty Name="PropertyViews" Relationship="Self.FK_PropertyViews_Property" FromRole="Property" ToRole="PropertyViews" />
           <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Property" FromRole="Property" ToRole="Reviews" />
           <NavigationProperty Name="Favorites" Relationship="DB_RealEstateModel.FK_Favorites_Property" FromRole="Property" ToRole="Favorite" />
+          <Property Name="CurrentStatusId" Type="Int32" />
+          <NavigationProperty Name="CurrentStatu" Relationship="DB_RealEstateModel.FK_Property_CurrentStatus" FromRole="Property" ToRole="CurrentStatu" />
         </EntityType>
         <EntityType Name="PropertyContent">
           <Key>
@@ -1857,6 +1902,15 @@
             <End Role="UserDetail" EntitySet="UserDetails" />
             <End Role="Favorite" EntitySet="Favorites" />
           </AssociationSet>
+          <EntitySet Name="CurrentStatus" EntityType="DB_RealEstateModel.CurrentStatu" />
+          <AssociationSet Name="FK_CurrentStatus_Content" Association="DB_RealEstateModel.FK_CurrentStatus_Content">
+            <End Role="Content" EntitySet="Contents" />
+            <End Role="CurrentStatu" EntitySet="CurrentStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Property_CurrentStatus" Association="DB_RealEstateModel.FK_Property_CurrentStatus">
+            <End Role="CurrentStatu" EntitySet="CurrentStatus" />
+            <End Role="Property" EntitySet="Properties" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Favorite">
           <Key>
@@ -1889,6 +1943,40 @@
             </Principal>
             <Dependent Role="Favorite">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CurrentStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Content" Relationship="DB_RealEstateModel.FK_CurrentStatus_Content" FromRole="CurrentStatu" ToRole="Content" />
+          <NavigationProperty Name="Properties" Relationship="DB_RealEstateModel.FK_Property_CurrentStatus" FromRole="CurrentStatu" ToRole="Property" />
+        </EntityType>
+        <Association Name="FK_CurrentStatus_Content">
+          <End Type="DB_RealEstateModel.Content" Role="Content" Multiplicity="1" />
+          <End Type="DB_RealEstateModel.CurrentStatu" Role="CurrentStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Content">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CurrentStatu">
+              <PropertyRef Name="ContentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Property_CurrentStatus">
+          <End Type="DB_RealEstateModel.CurrentStatu" Role="CurrentStatu" Multiplicity="0..1" />
+          <End Type="DB_RealEstateModel.Property" Role="Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrentStatu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Property">
+              <PropertyRef Name="CurrentStatusId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2040,6 +2128,7 @@
           <EntitySetMapping Name="Properties">
             <EntityTypeMapping TypeName="DB_RealEstateModel.Property">
               <MappingFragment StoreEntitySet="Property">
+                <ScalarProperty Name="CurrentStatusId" ColumnName="CurrentStatusId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="PropertySize" ColumnName="PropertySize" />
@@ -2195,6 +2284,15 @@
               <MappingFragment StoreEntitySet="Favorites">
                 <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CurrentStatus">
+            <EntityTypeMapping TypeName="DB_RealEstateModel.CurrentStatu">
+              <MappingFragment StoreEntitySet="CurrentStatus">
+                <ScalarProperty Name="ContentId" ColumnName="ContentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

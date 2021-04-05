@@ -70,6 +70,9 @@
         <EntityTypeShape EntityType="DB_RealEstateModel.Favorite" Width="1.5" PointX="15" PointY="16.75" />
         <AssociationConnector Association="DB_RealEstateModel.FK_Favorites_Property" />
         <AssociationConnector Association="DB_RealEstateModel.FK_Favorites_UserDetails" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.CurrentStatu" Width="1.5" PointX="3" PointY="14.875" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_CurrentStatus_Content" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_Property_CurrentStatus" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

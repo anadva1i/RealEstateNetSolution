@@ -53,5 +53,6 @@ namespace RealEstateNet.Models
         public virtual DbSet<Translation> Translations { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
+        public virtual DbSet<CurrentStatu> CurrentStatus { get; set; }
     }
 }

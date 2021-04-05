@@ -27,6 +27,7 @@ namespace RealEstateNet.Controllers
     {
         private string language = "EN";
         private int favoritesPages = 1;
+        private int propertiesPages = 1;
         // GET: Dashboard
         public ActionResult Index()
         {
@@ -58,12 +59,16 @@ namespace RealEstateNet.Controllers
             return View();
         }
 
-        public ActionResult Properties(string lang)
+        public ActionResult Properties(string lang, int page, string search)
         {
             if (lang == null)
                 lang = "EN";
             language = lang;
-            return View();
+            dynamic model = new ExpandoObject();
+            model.Properties = MyProperties(page, search);
+            model.Page = propertiesPages;
+            model.Search = search;
+            return View(model);
         }
 
         public ActionResult Favorites(string lang, int page)
@@ -95,6 +100,150 @@ namespace RealEstateNet.Controllers
             model.UserDetails = GetAgent();
             return View(model);
         }
+
+        private IEnumerable<MyPropertiesView> MyProperties(int page, string search)
+        {
+            List<MyPropertiesView> propertiesViews = new List<MyPropertiesView>();
+            using(var context = new DB_RealEstateEntities())
+            {
+                var userId = User.Identity.GetUserId();
+                var user = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
+                var properties = context.Properties.Where(c => c.UserDetailsId == user);
+                foreach(var p in properties)
+                {
+                    int propertyId = p.Id;
+                    int langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
+                    var contextName = context.Contents.FirstOrDefault(c=>c.Type.Equals("ListingTitle"+propertyId)).Id;
+                    var propertyName = context.Translations.FirstOrDefault(c => c.ContentId == contextName && c.LanguageId == langId).Text;
+                    var locationId = p.LocationId;
+                    var contentAddress = context.Locations.FirstOrDefault(c => c.Id == locationId).ContentId;
+                    var propertyAddress = context.Translations.FirstOrDefault(c => c.ContentId == contentAddress && c.LanguageId == langId).Text;
+                    var statusId = p.StatusId;
+                    var contentStatus = context.Status.FirstOrDefault(c => c.Id == statusId).ContentId;
+                    var propertyStatus = context.Translations.FirstOrDefault(c => c.ContentId == contentStatus && c.LanguageId == langId).Text;
+                    var imageURL = context.Media.FirstOrDefault(c=>c.PropertyId == propertyId).MediaUrl;
+                    var views = context.PropertyViews.Where(c=>c.PropertyId == propertyId).Count();
+                    var currentStatusId = p.CurrentStatusId;
+                    var currentStatusContent = context.CurrentStatus.FirstOrDefault(c=>c.Id==currentStatusId).ContentId;
+                    var currentStatus = context.Translations.FirstOrDefault(c => c.ContentId == currentStatusContent && c.LanguageId == langId).Text;
+                    if(search == null)
+                    {
+                        MyPropertiesView myProperty = new MyPropertiesView();
+                        myProperty.CurrentStatus = currentStatus;
+                        myProperty.Status = propertyStatus;
+                        myProperty.Price = p.Price;
+                        myProperty.DatePublished = p.DatePublished.ToString("MMMM dd, yyyy");
+                        myProperty.Name = propertyName;
+                        myProperty.Address = propertyAddress;
+                        myProperty.ImageUrl = imageURL;
+                        myProperty.Views = views;
+                        propertiesViews.Add(myProperty);
+                    }
+                    else if (propertyName.Contains(search) || propertyAddress.Contains(search) || propertyStatus.Contains(search) || currentStatus.Contains(search))
+                    {
+                        MyPropertiesView myProperty = new MyPropertiesView();
+                        myProperty.CurrentStatus = currentStatus;
+                        myProperty.Status = propertyStatus;
+                        myProperty.Price = p.Price;
+                        myProperty.DatePublished = p.DatePublished.ToString("MMMM dd, yyyy");
+                        myProperty.Name = propertyName;
+                        myProperty.Address = propertyAddress;
+                        myProperty.ImageUrl = imageURL;
+                        myProperty.Views = views;
+                        propertiesViews.Add(myProperty);
+                    }
+                }
+            }
+            int records = propertiesViews.Count;
+            int recordsPerPage = 6;
+            propertiesPages = (records + recordsPerPage - 1) / recordsPerPage;
+            return propertiesViews.AsEnumerable().ToPagedList(page, recordsPerPage);
+        }
+
+        [HttpPost]
+        public bool RemoveProperty(int propertyId)
+        {
+            try
+            {
+                using (var ts = new System.Transactions.TransactionScope())
+                {
+                    using (var context = new DB_RealEstateEntities())
+                    {
+                        var property = context.Properties.FirstOrDefault(c => c.Id == propertyId);
+                        //remove property service
+                        var propertyService = context.PropertyServices.FirstOrDefault(c=>c.PropertyId == propertyId);
+                        if (propertyService != null)
+                            context.PropertyServices.Remove(propertyService);
+                        //remove favorites
+                        var favorites = context.Favorites.Where(c=>c.PropertyId == propertyId);
+                        foreach(var f in favorites)
+                        {
+                            context.Favorites.Remove(f);
+                        }
+                        //remove media
+                        var media = context.Media.Where(c => c.PropertyId == propertyId);
+                        foreach(var m in media)
+                        {
+                            context.Media.Remove(m);
+                        }
+                        //remove Features
+                        var features = context.PropertyFeatures.Where(c => c.PropertyId == propertyId);
+                        foreach(var f in features)
+                        {
+                            context.PropertyFeatures.Remove(f);
+                        }
+                        //remove views
+                        var views = context.PropertyViews.Where(c => c.PropertyId == propertyId);
+                        foreach(var v in views)
+                        {
+                            context.PropertyViews.Remove(v);
+                        }
+                        //remove reviews
+                        var reviews = context.Reviews.Where(c => c.PropertyId == propertyId);
+                        foreach(var r in reviews)
+                        {
+                            context.Reviews.Remove(r);
+                        }
+                        //remove contents and translations
+                        var propertyContents = context.PropertyContents.Where(c => c.propertyId == propertyId);
+                        foreach(var pc in propertyContents)
+                        {
+                            var contentId = pc.contentId;
+                            var translations = context.Translations.Where(c => c.ContentId == contentId);
+                            foreach(var t in translations)
+                            {
+                                context.Translations.Remove(t);
+                            }
+                            context.PropertyContents.Remove(pc);
+                            var content = context.Contents.FirstOrDefault(c => c.Id == contentId);
+                            context.Contents.Remove(content);
+                        }
+                        //remove location
+                        var locationId = property.LocationId;
+                        var location = context.Locations.FirstOrDefault(c => c.Id == locationId);
+                        var locationTranslation = context.Translations.Where(c => c.ContentId == location.ContentId);
+                        var locationContent = context.Contents.FirstOrDefault(c => c.Id == location.ContentId);
+                        foreach(var l in locationTranslation)
+                        {
+                            context.Translations.Remove(l);
+                        }
+                        context.Locations.Remove(location);
+                        context.Contents.Remove(locationContent);
+                        //remove property
+                        context.Properties.Remove(property);
+                        context.SaveChanges();
+                    }
+                    ts.Complete();
+                }
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+            
+        }
+
         [HttpPost]
         public ActionResult My_Profile(AgentModel agent)
         {
@@ -197,6 +346,7 @@ namespace RealEstateNet.Controllers
             favoritesPages = (records + recordsPerPage - 1) / recordsPerPage;
             return favorites.AsEnumerable().ToPagedList(page, recordsPerPage);
         }
+
 
         [HttpPost]
         public ActionResult SearchFavorites(string keyword)

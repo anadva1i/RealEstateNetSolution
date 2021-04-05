@@ -27,6 +27,7 @@ namespace RealEstateNet.Models
             this.States = new HashSet<State>();
             this.Status = new HashSet<Status>();
             this.Translations = new HashSet<Translation>();
+            this.CurrentStatus = new HashSet<CurrentStatu>();
         }
     
         public int Id { get; set; }
@@ -52,5 +53,7 @@ namespace RealEstateNet.Models
         public virtual ICollection<Status> Status { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Translation> Translations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CurrentStatu> CurrentStatus { get; set; }
     }
 }
