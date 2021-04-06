@@ -659,6 +659,8 @@
     <Content Include="Views\Dashboard\My_Profile.cshtml" />
     <Content Include="Views\Shared\_ModalUserDetails.cshtml" />
     <Content Include="Views\Dashboard\Properties.cshtml" />
+    <Content Include="Views\Dashboard\Reviews.cshtml" />
+    <Content Include="Views\Dashboard\Saved_Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

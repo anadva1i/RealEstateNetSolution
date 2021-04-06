@@ -100,6 +100,22 @@ namespace RealEstateNet.Controllers
             model.UserDetails = GetAgent();
             return View(model);
         }
+        public ActionResult Saved_Search(string lang)
+        {
+            if (lang == null)
+                lang = "EN";
+            language = lang;
+            dynamic model = new ExpandoObject();
+            return View(model);
+        }
+        public ActionResult Reviews(string lang)
+        {
+            if (lang == null)
+                lang = "EN";
+            language = lang;
+            dynamic model = new ExpandoObject();
+            return View(model);
+        }
 
         private IEnumerable<MyPropertiesView> MyProperties(int page, string search)
         {
