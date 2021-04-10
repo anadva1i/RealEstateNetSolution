@@ -49,43 +49,46 @@
                                     <div class="col-lg-4 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="propertyTitle">@Model.PageModel.PropertyTitleGE</label>
-                                            <input type="text" class="form-control" id="propertyTitle" required name="PropertyTitleGE">
+                                            <input type="text" class="form-control" id="propertyTitle" required name="PropertyTitleGE" value="@Model.Property.PropertyTitleGE">
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="propertyTitle">@Model.PageModel.PropertyTitleEN</label>
-                                            <input type="text" class="form-control" id="propertyTitle" name="PropertyTitleEN">
+                                            <input type="text" class="form-control" id="propertyTitle" name="PropertyTitleEN" value="@Model.Property.PropertyTitleEN">
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="propertyTitle">@Model.PageModel.PropertyTitleRU</label>
-                                            <input type="text" class="form-control" id="propertyTitle" name="PropertyTitleRU">
+                                            <input type="text" class="form-control" id="propertyTitle" name="PropertyTitleRU" value="@Model.Property.PropertyTitleRU">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="my_profile_setting_textarea">
                                             <label for="propertyDescription">@Model.PageModel.PropertyDescriptionGE</label>
-                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionGE"></textarea>
+                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionGE" value="@Model.Property.DescriptionGE"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="my_profile_setting_textarea">
                                             <label for="propertyDescription">@Model.PageModel.PropertyDescriptionEN</label>
-                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionEN"></textarea>
+                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionEN" value="@Model.Property.DescriptionEN"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="my_profile_setting_textarea">
                                             <label for="propertyDescription">@Model.PageModel.PropertyDescriptionRU</label>
-                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionRU"></textarea>
+                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionRU" value="@Model.Property.DescriptionRU"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-6">
                                         <div class="my_profile_setting_input ui_kit_select_search form-group">
                                             <label>@Model.PageModel.PropertyType</label>
                                             <select class="selectpicker" data-live-search="true" data-width="100%" name="Type">
+                                                <option data-tokens="@Model.Property.Type">
+                                                    @Model.Property.Type
+                                                </option>
                                                 @foreach (var type in Model.TypeModels)
                                                 {
                                                     <option data-tokens="@type">
@@ -99,6 +102,9 @@
                                         <div class="my_profile_setting_input ui_kit_select_search form-group">
                                             <label>@Model.PageModel.PropertyStatus</label>
                                             <select class="selectpicker" data-live-search="true" data-width="100%" name="Status">
+                                                <option data-tokens="@Model.Property.Status">
+                                                    @Model.Property.Status
+                                                </option>
                                                 @foreach (var status in Model.StatusModels)
                                                 {
                                                     <option data-tokens="@status">
@@ -111,19 +117,19 @@
                                     <div class="col-lg-4 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="formGroupExamplePrice">@Model.PageModel.PropertyPrice</label>
-                                            <input type="number" class="form-control" id="formGroupExamplePrice" name="Price" required>
+                                            <input type="number" class="form-control" id="formGroupExamplePrice" name="Price" value="@Model.Property.Price" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="formGroupExampleArea">@Model.PageModel.PropertyArea</label>
-                                            <input type="number" class="form-control" id="formGroupExampleArea" name="Area">
+                                            <input type="number" class="form-control" id="formGroupExampleArea" name="Area" value="@Model.Property.Area">
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-xl-4">
                                         <div class="my_profile_setting_input ui_kit_select_search form-group">
                                             <label for="formGroupExampleRooms">@Model.PageModel.PropertyRooms</label>
-                                            <input type="number" class="form-control" id="formGroupExampleRooms" name="Rooms">
+                                            <input type="number" class="form-control" id="formGroupExampleRooms" name="Rooms" value="@Model.Property.Rooms">
                                         </div>
                                     </div>
                                 </div>
@@ -156,6 +162,9 @@
                                         <div class="my_profile_setting_input ui_kit_select_search form-group">
                                             <label>@Model.PageModel.City</label>
                                             <select class="selectpicker" data-live-search="true" data-width="100%" name="City">
+                                                <option data-tokens="@Model.Property.City">
+                                                    @Model.Property.City
+                                                </option>
                                                 @foreach (var city in Model.Cities)
                                                 {
                                                     <option data-tokens="@city">
@@ -173,19 +182,19 @@
                                     <div class="col-lg-4 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="googleMapLat">@Model.PageModel.Latitude</label>
-                                            <input type="text" class="form-control" id="googleMapLat" name="Latitude">
+                                            <input type="text" class="form-control" id="googleMapLat" name="Latitude" value="@Model.Property.Latitude">
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="googleMapLong">@Model.PageModel.Longitude</label>
-                                            <input type="text" class="form-control" id="googleMapLong" name="Longitude">
+                                            <input type="text" class="form-control" id="googleMapLong" name="Longitude" value="@Model.Property.Longitude">
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="zipCode">@Model.PageModel.Zip</label>
-                                            <input type="text" class="form-control" id="zipCode" name="Zip">
+                                            <input type="text" class="form-control" id="zipCode" name="Zip" value="@Model.Property.Zip">
                                         </div>
                                     </div>
 
@@ -205,37 +214,40 @@
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="propertyId">@Model.PageModel.PropertyId</label>
-                                            <input type="text" class="form-control" id="propertyId" name="CadastralCode">
+                                            <input type="text" class="form-control" id="propertyId" name="CadastralCode" value="@Model.Property.CadastralCode">
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="bedRooms">@Model.PageModel.Bedrooms</label>
-                                            <input type="number" class="form-control" id="bedRooms" name="Bedrooms">
+                                            <input type="number" class="form-control" id="bedRooms" name="Bedrooms" value="@Model.Property.Bedrooms">
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="bathRooms">@Model.PageModel.Bathrooms</label>
-                                            <input type="number" class="form-control" id="bathRooms" name="Bathrooms">
+                                            <input type="number" class="form-control" id="bathRooms" name="Bathrooms" value="@Model.Property.Bathrooms">
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="garages">@Model.PageModel.Garages</label>
-                                            <input type="number" class="form-control" id="garages" name="Garages">
+                                            <input type="number" class="form-control" id="garages" name="Garages" value="@Model.Property.Garages">
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="garagesSize">@Model.PageModel.CeilingSize</label>
-                                            <input type="number" class="form-control" id="garagesSize" name="CeilingSize">
+                                            <input type="number" class="form-control" id="garagesSize" name="CeilingSize" value="@Model.Property.CeilingSize">
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="my_profile_setting_input ui_kit_select_search form-group">
                                             <label for="yearBuild">State</label>
                                             <select class="selectpicker" data-live-search="true" data-width="100%" name="State">
+                                                <option data-tokens="@Model.Property.State">
+                                                    @Model.Property.State
+                                                </option>
                                                 @foreach (var state in Model.StateModels)
                                                 {
                                                     <option data-tokens="@state">

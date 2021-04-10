@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNet.Identity
+﻿@model dynamic
+@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
     @*<li class="list-inline-item add_listing"><a href="page-add-new-property.html"><span class="flaticon-plus"></span><span class="dn-lg"> Create Listing</span></a></li>*@
@@ -12,11 +13,11 @@
         </ul>*@
     <li class="user_setting">
         <div class="dropdown">
-            <a class="btn dropdown-toggle" href="#" data-toggle="dropdown"><img class="rounded-circle" src="../../Content/images/user.png" alt="e1.png" style="width: 50px; height: 50px; object-fit: cover"><span class="dn-1199"></span></a>
+            <a class="btn dropdown-toggle" href="#" data-toggle="dropdown"><img class="rounded-circle" src="@Model.User.Image" alt="e1.png" style="width: 50px; height: 50px; object-fit: cover"><span class="dn-1199"></span></a>
             <div class="dropdown-menu">
                 <div class="user_set_header">
-                    <img class="float-left" src="../../Content/images/user.png" alt="e1.png">
-                    <p>Name Lastname <br><span class="address">@User.Identity.GetUserName()</span></p>
+                    <img style="width: 50px; height: 50px; float: left; object-fit: cover" class="rounded-circle" src="@Model.User.Image" alt="e1.png">
+                    <p>@Model.User.Name @Model.User.LastName <br><span class="address">@Model.User.userName</span></p>
                 </div>
                 @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                 {
@@ -32,6 +33,7 @@
             </div>
         </div>
     </li>
+
     <li class="list-inline-item add_listing"><a href="~/Dashboard/AddNewProperty"><span class="flaticon-plus"></span><span class="dn-lg"> Create Listing</span></a></li>
 }
 else

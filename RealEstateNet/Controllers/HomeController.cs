@@ -40,6 +40,7 @@ namespace RealEstateNet.Controllers
             model.Kutaisi = GetCity(lang, "Kutaisi");
             model.Batumi = GetCity(lang, "Batumi");
             model.Language = lang;
+            model.User = getUserDetails();
             return View(model);
         }
 
@@ -72,7 +73,26 @@ namespace RealEstateNet.Controllers
             model.PropertyId = id;
             model.TotalReviews = GetTotalReviews(id);
             model.ExistedReviews = GetExistedReviews(id);
+            model.User = getUserDetails();
             return View(model);
+        }
+        public UserDetails getUserDetails()
+        {
+            using (var context = new DB_RealEstateEntities())
+            {
+                UserDetails user = new UserDetails();
+                var thisUserID = User.Identity.GetUserId();
+                var isuser = context.UserDetails.Where(c => c.UserId.Equals(thisUserID));
+                if(isuser.Count() > 0)
+                {
+                    var userDetails = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(thisUserID));
+                    user.Image = userDetails.Picture;
+                    user.Name = userDetails.Name;
+                    user.LastName = userDetails.LastName;
+                    user.userName = User.Identity.GetUserName();
+                }                
+                return user;
+            }
         }
 
         [HttpPost]
@@ -88,6 +108,7 @@ namespace RealEstateNet.Controllers
             model.Cities = GetCities(lang);
             model.States = GetState(lang);
             model.SearchResult = search;
+            model.User = getUserDetails();
             return View(model);
         }
 

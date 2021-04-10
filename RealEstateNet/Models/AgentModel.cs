@@ -15,4 +15,12 @@ namespace RealEstateNet.Models
         public string Phone { get; set; }
         public string Location { get; set; }
     }
+
+    public class UserDetails
+    {
+        public string userName { get; set; }
+        public string Image { get; set; }
+        public string Name { get; set; }
+        public string LastName { get; set; }
+    }
 }

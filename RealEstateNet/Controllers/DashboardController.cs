@@ -31,10 +31,12 @@ namespace RealEstateNet.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            return View();
+            dynamic model = new ExpandoObject();
+            model.User = getUserDetails();
+            return View(model);
         }
 
-        public ActionResult AddNewProperty(string lang)
+        public ActionResult AddNewProperty(string lang, int? propertyId)
         {
             if (lang == null) 
                 lang = "EN";
@@ -48,7 +50,75 @@ namespace RealEstateNet.Controllers
             model.Cities = GetCities(lang);
             model.FeaturesModel = getFeatures(lang);
             model.Registered = RegisteredUser();
+            model.Property = PrePropertyUpdate(propertyId);
+            model.User = getUserDetails();
             return View(model);
+        }
+
+        private CreateListingModel PrePropertyUpdate(int? propertyId)
+        {
+            CreateListingModel OldProperty = new CreateListingModel();
+            if(propertyId != null)
+            {
+                using (var context = new DB_RealEstateEntities())
+                {
+                    var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
+                    var db_property = context.Properties.FirstOrDefault(c => c.Id == propertyId);
+                    //Get Property titles
+                    var titleContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + propertyId)).Id;
+                    var titleEN = context.Translations.FirstOrDefault(c => c.LanguageId == 2 && c.ContentId == titleContent).Text;
+                    var titleGE = context.Translations.FirstOrDefault(c => c.LanguageId == 1 && c.ContentId == titleContent).Text;
+                    var titleRU = context.Translations.FirstOrDefault(c => c.LanguageId == 3 && c.ContentId == titleContent).Text;
+                    //Get Property Description
+                    var DescriptionContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingDescription" + propertyId)).Id;
+                    var DescriptionEN = context.Translations.FirstOrDefault(c => c.LanguageId == 2 && c.ContentId == DescriptionContent).Text;
+                    var DescriptionGE = context.Translations.FirstOrDefault(c => c.LanguageId == 1 && c.ContentId == DescriptionContent).Text;
+                    var DescriptionRU = context.Translations.FirstOrDefault(c => c.LanguageId == 3 && c.ContentId == DescriptionContent).Text;
+                    //Get Property Type
+                    var typeId = db_property.PropertyTypeId;
+                    var typeContent = context.PropertyTypes.FirstOrDefault(c => c.Id == typeId).ContentId;
+                    var propertyType = context.Translations.FirstOrDefault(c => c.ContentId == typeContent && c.LanguageId == langId).Text;
+                    //Get Property Status
+                    var statusId = db_property.StatusId;
+                    var statusContent = context.Status.FirstOrDefault(c => c.Id == statusId).ContentId;
+                    var propertyStatus = context.Translations.FirstOrDefault(c => c.ContentId == statusContent && c.LanguageId == langId).Text;
+                    //Get Location
+                    var locationId = db_property.LocationId;
+                    var location = context.Locations.FirstOrDefault(c => c.Id == locationId);
+                    var cityId = location.CityId;
+                    var cityContent = context.Cities.FirstOrDefault(c => c.Id == cityId).ContentId;
+                    var city = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == cityContent).Text;
+
+                    //Get State
+                    var stateId = db_property.StateId;
+                    var stateContent = context.States.FirstOrDefault(c => c.Id == stateId).ContentId;
+                    var propertyState = context.Translations.FirstOrDefault(c => c.ContentId == stateContent && c.LanguageId == langId).Text;
+
+                    OldProperty.PropertyTitleGE = titleGE;
+                    OldProperty.PropertyTitleEN = titleEN;
+                    OldProperty.PropertyTitleRU = titleRU;
+                    OldProperty.DescriptionEN = DescriptionEN;
+                    OldProperty.DescriptionGE = DescriptionGE;
+                    OldProperty.DescriptionRU = DescriptionRU;
+                    OldProperty.Type = propertyType;
+                    OldProperty.Status = propertyStatus;
+                    OldProperty.State = propertyState;
+                    OldProperty.Price = db_property.Price;
+                    OldProperty.Area = db_property.PropertySize;
+                    OldProperty.Rooms = db_property.Rooms;
+                    OldProperty.City = city;
+                    OldProperty.Latitude = (decimal)location.Latitude;
+                    OldProperty.Longitude = (decimal)location.Longitude;
+                    OldProperty.Zip = (int)location.Zip;
+                    OldProperty.CadastralCode = db_property.CadastralCode;
+                    OldProperty.Bedrooms = db_property.Bedrooms;
+                    OldProperty.Bathrooms = (int)db_property.Bathrooms;
+                    OldProperty.Garages = (int)db_property.Garages;
+                    OldProperty.CeilingSize = (int)db_property.CeilingSize;
+                    return OldProperty;
+                }
+            }
+            return OldProperty;
         }
 
         public ActionResult Message(string lang)
@@ -56,7 +126,9 @@ namespace RealEstateNet.Controllers
             if (lang == null)
                 lang = "EN";
             language = lang;
-            return View();
+            dynamic model = new ExpandoObject();
+            model.User = getUserDetails();
+            return View(model);
         }
 
         public ActionResult Properties(string lang, int page, string search)
@@ -68,6 +140,7 @@ namespace RealEstateNet.Controllers
             model.Properties = MyProperties(page, search);
             model.Page = propertiesPages;
             model.Search = search;
+            model.User = getUserDetails();
             return View(model);
         }
 
@@ -79,6 +152,7 @@ namespace RealEstateNet.Controllers
             dynamic model = new ExpandoObject();
             model.Favorites = GetFavorites(page);
             model.Page = favoritesPages;
+            model.User = getUserDetails();
             return View(model);
         }
 
@@ -87,7 +161,9 @@ namespace RealEstateNet.Controllers
             if (lang == null)
                 lang = "EN";
             language = lang;
-            return View();
+            dynamic model = new ExpandoObject();
+            model.User = getUserDetails();
+            return View(model);
         }
 
         public ActionResult My_Profile(string lang)
@@ -98,6 +174,7 @@ namespace RealEstateNet.Controllers
             dynamic model = new ExpandoObject();
             model.Role = GetUserRole();
             model.UserDetails = GetAgent();
+            model.User = getUserDetails();
             return View(model);
         }
         public ActionResult Saved_Search(string lang)
@@ -106,6 +183,7 @@ namespace RealEstateNet.Controllers
                 lang = "EN";
             language = lang;
             dynamic model = new ExpandoObject();
+            model.User = getUserDetails();
             return View(model);
         }
         public ActionResult Reviews(string lang)
@@ -114,6 +192,7 @@ namespace RealEstateNet.Controllers
                 lang = "EN";
             language = lang;
             dynamic model = new ExpandoObject();
+            model.User = getUserDetails();
             return View(model);
         }
 
@@ -153,6 +232,7 @@ namespace RealEstateNet.Controllers
                         myProperty.Address = propertyAddress;
                         myProperty.ImageUrl = imageURL;
                         myProperty.Views = views;
+                        myProperty.Id = propertyId;
                         propertiesViews.Add(myProperty);
                     }
                     else if (propertyName.Contains(search) || propertyAddress.Contains(search) || propertyStatus.Contains(search) || currentStatus.Contains(search))
@@ -176,8 +256,8 @@ namespace RealEstateNet.Controllers
             return propertiesViews.AsEnumerable().ToPagedList(page, recordsPerPage);
         }
 
-        [HttpPost]
-        public bool RemoveProperty(int propertyId)
+       
+        public ActionResult RemoveProperty(int propertyId)
         {
             try
             {
@@ -251,11 +331,11 @@ namespace RealEstateNet.Controllers
                     }
                     ts.Complete();
                 }
-                return true;
+                return Redirect(Request.UrlReferrer.ToString());
             }
             catch(Exception ex)
             {
-                return false;
+                return Redirect(Request.UrlReferrer.ToString());
             }
             
         }
@@ -328,6 +408,25 @@ namespace RealEstateNet.Controllers
             }
             
             return agent;
+        }
+
+        public UserDetails getUserDetails()
+        {
+            using (var context = new DB_RealEstateEntities())
+            {
+                UserDetails user = new UserDetails();
+                var thisUserID = User.Identity.GetUserId();
+                var isuser = context.UserDetails.Where(c => c.UserId.Equals(thisUserID));
+                if (isuser.Count() > 0)
+                {
+                    var userDetails = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(thisUserID));
+                    user.Image = userDetails.Picture;
+                    user.Name = userDetails.Name;
+                    user.LastName = userDetails.LastName;
+                    user.userName = User.Identity.GetUserName();
+                }
+                return user;
+            }
         }
 
         private IEnumerable<FavoriteView> GetFavorites(int page)
