@@ -98,6 +98,7 @@ namespace RealEstateNet.Models
         public bool Sauna { get; set; }
         public bool WindowCoverings { get; set; }
         public string media { get; set; }
+        public List<string> pictures { get; set; }
     }
 
     public class Picture

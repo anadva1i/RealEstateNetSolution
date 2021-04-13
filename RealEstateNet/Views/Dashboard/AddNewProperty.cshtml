@@ -67,19 +67,19 @@
                                     <div class="col-lg-12">
                                         <div class="my_profile_setting_textarea">
                                             <label for="propertyDescription">@Model.PageModel.PropertyDescriptionGE</label>
-                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionGE" value="@Model.Property.DescriptionGE"></textarea>
+                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionGE">@Model.Property.DescriptionGE</textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="my_profile_setting_textarea">
                                             <label for="propertyDescription">@Model.PageModel.PropertyDescriptionEN</label>
-                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionEN" value="@Model.Property.DescriptionEN"></textarea>
+                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionEN">@Model.Property.DescriptionEN</textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="my_profile_setting_textarea">
                                             <label for="propertyDescription">@Model.PageModel.PropertyDescriptionRU</label>
-                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionRU" value="@Model.Property.DescriptionRU"></textarea>
+                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionRU">@Model.Property.DescriptionRU</textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-6">
@@ -142,7 +142,7 @@
                                     <div class="col-lg-12 col-xl-12">
                                         <div class="my_profile_setting_input form-group">
                                             <label for="propertyAddress">@Model.PageModel.AddressGE</label>
-                                            <input type="text" class="form-control" id="propertyAddressGE" name="AddressGE" placeholder="Drag map marker to get the address" readonly="true" required>
+                                            <input type="text" class="form-control" id="propertyAddressGE" name="AddressGE" placeholder="Drag map marker to get the address" value="@Model.Property.AddressEN" readonly="true" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-6">
@@ -341,14 +341,16 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <ul class="mb0" id="ul-images">
-                                            <ul class="mb0" id="ul-images">
-                                                @*<li class="list-inline-item">
-                                                        <div class="portfolio_item">
-                                                            <img class="img-fluid" id="myImg" style="width: 200px; height: 200px; object-fit: cover">
-                                                            <div class="edu_stats_list" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><a href="#"><span class="flaticon-garbage"></span></a></div>
-                                                        </div>
-                                                    </li>*@
-                                            </ul>
+                                            @foreach (var picture in Model.Property.pictures)
+                                            {
+                                                <li class="list-inline-item">
+                                                    <div class="portfolio_item">
+                                                        <img class="img-fluid" id="myImg" style="width: 200px; height: 200px; object-fit: cover" src="@picture">
+                                                        <div class="edu_stats_list" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><a href="#"><span class="flaticon-garbage"></span></a></div>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="portfolio_upload">

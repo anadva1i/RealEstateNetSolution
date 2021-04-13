@@ -88,12 +88,20 @@ namespace RealEstateNet.Controllers
                     var cityId = location.CityId;
                     var cityContent = context.Cities.FirstOrDefault(c => c.Id == cityId).ContentId;
                     var city = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == cityContent).Text;
-
+                    var addressContent = location.ContentId;
+                    var address = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == addressContent).Text;
                     //Get State
                     var stateId = db_property.StateId;
                     var stateContent = context.States.FirstOrDefault(c => c.Id == stateId).ContentId;
                     var propertyState = context.Translations.FirstOrDefault(c => c.ContentId == stateContent && c.LanguageId == langId).Text;
-
+                    //Get Media
+                    var media = context.Media.Where(c => c.PropertyId == propertyId);
+                    List<string> pics = new List<string>();
+                    foreach(var m in media)
+                    {
+                        pics.Add(m.MediaUrl);
+                    }
+                    OldProperty.pictures = pics;
                     OldProperty.PropertyTitleGE = titleGE;
                     OldProperty.PropertyTitleEN = titleEN;
                     OldProperty.PropertyTitleRU = titleRU;
@@ -106,6 +114,7 @@ namespace RealEstateNet.Controllers
                     OldProperty.Price = db_property.Price;
                     OldProperty.Area = db_property.PropertySize;
                     OldProperty.Rooms = db_property.Rooms;
+                    OldProperty.AddressEN = address;
                     OldProperty.City = city;
                     OldProperty.Latitude = (decimal)location.Latitude;
                     OldProperty.Longitude = (decimal)location.Longitude;
