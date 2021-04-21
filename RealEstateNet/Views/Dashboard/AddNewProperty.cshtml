@@ -38,8 +38,15 @@
                             <p>@Model.PageModel.AddNewProperty_Description</p>
                         </div>
                     </div>
-                    @using (Html.BeginForm("CreateListing", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    @{var controller = "CreateListing"; }
+                    @if (Model.Property.Id > 0)
                     {
+                        controller = "EditListing";
+                    }
+
+                    @using (Html.BeginForm(controller, "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    {
+                        <input type="text" name="Id" value="@Model.Property.Id" style="display: none">
                         <div class="col-lg-12">
                             <div class="my_dashboard_review">
                                 <div class="row">
@@ -91,9 +98,12 @@
                                                 </option>
                                                 @foreach (var type in Model.TypeModels)
                                                 {
-                                                    <option data-tokens="@type">
-                                                        @type
-                                                    </option>
+                                                    if (!type.Equals(@Model.Property.Type))
+                                                    {
+                                                        <option data-tokens="@type">
+                                                            @type
+                                                        </option>
+                                                    }
                                                 }
                                             </select>
                                         </div>
@@ -107,9 +117,12 @@
                                                 </option>
                                                 @foreach (var status in Model.StatusModels)
                                                 {
-                                                    <option data-tokens="@status">
-                                                        @status
-                                                    </option>
+                                                    if (!status.Equals(@Model.Property.Status))
+                                                    {
+                                                        <option data-tokens="@status">
+                                                            @status
+                                                        </option>
+                                                    }
                                                 }
                                             </select>
                                         </div>
@@ -167,9 +180,12 @@
                                                 </option>
                                                 @foreach (var city in Model.Cities)
                                                 {
-                                                    <option data-tokens="@city">
-                                                        @city
-                                                    </option>
+                                                    if (!city.Equals(@Model.Property.City))
+                                                    {
+                                                        <option data-tokens="@city">
+                                                            @city
+                                                        </option>
+                                                    }
                                                 }
                                             </select>
                                         </div>
@@ -199,11 +215,11 @@
                                     </div>
 
                                     @*<div class="col-xl-12">
-                                            <div class="my_profile_setting_input">
-                                                <button class="btn btn1 float-left">Back</button>
-                                                <button class="btn btn2 float-right">Next</button>
-                                            </div>
-                                        </div>*@
+                            <div class="my_profile_setting_input">
+                                <button class="btn btn1 float-left">Back</button>
+                                <button class="btn btn2 float-right">Next</button>
+                            </div>
+                        </div>*@
                                 </div>
                             </div>
                             <div class="my_dashboard_review mt30">
@@ -250,9 +266,12 @@
                                                 </option>
                                                 @foreach (var state in Model.StateModels)
                                                 {
-                                                    <option data-tokens="@state">
-                                                        @state
-                                                    </option>
+                                                    if (!state.Equals(@Model.Property.State))
+                                                    {
+                                                        <option data-tokens="@state">
+                                                            @state
+                                                        </option>
+                                                    }
                                                 }
                                             </select>
                                         </div>
@@ -264,19 +283,19 @@
                                         <ul class="ui_kit_checkbox selectable-list">
                                             <li>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="AirConditioning">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="AirConditioning" @Model.Property.AirConditioning>
                                                     <label class="custom-control-label" for="customCheck1">@Model.FeaturesModel.Feature_AirConditioning</label>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="Yard">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="Yard" @Model.Property.Yard>
                                                     <label class="custom-control-label" for="customCheck2">@Model.FeaturesModel.Feature_Yard</label>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck3" name="SwimmingPool">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck3" name="SwimmingPool" @Model.Property.SwimmingPool>
                                                     <label class="custom-control-label" for="customCheck3">@Model.FeaturesModel.Feature_SwimmingPool</label>
                                                 </div>
                                             </li>
@@ -286,19 +305,19 @@
                                         <ul class="ui_kit_checkbox selectable-list">
                                             <li>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck6" name="Tv">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck6" name="Tv" @Model.Property.Tv>
                                                     <label class="custom-control-label" for="customCheck6">@Model.FeaturesModel.Feature_TV</label>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck7" name="Fireplace">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck7" name="Fireplace" @Model.Property.Fireplace>
                                                     <label class="custom-control-label" for="customCheck7">@Model.FeaturesModel.Feature_Fireplace</label>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck8" name="Refrigirator">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck8" name="Refrigirator" @Model.Property.Refrigirator>
                                                     <label class="custom-control-label" for="customCheck8">@Model.FeaturesModel.Feature_Refrigirator</label>
                                                 </div>
                                             </li>
@@ -308,30 +327,30 @@
                                         <ul class="ui_kit_checkbox selectable-list">
                                             <li>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck11" name="Wifi">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck11" name="Wifi" @Model.Property.Wifi>
                                                     <label class="custom-control-label" for="customCheck11">@Model.FeaturesModel.Feature_Wifi</label>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck12" name="Sauna">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck12" name="Sauna" @Model.Property.Sauna>
                                                     <label class="custom-control-label" for="customCheck12">@Model.FeaturesModel.Feature_Sauna</label>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck13" name="WindowCoverings">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck13" name="WindowCoverings" @Model.Property.WindowCoverings>
                                                     <label class="custom-control-label" for="customCheck13">@Model.FeaturesModel.Feature_WindowCoverings</label>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
                                     @*<div class="col-xl-12">
-                                            <div class="my_profile_setting_input">
-                                                <button class="btn btn1 float-left">Back</button>
-                                                <button class="btn btn2 float-right">Next</button>
-                                            </div>
-                                        </div>*@
+                            <div class="my_profile_setting_input">
+                                <button class="btn btn1 float-left">Back</button>
+                                <button class="btn btn2 float-right">Next</button>
+                            </div>
+                        </div>*@
                                 </div>
                             </div>
                             <div class="my_dashboard_review mt30">
@@ -341,15 +360,21 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <ul class="mb0" id="ul-images">
-                                            @foreach (var picture in Model.Property.pictures)
+                                            @if (Model.Property.pictures != null)
                                             {
-                                                <li class="list-inline-item">
-                                                    <div class="portfolio_item">
-                                                        <img class="img-fluid" id="myImg" style="width: 200px; height: 200px; object-fit: cover" src="@picture">
-                                                        <div class="edu_stats_list" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><a href="#"><span class="flaticon-garbage"></span></a></div>
-                                                    </div>
-                                                </li>
+                                                foreach (var picture in Model.Property.pictures)
+                                                {
+                                                    var count = 1;
+                                                    <li id="li-@count" class="list-inline-item">
+                                                        <div class="portfolio_item">
+                                                            <img class="img-fluid" id="myImg" style="width: 200px; height: 200px; object-fit: cover" src="@picture">
+                                                            <div class="edu_stats_list" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><span class="flaticon-garbage" onclick="deleteImage('@picture', @count)"></span></div>
+                                                        </div>
+                                                    </li>
+                                                    count++;
+                                                }
                                             }
+
                                         </ul>
                                     </div>
                                     <div class="col-lg-12">

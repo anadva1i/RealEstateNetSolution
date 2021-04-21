@@ -63,6 +63,7 @@ namespace RealEstateNet.Models
 
     public class CreateListingModel
     {
+        public int Id { get; set; }
         public string PropertyTitleGE { get; set; }
         public string PropertyTitleEN { get; set; }
         public string PropertyTitleRU { get; set; }
@@ -88,15 +89,15 @@ namespace RealEstateNet.Models
         public int Garages { get; set; }
         public int CeilingSize { get; set; }
         public string State { get; set; }
-        public bool AirConditioning { get; set; }
-        public bool Yard { get; set; }
-        public bool SwimmingPool { get; set; }
-        public bool Tv { get; set; }
-        public bool Fireplace { get; set; }
-        public bool Refrigirator { get; set; }
-        public bool Wifi { get; set; }
-        public bool Sauna { get; set; }
-        public bool WindowCoverings { get; set; }
+        public string AirConditioning { get; set; }
+        public string Yard { get; set; }
+        public string SwimmingPool { get; set; }
+        public string Tv { get; set; }
+        public string Fireplace { get; set; }
+        public string Refrigirator { get; set; }
+        public string Wifi { get; set; }
+        public string Sauna { get; set; }
+        public string WindowCoverings { get; set; }
         public string media { get; set; }
         public List<string> pictures { get; set; }
     }

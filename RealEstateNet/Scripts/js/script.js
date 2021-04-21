@@ -1090,12 +1090,17 @@ var counter = 0;
 var media = [];
 var pics = [];
 function imageIsLoaded(e) { 
+    if ($('#ul-images li').length > 1) {
+        counter = $('#ul-images li').size();
+    }
     counter++;
+    var $div = $("<div>", {"class": "portfolio_item"});
     var $img = $("<img>", { "class": "img-fluid", "style": "width: 200px; height: 200px; object-fit: cover; border-radius: 3%", "src": e.target.result });
     var $close = '<span onclick="imgDelete('+counter+')" class="flaticon-garbage" style="background: #ff5a5f; border-radius: 15%; color: white; cursor: pointer; position: absolute; margin-top: 5px; margin-left: -40px; padding: 5px 10px" title="delete"></span>';
     var $li = $("<li>", { "id": "li-" + counter, "class": "list-inline-item", "style":"margin-bottom: 10px"});
-    $li.append($img);
-    $li.append($close);
+    $div.append($img);
+    $div.append($close);
+    $li.append($div);
     $("#ul-images").append($li);
     var id = counter;
     var pic = e.target.result;
@@ -1423,4 +1428,18 @@ $("#SearchProperties").keyup(function (event) {
 function SearchMyProperties() {
     var keyword = $("#SearchProperties").val();
     location.href = "?page=1&search=" + keyword;
+}
+
+function deleteImage(src, index) {
+    $.ajax({
+        url: '../../Dashboard/DeleteImage',
+        dataType: "json",
+        type: "POST",
+        cache: false,
+        data: { src: src },
+        complete: function (data) {
+            if(data)
+                imgDelete(index);
+        }
+    });
 }

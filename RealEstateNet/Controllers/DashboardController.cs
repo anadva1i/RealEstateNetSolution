@@ -101,6 +101,46 @@ namespace RealEstateNet.Controllers
                     {
                         pics.Add(m.MediaUrl);
                     }
+                    //Get Features
+                    var check = "";
+                    var propertyFeatures = context.PropertyFeatures.Where(c => c.PropertyId == propertyId);
+                    foreach(var feature in propertyFeatures)
+                    {
+                        if (feature.Availability)
+                            check = "checked";
+                        else check = "";
+                        switch (feature.FeatureId)
+                        {
+                            case 1:
+                                OldProperty.AirConditioning = check;
+                                break;
+                            case 2:
+                                OldProperty.Yard = check;
+                                break;
+                            case 3:
+                                OldProperty.SwimmingPool = check;
+                                break;
+                            case 4:
+                                OldProperty.Fireplace = check;
+                                break;
+                            case 5:
+                                OldProperty.Tv = check;
+                                break;
+                            case 6:
+                                OldProperty.Refrigirator = check;
+                                break;
+                            case 7:
+                                OldProperty.Wifi = check;
+                                break;
+                            case 8:
+                                OldProperty.Sauna = check;
+                                break;
+                            case 9:
+                                OldProperty.WindowCoverings = check;
+                                break;
+
+                        }
+                    }
                     OldProperty.pictures = pics;
                     OldProperty.PropertyTitleGE = titleGE;
                     OldProperty.PropertyTitleEN = titleEN;
@@ -124,6 +164,7 @@ namespace RealEstateNet.Controllers
                     OldProperty.Bathrooms = (int)db_property.Bathrooms;
                     OldProperty.Garages = (int)db_property.Garages;
                     OldProperty.CeilingSize = (int)db_property.CeilingSize;
+                    OldProperty.Id = db_property.Id;
                     return OldProperty;
                 }
             }
@@ -671,7 +712,150 @@ namespace RealEstateNet.Controllers
             return featuresModel;
         }
 
-        
+        [HttpPost]
+        public ActionResult EditListing(CreateListingModel model)
+        {
+            try
+            {
+                using (var scope = new System.Transactions.TransactionScope())
+                {
+                    using (var context = new DB_RealEstateEntities())
+                    {
+                        //Edit Listing
+                        int id = model.Id;
+                        var titleContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + id)).Id;
+                        var titleEN = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == 2);
+                        var titleGE = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == 1);
+                        var titleRU = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == 3);
+                        var descriptionContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingDescription" + id)).Id;
+                        var descriptionEN = context.Translations.FirstOrDefault(c => c.ContentId == descriptionContent && c.LanguageId == 2);
+                        var descriptionGE = context.Translations.FirstOrDefault(c => c.ContentId == descriptionContent && c.LanguageId == 1);
+                        var descriptionRU = context.Translations.FirstOrDefault(c => c.ContentId == descriptionContent && c.LanguageId == 3);
+                        if (model.PropertyTitleEN == "")
+                            model.PropertyTitleEN = model.PropertyTitleGE;
+                        if (model.PropertyTitleRU == "")
+                            model.PropertyTitleRU = model.PropertyTitleGE;
+                        if (model.DescriptionEN == "")
+                            model.DescriptionEN = model.DescriptionGE;
+                        if (model.DescriptionRU == "")
+                            model.DescriptionRU = model.DescriptionGE;
+                        titleEN.Text = model.PropertyTitleEN;
+                        titleGE.Text = model.PropertyTitleGE;
+                        titleRU.Text = model.PropertyTitleRU;
+                        descriptionEN.Text = model.DescriptionEN;
+                        descriptionGE.Text = model.DescriptionGE;
+                        descriptionRU.Text = model.DescriptionRU;
+                        var contentType = context.Translations.FirstOrDefault(c => c.Text.Equals(model.Type)).ContentId;
+                        var propertyTypeId = context.PropertyTypes.FirstOrDefault(c => c.ContentId == contentType).Id;
+                        var contentStatus = context.Translations.FirstOrDefault(c => c.Text.Equals(model.Status)).ContentId;
+                        var propertyStatusId = context.Status.FirstOrDefault(c => c.ContentId == contentStatus).Id;
+                        var property = context.Properties.FirstOrDefault(c => c.Id == id);
+                        property.Price = model.Price;
+                        property.PropertySize = model.Area;
+                        property.Rooms = model.Rooms;
+                        property.PropertyTypeId = propertyTypeId;
+                        property.StatusId = propertyStatusId;
+                        //Edit Location
+                        var location = context.Locations.FirstOrDefault(c => c.Id == property.LocationId);
+                        location.Latitude = model.Latitude;
+                        location.Longitude = model.Longitude;
+                        location.Zip = model.Zip;
+                        var cityContent = context.Translations.FirstOrDefault(c => c.Text.Equals(model.City)).ContentId;
+                        var cityId = context.Cities.FirstOrDefault(c=>c.ContentId == cityContent).Id;
+                        location.CityId = cityId;
+                        var AddressContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + id)).Id;
+                        var AddressEN = context.Translations.FirstOrDefault(c => c.ContentId == AddressContent && c.LanguageId == 2);
+                        var AddressGE = context.Translations.FirstOrDefault(c => c.ContentId == AddressContent && c.LanguageId == 1);
+                        var AddressRU = context.Translations.FirstOrDefault(c => c.ContentId == AddressContent && c.LanguageId == 3);
+                        AddressEN.Text = model.AddressGE;
+                        AddressGE.Text = model.AddressGE;
+                        AddressRU.Text = model.AddressGE;
+                        //Edit Detailed info
+                        property.CadastralCode = model.CadastralCode;
+                        property.Bedrooms = model.Bedrooms;
+                        property.Bathrooms = model.Bathrooms;
+                        property.Garages = model.Garages;
+                        property.CeilingSize = model.CeilingSize;
+                        var stateContent = context.Translations.FirstOrDefault(c => c.Text.Equals(model.State)).ContentId;
+                        var stateId = context.States.FirstOrDefault(c => c.ContentId == stateContent).Id;
+                        property.StateId = stateId;
+                        //Edit Amenities
+                        var content_AirConditioning = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_AirConditioning")).Id;
+                        var feature_AirConditioning = context.Features.FirstOrDefault(c => c.ContentId == content_AirConditioning).Id;
+                        var propertyFeature_AirConditioning = context.PropertyFeatures.FirstOrDefault(c => c.FeatureId == feature_AirConditioning && c.PropertyId == id);
+                        var content_Yard = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Yard")).Id;
+                        var feature_Yard = context.Features.FirstOrDefault(c => c.ContentId == content_Yard).Id;
+                        var propertyFeature_Yard = context.PropertyFeatures.FirstOrDefault(c => c.FeatureId == feature_Yard && c.PropertyId == id);
+                        var content_SwimmingPool = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_SwimmingPool")).Id;
+                        var feature_SwimmingPool = context.Features.FirstOrDefault(c => c.ContentId == content_SwimmingPool).Id;
+                        var propertyFeature_SwimmingPool = context.PropertyFeatures.FirstOrDefault(c => c.FeatureId == feature_SwimmingPool && c.PropertyId == id);
+                        var content_Tv = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Tv")).Id;
+                        var feature_Tv = context.Features.FirstOrDefault(c => c.ContentId == content_Tv).Id;
+                        var propertyFeature_Tv = context.PropertyFeatures.FirstOrDefault(c => c.FeatureId == feature_Tv && c.PropertyId == id);
+                        var content_Fireplace = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Fireplace")).Id;
+                        var feature_Fireplace = context.Features.FirstOrDefault(c => c.ContentId == content_Fireplace).Id;
+                        var propertyFeature_Fireplace = context.PropertyFeatures.FirstOrDefault(c => c.FeatureId == feature_Fireplace && c.PropertyId == id);
+                        var content_Refrigirator = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Refrigirator")).Id;
+                        var feature_Refrigirator = context.Features.FirstOrDefault(c => c.ContentId == content_Refrigirator).Id;
+                        var propertyFeature_Refrigirator = context.PropertyFeatures.FirstOrDefault(c => c.FeatureId == feature_Refrigirator && c.PropertyId == id);
+                        var content_Wifi = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Wifi")).Id;
+                        var feature_Wifi = context.Features.FirstOrDefault(c => c.ContentId == content_Wifi).Id;
+                        var propertyFeature_Wifi = context.PropertyFeatures.FirstOrDefault(c => c.FeatureId == feature_Wifi && c.PropertyId == id);
+                        var content_Sauna = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Sauna")).Id;
+                        var feature_Sauna = context.Features.FirstOrDefault(c => c.ContentId == content_Sauna).Id;
+                        var propertyFeature_Sauna = context.PropertyFeatures.FirstOrDefault(c => c.FeatureId == feature_Sauna && c.PropertyId == id);
+                        var content_WindowCoverings = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_WindowCoverings")).Id;
+                        var feature_WindowCoverings = context.Features.FirstOrDefault(c => c.ContentId == content_WindowCoverings).Id;
+                        var propertyFeature_WindowCoverings = context.PropertyFeatures.FirstOrDefault(c => c.FeatureId == feature_WindowCoverings && c.PropertyId == id);
+                        if (model.AirConditioning != null)
+                            propertyFeature_AirConditioning.Availability = true;
+                        else
+                            propertyFeature_AirConditioning.Availability = false;
+                        if (model.Yard != null)
+                            propertyFeature_Yard.Availability = true;
+                        else
+                            propertyFeature_Yard.Availability = false;
+                        if (model.SwimmingPool != null)
+                            propertyFeature_SwimmingPool.Availability = true;
+                        else
+                            propertyFeature_SwimmingPool.Availability = false;
+                        if (model.Tv != null)
+                            propertyFeature_Tv.Availability = true;
+                        else
+                            propertyFeature_Tv.Availability = false;
+                        if (model.Fireplace != null)
+                            propertyFeature_Fireplace.Availability = true;
+                        else
+                            propertyFeature_Fireplace.Availability = false;
+                        if (model.Refrigirator != null)
+                            propertyFeature_Refrigirator.Availability = true;
+                        else
+                            propertyFeature_Refrigirator.Availability = false;
+                        if (model.Wifi != null)
+                            propertyFeature_Wifi.Availability = true;
+                        else
+                            propertyFeature_Wifi.Availability = false;
+                        if (model.Sauna != null)
+                            propertyFeature_Sauna.Availability = true;
+                        else
+                            propertyFeature_Sauna.Availability = false;
+                        if (model.WindowCoverings != null)
+                            propertyFeature_WindowCoverings.Availability = true;
+                        else
+                            propertyFeature_WindowCoverings.Availability = false;
+                        context.SaveChanges();
+                        scope.Complete();
+                        return RedirectToAction("Property", "Home", new { id = id, lang = language });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+
+
         [HttpPost]
         public ActionResult CreateListing(CreateListingModel model)
         {            
@@ -826,7 +1010,7 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityAirConditioning = new PropertyFeature();
                         amenityAirConditioning.PropertyId = property.Id;
                         amenityAirConditioning.FeatureId = feature_AirConditioning;
-                        amenityAirConditioning.Availability = model.AirConditioning;
+                        //amenityAirConditioning.Availability = model.AirConditioning;
                         context.PropertyFeatures.Add(amenityAirConditioning);
 
                         var content_Yard = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Yard")).Id;
@@ -834,7 +1018,7 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityYard = new PropertyFeature();
                         amenityYard.PropertyId = property.Id;
                         amenityYard.FeatureId = feature_Yard;
-                        amenityYard.Availability = model.Yard;
+                        //amenityYard.Availability = model.Yard;
                         context.PropertyFeatures.Add(amenityYard);
 
                         var content_SwimmingPool = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_SwimmingPool")).Id;
@@ -842,7 +1026,7 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenitySwimmingPool = new PropertyFeature();
                         amenitySwimmingPool.PropertyId = property.Id;
                         amenitySwimmingPool.FeatureId = feature_SwimmingPool;
-                        amenitySwimmingPool.Availability = model.SwimmingPool;
+                        //samenitySwimmingPool.Availability = model.SwimmingPool;
                         context.PropertyFeatures.Add(amenitySwimmingPool);
 
                         var content_Tv = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_TV")).Id;
@@ -850,7 +1034,7 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityTv = new PropertyFeature();
                         amenityTv.PropertyId = property.Id;
                         amenityTv.FeatureId = feature_Tv;
-                        amenityTv.Availability = model.Tv;
+                        //amenityTv.Availability = model.Tv;
                         context.PropertyFeatures.Add(amenityTv);
 
                         var content_Fireplace = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Fireplace")).Id;
@@ -858,7 +1042,7 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityFireplace = new PropertyFeature();
                         amenityFireplace.PropertyId = property.Id;
                         amenityFireplace.FeatureId = feature_Fireplace;
-                        amenityFireplace.Availability = model.Fireplace;
+                        //amenityFireplace.Availability = model.Fireplace;
                         context.PropertyFeatures.Add(amenityFireplace);
 
                         var content_Refrigirator = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Refrigirator")).Id;
@@ -866,7 +1050,7 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityRefrigirator = new PropertyFeature();
                         amenityRefrigirator.PropertyId = property.Id;
                         amenityRefrigirator.FeatureId = feature_Refrigirator;
-                        amenityRefrigirator.Availability = model.Refrigirator;
+                        //amenityRefrigirator.Availability = model.Refrigirator;
                         context.PropertyFeatures.Add(amenityRefrigirator);
 
                         var content_Wifi = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Wifi")).Id;
@@ -874,7 +1058,7 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityWifi = new PropertyFeature();
                         amenityWifi.PropertyId = property.Id;
                         amenityWifi.FeatureId = feature_Wifi;
-                        amenityWifi.Availability = model.Wifi;
+                        //amenityWifi.Availability = model.Wifi;
                         context.PropertyFeatures.Add(amenityWifi);
 
                         var content_Sauna = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Sauna")).Id;
@@ -882,7 +1066,7 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenitySauna = new PropertyFeature();
                         amenitySauna.PropertyId = property.Id;
                         amenitySauna.FeatureId = feature_Sauna;
-                        amenitySauna.Availability = model.Sauna;
+                        //amenitySauna.Availability = model.Sauna;
                         context.PropertyFeatures.Add(amenitySauna);
 
                         var content_WindowCoverings = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_WindowCoverings")).Id;
@@ -890,7 +1074,7 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityWindowCoverings = new PropertyFeature();
                         amenityWindowCoverings.PropertyId = property.Id;
                         amenityWindowCoverings.FeatureId = feature_WindowCoverings;
-                        amenityWindowCoverings.Availability = model.WindowCoverings;
+                       // amenityWindowCoverings.Availability = model.WindowCoverings;
                         context.PropertyFeatures.Add(amenityWindowCoverings);
                         context.SaveChanges();
 
@@ -942,6 +1126,25 @@ namespace RealEstateNet.Controllers
                     context.Media.Add(media);
                     context.SaveChanges();
                 }
+            }
+        }
+
+        [HttpPost]
+        public bool DeleteImage(string src)
+        {
+            try
+            {
+                using(var context = new DB_RealEstateEntities())
+                {
+                    var picture = context.Media.FirstOrDefault(c => c.MediaUrl.Equals(src));
+                    context.Media.Remove(picture);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
             }
         }
 
