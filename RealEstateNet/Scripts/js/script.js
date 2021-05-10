@@ -248,15 +248,16 @@
     });
 
     /* ----- MagnificPopup ----- */
-    if (($(".popup-img").length > 0) || ($(".popup-iframe").length > 0) || ($(".popup-img-single").length > 0)) {
+    if (($(".popup-img").length > 0) ||($(".popup-iframe").length > 0) || ($(".popup-img-single").length > 0)) {
         $(".popup-img").magnificPopup({
-            type:"image",
+            type: 'image',
             gallery: {
                 enabled: true,
+                navigateByImgClick: true,
             }
         });
         $(".popup-img-single").magnificPopup({
-            type:"image",
+            type: "image",
             gallery: {
                 enabled: false,
             }
@@ -1442,4 +1443,9 @@ function deleteImage(src, index) {
                 imgDelete(index);
         }
     });
+}
+
+function stayHere() {
+    event.preventDefault();
+    $("#next-img").click();
 }

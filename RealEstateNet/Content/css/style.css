@@ -2981,7 +2981,7 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
   margin-top: 0;
 }
 .home10-mainslider .banner-style-one .slide:before{
-  background-color: rgba(29, 41, 62, 0.6);
+  background-color: rgba(29, 41, 62, 0.3);
   bottom: 0;
   content: "";
   left: 0;
@@ -11811,14 +11811,15 @@ a.btn.btn_error{
   margin-bottom: 0;
   position: relative;
 }
-.portfolio_upload input[type=file] {
-  font-size: 100px;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-}
+    .portfolio_upload input[type=file] {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        z-index: 1;
+    }
 /*== Message Page ==*/
 .message_container {
   background-color: #ffffff;

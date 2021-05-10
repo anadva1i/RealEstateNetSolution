@@ -1,5 +1,4 @@
-﻿
-@model dynamic
+﻿@model dynamic
 @{
     ViewBag.Title = "Property";
 } 
@@ -17,17 +16,23 @@
                         <div class="col-lg-12">
                             <div class="main-banner-wrapper home10">
                                 <div class="banner-style-one owl-theme owl-carousel">
+                                    @{ int counter = 1;}
                                     @foreach (var pic in Model.Media)
                                     {
-                                        <div class="slide slide-one" style="background-image: url('@pic');height: 600px;"></div>
+                                        if (counter < Model.Media.Count)
+                                        {
+                                            <a class="popup-img" href="@pic"><div class="slide slide-one" style="background-image: url('@pic'); height: 600px;"></div></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="popup-img" href="@pic" onclick="stayHere()"><div class="slide slide-one" style="background-image: url('@pic'); height: 600px;"></div></a>
+                                        }
+                                        counter++;
                                     }
-                                    @*<div class="slide slide-one" style="background-image: url(images/home/1.jpg);height: 600px;"></div>
-                                        <div class="slide slide-one" style="background-image: url(images/home/2.jpg);height: 600px;"></div>
-                                        <div class="slide slide-one" style="background-image: url(images/home/1.jpg);height: 600px;"></div>*@
                                 </div>
                                 <div class="carousel-btn-block banner-carousel-btn">
                                     <span class="carousel-btn left-btn"><i class="flaticon-left-arrow-1 left"></i></span>
-                                    <span class="carousel-btn right-btn"><i class="flaticon-right-arrow right"></i></span>
+                                    <span id="next-img" class="carousel-btn right-btn"><i class="flaticon-right-arrow right"></i></span>
                                 </div><!-- /.carousel-btn-block banner-carousel-btn -->
                             </div><!-- /.main-banner-wrapper -->
                         </div>
