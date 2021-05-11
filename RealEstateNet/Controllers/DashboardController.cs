@@ -1010,7 +1010,8 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityAirConditioning = new PropertyFeature();
                         amenityAirConditioning.PropertyId = property.Id;
                         amenityAirConditioning.FeatureId = feature_AirConditioning;
-                        //amenityAirConditioning.Availability = model.AirConditioning;
+                        if (model.AirConditioning != null)
+                            amenityAirConditioning.Availability = true;
                         context.PropertyFeatures.Add(amenityAirConditioning);
 
                         var content_Yard = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Yard")).Id;
@@ -1018,7 +1019,8 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityYard = new PropertyFeature();
                         amenityYard.PropertyId = property.Id;
                         amenityYard.FeatureId = feature_Yard;
-                        //amenityYard.Availability = model.Yard;
+                        if (model.Yard != null)
+                            amenityYard.Availability = true;
                         context.PropertyFeatures.Add(amenityYard);
 
                         var content_SwimmingPool = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_SwimmingPool")).Id;
@@ -1026,7 +1028,8 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenitySwimmingPool = new PropertyFeature();
                         amenitySwimmingPool.PropertyId = property.Id;
                         amenitySwimmingPool.FeatureId = feature_SwimmingPool;
-                        //samenitySwimmingPool.Availability = model.SwimmingPool;
+                        if (model.SwimmingPool != null)
+                            amenitySwimmingPool.Availability = true;
                         context.PropertyFeatures.Add(amenitySwimmingPool);
 
                         var content_Tv = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_TV")).Id;
@@ -1034,7 +1037,8 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityTv = new PropertyFeature();
                         amenityTv.PropertyId = property.Id;
                         amenityTv.FeatureId = feature_Tv;
-                        //amenityTv.Availability = model.Tv;
+                        if (model.Tv != null)
+                            amenityTv.Availability = true;
                         context.PropertyFeatures.Add(amenityTv);
 
                         var content_Fireplace = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Fireplace")).Id;
@@ -1042,7 +1046,8 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityFireplace = new PropertyFeature();
                         amenityFireplace.PropertyId = property.Id;
                         amenityFireplace.FeatureId = feature_Fireplace;
-                        //amenityFireplace.Availability = model.Fireplace;
+                        if (model.Fireplace != null)
+                            amenityFireplace.Availability = true;
                         context.PropertyFeatures.Add(amenityFireplace);
 
                         var content_Refrigirator = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Refrigirator")).Id;
@@ -1050,7 +1055,8 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityRefrigirator = new PropertyFeature();
                         amenityRefrigirator.PropertyId = property.Id;
                         amenityRefrigirator.FeatureId = feature_Refrigirator;
-                        //amenityRefrigirator.Availability = model.Refrigirator;
+                        if (model.Refrigirator != null)
+                            amenityRefrigirator.Availability = true;
                         context.PropertyFeatures.Add(amenityRefrigirator);
 
                         var content_Wifi = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Wifi")).Id;
@@ -1058,7 +1064,8 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityWifi = new PropertyFeature();
                         amenityWifi.PropertyId = property.Id;
                         amenityWifi.FeatureId = feature_Wifi;
-                        //amenityWifi.Availability = model.Wifi;
+                        if (model.Wifi != null)
+                            amenityWifi.Availability = true;
                         context.PropertyFeatures.Add(amenityWifi);
 
                         var content_Sauna = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_Sauna")).Id;
@@ -1066,7 +1073,8 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenitySauna = new PropertyFeature();
                         amenitySauna.PropertyId = property.Id;
                         amenitySauna.FeatureId = feature_Sauna;
-                        //amenitySauna.Availability = model.Sauna;
+                        if (model.Sauna != null)
+                            amenitySauna.Availability = true;
                         context.PropertyFeatures.Add(amenitySauna);
 
                         var content_WindowCoverings = context.Contents.FirstOrDefault(c => c.Type.Equals("Feature_WindowCoverings")).Id;
@@ -1074,7 +1082,8 @@ namespace RealEstateNet.Controllers
                         PropertyFeature amenityWindowCoverings = new PropertyFeature();
                         amenityWindowCoverings.PropertyId = property.Id;
                         amenityWindowCoverings.FeatureId = feature_WindowCoverings;
-                       // amenityWindowCoverings.Availability = model.WindowCoverings;
+                        if (model.WindowCoverings != null)
+                            amenityWindowCoverings.Availability = true;
                         context.PropertyFeatures.Add(amenityWindowCoverings);
                         context.SaveChanges();
 
