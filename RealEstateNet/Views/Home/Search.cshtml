@@ -364,14 +364,14 @@
                                                 <option>@Model.SearchResult.bathrooms</option>
                                                 @for (int i = 1; i <= 6; i++)
                                                 {
-                                                    if (@Model.SearchResult.bathrooms == "Bathrooms")
+                                                    if (Model.SearchResult.bathrooms != i.ToString())
                                                     {
                                                         <option>@i</option>
                                                     }
-                                                    else if (@Model.SearchResult.bathrooms != i)
-                                                    {
-                                                        <option>@i</option>
-                                                    }
+                                                }
+                                                @if (Model.SearchResult.bathrooms != "Bathrooms")
+                                                {
+                                                    <option>Bathrooms</option>
                                                 }
                                             </select>
                                         </div>
@@ -384,14 +384,14 @@
                                                 <option>@Model.SearchResult.bedrooms</option>
                                                 @for (int i = 1; i <= 6; i++)
                                                 {
-                                                    if (@Model.SearchResult.bedrooms == "Bedrooms")
+                                                    if (Model.SearchResult.bedrooms != i.ToString())
                                                     {
                                                         <option>@i</option>
                                                     }
-                                                    else if (@Model.SearchResult.bedrooms != i)
-                                                    {
-                                                        <option>@i</option>
-                                                    }
+                                                }
+                                                @if (Model.SearchResult.bedrooms != "Bedrooms")
+                                                {
+                                                    <option>Bedrooms</option>
                                                 }
                                             </select>
                                         </div>
