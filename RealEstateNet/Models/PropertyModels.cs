@@ -172,6 +172,7 @@ namespace RealEstateNet.Models
 
     public class SearchModel
     {
+        public int page { get; set; }
         public string status { get; set; }
         public string keyword { get; set; }
         public string location { get; set; }

@@ -19,6 +19,7 @@ namespace RealEstateNet.Controllers
 {
     public class HomeController : Controller
     {
+        private int SearchedPage;
         private string language = "EN";
         Similars similar;
         public ActionResult Index(string lang)
@@ -95,14 +96,13 @@ namespace RealEstateNet.Controllers
                 return user;
             }
         }
-        int SearchedPage = 1;
         [HttpPost]
         public ActionResult Search(string lang, SearchModel search)
         {
             dynamic model = new ExpandoObject();
             if (lang == null)
                 lang = "EN";
-            model.Result = SearchedResult(lang, search, SearchedPage);
+            model.Result = SearchedResult(lang, search);
             model.Status = GetStatuses(lang);
             model.Type = GetTypes(lang);
             model.Amenity = GetAmenities(lang);
@@ -997,8 +997,7 @@ namespace RealEstateNet.Controllers
             }
             return properties;
         }
-
-        private IEnumerable<PropertySmallView> SearchedResult(string lang, SearchModel searchModel, int page)
+        private IEnumerable<PropertySmallView> SearchedResult(string lang, SearchModel searchModel)
         {
             List<PropertySmallView> properties = new List<PropertySmallView>();
             using (var context = new DB_RealEstateEntities())
@@ -1088,6 +1087,9 @@ namespace RealEstateNet.Controllers
                     properties.Add(thisProperty);
                 }
             }
+            var page = 1;
+            if (searchModel.page > 1)
+                page = searchModel.page;
             int records = properties.Count;
             int recordsPerPage = 6;
             SearchedPage = (records + recordsPerPage - 1) / recordsPerPage;

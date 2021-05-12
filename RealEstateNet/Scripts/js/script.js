@@ -1151,11 +1151,18 @@ $(".page-item").click(function () {
     ActivatePage(currentPage);
     var search = $("#SearchProperties").val();
     var url;
-    if (search == "")
-        url = "?page=" + currentPage;
-    else
-        url = "?page=" + currentPage + "&search=" + search;
-    location.href = url;
+    if (!window.location.href.includes("Search")) {
+        if (search == "")
+            url = "?page=" + currentPage;
+        else
+            url = "?page=" + currentPage + "&search=" + search;
+        location.href = url;
+    }
+    else {        
+        $("#currentPage").val(currentPage);
+        $("#search-btn").click();
+    }
+    
 });
 
 function pagerState(page, last, mid3, previous, next) {
@@ -1214,8 +1221,6 @@ function PagerNumbers(page, last){
 }
 
 function ActivatePage(page) {
-    console.log("-----------------------------------------")
-    console.log("page" + page);
     $("li.page-item").removeClass(" active");
     $("li.page-item").each(function () {
         var num = parseInt($(this).text(), 0);
@@ -1227,11 +1232,14 @@ function ActivatePage(page) {
 function LoadPager(last) {
     var url = window.location.href;
     var currentPage;
-    if(!url.includes("&"))
-        currentPage = url.substring(url.indexOf("=") + 1, url.length);
-    else
-        currentPage = url.substring(url.indexOf("=") + 1, url.indexOf("&"));
-    console.log(currentPage);
+    if (!url.includes("Search")) {
+        if (!url.includes("&"))
+            currentPage = url.substring(url.indexOf("=") + 1, url.length);
+        else
+            currentPage = url.substring(url.indexOf("=") + 1, url.indexOf("&"));
+    }
+    else currentPage = $("#currentPage").val();
+    console.log("current page: " + currentPage);
     ActivatePage(currentPage);
     switch (last) {
         case 0:
