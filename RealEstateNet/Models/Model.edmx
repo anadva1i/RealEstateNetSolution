@@ -229,7 +229,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserDetailsId" Type="int" Nullable="false" />
           <Property Name="ReviewDate" Type="datetime" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="500" />
@@ -658,7 +658,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Reviews_Property">
+        <Association Name="FK_Reviews_Property1">
           <End Role="Property" Type="Self.Property" Multiplicity="1" />
           <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
           <ReferentialConstraint>
@@ -670,7 +670,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Reviews_UserDetails">
+        <Association Name="FK_Reviews_UserDetails1">
           <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
           <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
           <ReferentialConstraint>
@@ -929,11 +929,11 @@
             <End Role="Property" EntitySet="Property" />
             <End Role="PropertyViews" EntitySet="PropertyViews" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reviews_Property" Association="Self.FK_Reviews_Property">
+          <AssociationSet Name="FK_Reviews_Property1" Association="Self.FK_Reviews_Property1">
             <End Role="Property" EntitySet="Property" />
             <End Role="Reviews" EntitySet="Reviews" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reviews_UserDetails" Association="Self.FK_Reviews_UserDetails">
+          <AssociationSet Name="FK_Reviews_UserDetails1" Association="Self.FK_Reviews_UserDetails1">
             <End Role="UserDetails" EntitySet="UserDetails" />
             <End Role="Reviews" EntitySet="Reviews" />
           </AssociationSet>
