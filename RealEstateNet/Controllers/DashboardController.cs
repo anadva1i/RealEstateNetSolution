@@ -861,7 +861,7 @@ namespace RealEstateNet.Controllers
         {            
             try
             {
-                using(var scope = new System.Transactions.TransactionScope())
+                using (var scope = new System.Transactions.TransactionScope())
                 {
                     using (var context = new DB_RealEstateEntities())
                     {
@@ -869,7 +869,27 @@ namespace RealEstateNet.Controllers
                         Property property = new Property();
                         var contentType = context.Translations.FirstOrDefault(c => c.Text.Equals(model.Type)).ContentId;
                         var propertyTypeId = context.PropertyTypes.FirstOrDefault(c => c.ContentId == contentType).Id;
-                        var statusType = context.Translations.FirstOrDefault(c => c.Text.Equals(model.Status)).ContentId;
+                        var statusType = 0;
+                        var thisStatus = "";
+                        if (model.Status.Equals("იყიდება") || model.Status.Equals("продается"))
+                            thisStatus = "Buy";
+                        else if (model.Status.Equals("ქირავდება") || model.Status.Equals("в аренду"))
+                        {
+                            thisStatus = "Rent";
+                        }
+                        else thisStatus = "Rent Daily";
+                        switch (thisStatus)
+                        {
+                            case "Rent":
+                                statusType = context.Contents.FirstOrDefault(c => c.Type.Equals("PropertyStatus_Rent")).Id;
+                                break;
+                            case "Buy":
+                                statusType = context.Contents.FirstOrDefault(c => c.Type.Equals("PropertyStatus_Buy")).Id;
+                                break;
+                            case "Rent Daily":
+                                statusType = context.Contents.FirstOrDefault(c => c.Type.Equals("PropertyStatus_DailyRent")).Id;
+                                break;
+                        }
                         var statusId = context.Status.FirstOrDefault(c => c.ContentId == statusType).Id;
                         var propertyState = context.Translations.FirstOrDefault(c => c.Text.Equals(model.State)).ContentId;
                         var stateId = context.States.FirstOrDefault(c => c.ContentId == propertyState).Id;
@@ -890,6 +910,7 @@ namespace RealEstateNet.Controllers
                         property.Active = true;
                         property.DatePublished = DateTime.Now;
                         property.WholePrice = model.Price;
+                        property.CurrentStatusId = 2;
                         context.Properties.Add(property);
                         context.SaveChanges();
 

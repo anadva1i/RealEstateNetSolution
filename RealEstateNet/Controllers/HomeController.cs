@@ -928,13 +928,32 @@ namespace RealEstateNet.Controllers
 
         private List<Property> SimilarByStatus(List<Property> _properties)
         {
-            string status = similar.Status;
+            string status = "";
+            if (similar.Status.Equals("იყიდება") || similar.Status.Equals("продается"))
+                status = "Buy";
+            else if (similar.Status.Equals("ქირავდება") || similar.Status.Equals("в аренду"))
+            {
+                status = "Rent";
+            }
+            else status = "Rent Daily";
             List<Property> properties = new List<Property>();
             using(var context = new DB_RealEstateEntities())
             {
-                var statusContentId = context.Translations.FirstOrDefault(c => c.Text.Equals(status)).ContentId;
+                var statusContentId = 0;
+                switch (status)
+                {
+                    case "Rent":
+                        statusContentId = context.Contents.FirstOrDefault(c => c.Type.Equals("PropertyStatus_Rent")).Id;
+                        break;
+                    case "Buy":
+                        statusContentId = context.Contents.FirstOrDefault(c => c.Type.Equals("PropertyStatus_Buy")).Id;
+                        break;
+                    case "Rent Daily":
+                        statusContentId = context.Contents.FirstOrDefault(c => c.Type.Equals("PropertyStatus_DailyRent")).Id;
+                        break;
+                }
                 var statusId = context.Status.FirstOrDefault(c => c.ContentId == statusContentId).Id;
-                foreach(var p in _properties)
+                foreach (var p in _properties)
                 {
                     if (p.StatusId == statusId)
                         properties.Add(p);
