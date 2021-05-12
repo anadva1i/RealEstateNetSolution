@@ -13,6 +13,7 @@ using WebGrease.Css.Extensions;
 using System.IO;
 using Microsoft.AspNet.Identity;
 using System.Globalization;
+using PagedList;
 
 namespace RealEstateNet.Controllers
 {
@@ -94,14 +95,14 @@ namespace RealEstateNet.Controllers
                 return user;
             }
         }
-
+        int SearchedPage = 1;
         [HttpPost]
         public ActionResult Search(string lang, SearchModel search)
         {
             dynamic model = new ExpandoObject();
             if (lang == null)
                 lang = "EN";
-            model.Result = SearchedResult(lang, search);
+            model.Result = SearchedResult(lang, search, SearchedPage);
             model.Status = GetStatuses(lang);
             model.Type = GetTypes(lang);
             model.Amenity = GetAmenities(lang);
@@ -109,6 +110,7 @@ namespace RealEstateNet.Controllers
             model.States = GetState(lang);
             model.SearchResult = search;
             model.User = getUserDetails();
+            model.Page = SearchedPage;
             return View(model);
         }
 
@@ -977,14 +979,17 @@ namespace RealEstateNet.Controllers
             return properties;
         }
 
-        private List<PropertySmallView> SearchedResult(string lang, SearchModel searchModel)
+        private IEnumerable<PropertySmallView> SearchedResult(string lang, SearchModel searchModel, int page)
         {
             List<PropertySmallView> properties = new List<PropertySmallView>();
             using (var context = new DB_RealEstateEntities())
             {
+                var statusTranslate = context.Translations.FirstOrDefault(c => c.Text.Equals(searchModel.status)).ContentId;
+                var statusId = context.Status.FirstOrDefault(c => c.ContentId == statusTranslate).Id;
                 var property = from status in context.Status
                             join _property in context.Properties on status.Id equals _property.StatusId
-                            where _property.Price > searchModel.minPrice && _property.Price < searchModel.maxPrice
+                            where _property.Price > searchModel.minPrice && _property.Price < searchModel.maxPrice &&
+                            status.Id == statusId
                             select _property;
                 if (searchModel.location != null)
                     property = from content in context.Contents
@@ -1040,9 +1045,6 @@ namespace RealEstateNet.Controllers
                     bool hasMedia = context.Media.Any(c => c.PropertyId == PropertyId);
                     var TypeContent = context.PropertyTypes.FirstOrDefault(c => c.Id == PropertyTypeId).ContentId;
                     var PropertyType = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == TypeContent).Text;
-                    var PropertyStatusId = p.StatusId;
-                    var StatusContent = context.Status.FirstOrDefault(c => c.Id == PropertyStatusId).ContentId;
-                    var PropertyStatus = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == StatusContent).Text;
                     if (hasContent)
                     {
                         var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + PropertyId)).Id;
@@ -1056,7 +1058,7 @@ namespace RealEstateNet.Controllers
                     if (hasMedia)
                         thisProperty.ImageUrl = context.Media.FirstOrDefault(c => c.PropertyId == PropertyId).MediaUrl;
                     thisProperty.Type = PropertyType;
-                    thisProperty.Status = PropertyStatus;
+                    thisProperty.Status = searchModel.status;
                     thisProperty.Beds = p.Bedrooms;
                     thisProperty.Baths = p.Bathrooms;
                     thisProperty.Area = p.PropertySize;
@@ -1067,7 +1069,10 @@ namespace RealEstateNet.Controllers
                     properties.Add(thisProperty);
                 }
             }
-            return properties;
+            int records = properties.Count;
+            int recordsPerPage = 6;
+            SearchedPage = (records + recordsPerPage - 1) / recordsPerPage;
+            return properties.AsEnumerable().ToPagedList(page, recordsPerPage);
         }
         private Agent GetAgent(int property)
         {
