@@ -301,11 +301,14 @@ namespace RealEstateNet.Controllers
                 var statusContent = context.Status.FirstOrDefault(c => c.Id == db_property.StatusId).ContentId;
                 var status = context.Translations.FirstOrDefault(c => c.ContentId == statusContent && c.LanguageId == langId).Text;
                 var user = User.Identity.GetUserId();
-                var userId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(user)).Id;
-                var favorite = context.Favorites.FirstOrDefault(c => c.PropertyId == propertyId && c.UserId == userId);
                 property.IsFavorite = false;
-                if (favorite != null)
-                    property.IsFavorite = true;
+                if (user != null)
+                {
+                    var userId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(user)).Id;
+                    var favorite = context.Favorites.FirstOrDefault(c => c.PropertyId == propertyId && c.UserId == userId);
+                    if (favorite != null)
+                        property.IsFavorite = true;
+                }
                 property.Id = propertyId;
                 property.Title = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentTitle).Text;
                 property.Description = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentDescription).Text;

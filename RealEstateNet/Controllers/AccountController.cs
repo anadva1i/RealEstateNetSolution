@@ -173,13 +173,19 @@ namespace RealEstateNet.Controllers
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
                         // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                         // Send an email with this link
                         // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                        using(var _context = new DB_RealEstateEntities())
+                        {
+                            UserDetail detail = new UserDetail();
+                            detail.UserId = user.Id;
+                            detail.Name = user.Email.Substring(0, user.Email.IndexOf("@"));
+                            _context.UserDetails.Add(detail);
+                            _context.SaveChanges();
+                        }
                         return RedirectToAction("Index", "Home");
                     }
                     AddErrors(result);
@@ -403,6 +409,14 @@ namespace RealEstateNet.Controllers
                         if (result.Succeeded)
                         {
                             await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            using (var _context = new DB_RealEstateEntities())
+                            {
+                                UserDetail detail = new UserDetail();
+                                detail.UserId = user.Id;
+                                detail.Name = user.Email.Substring(0, user.Email.IndexOf("@"));
+                                _context.UserDetails.Add(detail);
+                                _context.SaveChanges();
+                            }
                             return RedirectToLocal(returnUrl);
                         }
                     }
