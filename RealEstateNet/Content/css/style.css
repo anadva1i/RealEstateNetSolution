@@ -2232,10 +2232,7 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu > li.last{
 }
 .home_adv_srch_opt .nav-pills{
   border-bottom: none;
-  margin: 0 auto;
-  text-align: center;
-  width: auto;
-  padding-left: 29%;
+  justify-content: center;
 }
 .home_adv_srch_opt.home3{
   margin-top: -17px;
@@ -2273,11 +2270,8 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu > li.last{
 .home_adv_srch_opt .nav-pills li.nav-item a.nav-link.active:before{
   background-color: #ff5a5f;
   content: "";
-  height: 20px;
-  margin-left: 5px;
+  align-content: center;
   position: absolute;
-  top: 35px;
-  width: 20px;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
