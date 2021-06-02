@@ -844,6 +844,16 @@ namespace RealEstateNet.Controllers
                         else
                             propertyFeature_WindowCoverings.Availability = false;
                         context.SaveChanges();
+
+                        //Add Activity
+                        var userId = User.Identity.GetUserId();
+                        int userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
+                        var activity = new UserActivity();
+                        activity.ActivityId = context.Activities.FirstOrDefault(c => c.Name.Equals("Property Upload")).Id;
+                        activity.PropertyId = id;
+                        activity.UserId = userDetailsId;
+                        SaveActivity(activity);
+
                         scope.Complete();
                         return RedirectToAction("Property", "Home", new { id = id, lang = language });
                     }
@@ -1111,6 +1121,13 @@ namespace RealEstateNet.Controllers
                         //Add Media
                         saveMedia(model.media, property.Id.ToString());
 
+                        //Add Activity
+                        var activity = new UserActivity();
+                        activity.ActivityId = context.Activities.FirstOrDefault(c=>c.Name.Equals("Property Upload")).Id;
+                        activity.PropertyId = property.Id;
+                        activity.UserId = userDetailsId;
+                        SaveActivity(activity);
+
                         scope.Complete();
                         if(language.Equals("EN"))
                             return RedirectToAction("Property", "Home", new { id = property.Id });
@@ -1124,6 +1141,15 @@ namespace RealEstateNet.Controllers
                 return View();
             }
         }
+
+        private void SaveActivity(UserActivity activity)
+        {
+            using(var context = new DB_RealEstateEntities())
+            {
+                context.UserActivities.Add(activity);
+                context.SaveChanges();
+            }
+        }   
 
         public void saveMedia(string picture, string folderName)
         {

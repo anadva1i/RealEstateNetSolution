@@ -73,6 +73,13 @@
         <EntityTypeShape EntityType="DB_RealEstateModel.CurrentStatu" Width="1.5" PointX="3" PointY="14.875" />
         <AssociationConnector Association="DB_RealEstateModel.FK_CurrentStatus_Content" />
         <AssociationConnector Association="DB_RealEstateModel.FK_Property_CurrentStatus" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.Activity" Width="1.5" PointX="3" PointY="11.875" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.UserActivity" Width="1.5" PointX="12" PointY="14" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_Activities_Content" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_UserActivities_Activities" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_UserActivities_Property" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_UserActivities_UserDetails" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_UserActivities_UserDetails1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

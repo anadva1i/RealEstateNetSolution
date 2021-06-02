@@ -54,5 +54,7 @@ namespace RealEstateNet.Models
         public virtual DbSet<UserDetail> UserDetails { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
         public virtual DbSet<CurrentStatu> CurrentStatus { get; set; }
+        public virtual DbSet<Activity> Activities { get; set; }
+        public virtual DbSet<UserActivity> UserActivities { get; set; }
     }
 }

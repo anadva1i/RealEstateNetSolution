@@ -15,6 +15,15 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="Activities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Icon" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ContentId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -229,7 +238,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="UserDetailsId" Type="int" Nullable="false" />
           <Property Name="ReviewDate" Type="datetime" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="500" />
@@ -275,6 +284,16 @@
           <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
           <Property Name="LanguageId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserActivities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="VisitorId" Type="int" />
+          <Property Name="PropertyId" Type="int" />
+          <Property Name="ActivityId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserDetails">
           <Key>
             <PropertyRef Name="Id" />
@@ -290,6 +309,18 @@
           <Property Name="Website" Type="nvarchar" MaxLength="128" />
           <Property Name="Landscaping" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
+        <Association Name="FK_Activities_Content">
+          <End Role="Content" Type="Self.Content" Multiplicity="1" />
+          <End Role="Activities" Type="Self.Activities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Content">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Activities">
+              <PropertyRef Name="ContentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Chat_UserDetails">
           <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
           <End Role="Chat" Type="Self.Chat" Multiplicity="*" />
@@ -658,6 +689,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Reviews_Property">
+          <End Role="Property" Type="Self.Property" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Reviews_Property1">
           <End Role="Property" Type="Self.Property" Multiplicity="1" />
           <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
@@ -667,6 +710,18 @@
             </Principal>
             <Dependent Role="Reviews">
               <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="UserDetailsId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -742,6 +797,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserActivities_Activities">
+          <End Role="Activities" Type="Self.Activities" Multiplicity="1" />
+          <End Role="UserActivities" Type="Self.UserActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserActivities">
+              <PropertyRef Name="ActivityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserActivities_Property">
+          <End Role="Property" Type="Self.Property" Multiplicity="0..1" />
+          <End Role="UserActivities" Type="Self.UserActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserActivities">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserActivities_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="UserActivities" Type="Self.UserActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserActivities">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserActivities_UserDetails1">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="0..1" />
+          <End Role="UserActivities" Type="Self.UserActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserActivities">
+              <PropertyRef Name="VisitorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserDetails_Location">
           <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
           <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="*" />
@@ -780,6 +883,7 @@
         </Association>
         <EntityContainer Name="DB_RealEstateModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Activities" EntityType="Self.Activities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -808,7 +912,12 @@
           <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Translations" EntityType="Self.Translations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserActivities" EntityType="Self.UserActivities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Activities_Content" Association="Self.FK_Activities_Content">
+            <End Role="Content" EntitySet="Content" />
+            <End Role="Activities" EntitySet="Activities" />
+          </AssociationSet>
           <AssociationSet Name="FK_Chat_UserDetails" Association="Self.FK_Chat_UserDetails">
             <End Role="UserDetails" EntitySet="UserDetails" />
             <End Role="Chat" EntitySet="Chat" />
@@ -929,8 +1038,16 @@
             <End Role="Property" EntitySet="Property" />
             <End Role="PropertyViews" EntitySet="PropertyViews" />
           </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Property" Association="Self.FK_Reviews_Property">
+            <End Role="Property" EntitySet="Property" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
           <AssociationSet Name="FK_Reviews_Property1" Association="Self.FK_Reviews_Property1">
             <End Role="Property" EntitySet="Property" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_UserDetails" Association="Self.FK_Reviews_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
             <End Role="Reviews" EntitySet="Reviews" />
           </AssociationSet>
           <AssociationSet Name="FK_Reviews_UserDetails1" Association="Self.FK_Reviews_UserDetails1">
@@ -956,6 +1073,22 @@
           <AssociationSet Name="FK_Translations_Language" Association="Self.FK_Translations_Language">
             <End Role="Language" EntitySet="Language" />
             <End Role="Translations" EntitySet="Translations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserActivities_Activities" Association="Self.FK_UserActivities_Activities">
+            <End Role="Activities" EntitySet="Activities" />
+            <End Role="UserActivities" EntitySet="UserActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserActivities_Property" Association="Self.FK_UserActivities_Property">
+            <End Role="Property" EntitySet="Property" />
+            <End Role="UserActivities" EntitySet="UserActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserActivities_UserDetails" Association="Self.FK_UserActivities_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="UserActivities" EntitySet="UserActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserActivities_UserDetails1" Association="Self.FK_UserActivities_UserDetails1">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="UserActivities" EntitySet="UserActivities" />
           </AssociationSet>
           <AssociationSet Name="FK_UserDetails_Location" Association="Self.FK_UserDetails_Location">
             <End Role="Location" EntitySet="Location" />
@@ -1074,6 +1207,7 @@
           <NavigationProperty Name="Status" Relationship="Self.FK_Status_Content" FromRole="Content" ToRole="Status" />
           <NavigationProperty Name="Translations" Relationship="Self.FK_Translations_Content" FromRole="Content" ToRole="Translations" />
           <NavigationProperty Name="CurrentStatus" Relationship="DB_RealEstateModel.FK_CurrentStatus_Content" FromRole="Content" ToRole="CurrentStatu" />
+          <NavigationProperty Name="Activities" Relationship="DB_RealEstateModel.FK_Activities_Content" FromRole="Content" ToRole="Activity" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -1173,6 +1307,7 @@
           <NavigationProperty Name="Favorites" Relationship="DB_RealEstateModel.FK_Favorites_Property" FromRole="Property" ToRole="Favorite" />
           <Property Name="CurrentStatusId" Type="Int32" />
           <NavigationProperty Name="CurrentStatu" Relationship="DB_RealEstateModel.FK_Property_CurrentStatus" FromRole="Property" ToRole="CurrentStatu" />
+          <NavigationProperty Name="UserActivities" Relationship="DB_RealEstateModel.FK_UserActivities_Property" FromRole="Property" ToRole="UserActivity" />
         </EntityType>
         <EntityType Name="PropertyContent">
           <Key>
@@ -1308,6 +1443,8 @@
           <NavigationProperty Name="UserDetails1" Relationship="Self.FK_UserDetails_UserDetails" FromRole="UserDetails" ToRole="UserDetails1" />
           <NavigationProperty Name="UserDetail1" Relationship="Self.FK_UserDetails_UserDetails" FromRole="UserDetails1" ToRole="UserDetails" />
           <NavigationProperty Name="Favorites" Relationship="DB_RealEstateModel.FK_Favorites_UserDetails" FromRole="UserDetail" ToRole="Favorite" />
+          <NavigationProperty Name="UserActivities" Relationship="DB_RealEstateModel.FK_UserActivities_UserDetails" FromRole="UserDetail" ToRole="UserActivity" />
+          <NavigationProperty Name="UserActivities1" Relationship="DB_RealEstateModel.FK_UserActivities_UserDetails1" FromRole="UserDetail" ToRole="UserActivity" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -1911,6 +2048,28 @@
             <End Role="CurrentStatu" EntitySet="CurrentStatus" />
             <End Role="Property" EntitySet="Properties" />
           </AssociationSet>
+          <EntitySet Name="Activities" EntityType="DB_RealEstateModel.Activity" />
+          <EntitySet Name="UserActivities" EntityType="DB_RealEstateModel.UserActivity" />
+          <AssociationSet Name="FK_Activities_Content" Association="DB_RealEstateModel.FK_Activities_Content">
+            <End Role="Content" EntitySet="Contents" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserActivities_Activities" Association="DB_RealEstateModel.FK_UserActivities_Activities">
+            <End Role="Activity" EntitySet="Activities" />
+            <End Role="UserActivity" EntitySet="UserActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserActivities_Property" Association="DB_RealEstateModel.FK_UserActivities_Property">
+            <End Role="Property" EntitySet="Properties" />
+            <End Role="UserActivity" EntitySet="UserActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserActivities_UserDetails" Association="DB_RealEstateModel.FK_UserActivities_UserDetails">
+            <End Role="UserDetail" EntitySet="UserDetails" />
+            <End Role="UserActivity" EntitySet="UserActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserActivities_UserDetails1" Association="DB_RealEstateModel.FK_UserActivities_UserDetails1">
+            <End Role="UserDetail" EntitySet="UserDetails" />
+            <End Role="UserActivity" EntitySet="UserActivities" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Favorite">
           <Key>
@@ -1977,6 +2136,91 @@
             </Principal>
             <Dependent Role="Property">
               <PropertyRef Name="CurrentStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Icon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ContentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Content" Relationship="DB_RealEstateModel.FK_Activities_Content" FromRole="Activity" ToRole="Content" />
+          <NavigationProperty Name="UserActivities" Relationship="DB_RealEstateModel.FK_UserActivities_Activities" FromRole="Activity" ToRole="UserActivity" />
+        </EntityType>
+        <EntityType Name="UserActivity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="VisitorId" Type="Int32" />
+          <Property Name="PropertyId" Type="Int32" />
+          <Property Name="ActivityId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Activity" Relationship="DB_RealEstateModel.FK_UserActivities_Activities" FromRole="UserActivity" ToRole="Activity" />
+          <NavigationProperty Name="Property" Relationship="DB_RealEstateModel.FK_UserActivities_Property" FromRole="UserActivity" ToRole="Property" />
+          <NavigationProperty Name="UserDetail" Relationship="DB_RealEstateModel.FK_UserActivities_UserDetails" FromRole="UserActivity" ToRole="UserDetail" />
+          <NavigationProperty Name="UserDetail1" Relationship="DB_RealEstateModel.FK_UserActivities_UserDetails1" FromRole="UserActivity" ToRole="UserDetail" />
+        </EntityType>
+        <Association Name="FK_Activities_Content">
+          <End Type="DB_RealEstateModel.Content" Role="Content" Multiplicity="1" />
+          <End Type="DB_RealEstateModel.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Content">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="ContentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserActivities_Activities">
+          <End Type="DB_RealEstateModel.Activity" Role="Activity" Multiplicity="1" />
+          <End Type="DB_RealEstateModel.UserActivity" Role="UserActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserActivity">
+              <PropertyRef Name="ActivityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserActivities_Property">
+          <End Type="DB_RealEstateModel.Property" Role="Property" Multiplicity="0..1" />
+          <End Type="DB_RealEstateModel.UserActivity" Role="UserActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserActivity">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserActivities_UserDetails">
+          <End Type="DB_RealEstateModel.UserDetail" Role="UserDetail" Multiplicity="1" />
+          <End Type="DB_RealEstateModel.UserActivity" Role="UserActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetail">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserActivity">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserActivities_UserDetails1">
+          <End Type="DB_RealEstateModel.UserDetail" Role="UserDetail" Multiplicity="0..1" />
+          <End Type="DB_RealEstateModel.UserActivity" Role="UserActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetail">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserActivity">
+              <PropertyRef Name="VisitorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2293,6 +2537,27 @@
               <MappingFragment StoreEntitySet="CurrentStatus">
                 <ScalarProperty Name="ContentId" ColumnName="ContentId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Activities">
+            <EntityTypeMapping TypeName="DB_RealEstateModel.Activity">
+              <MappingFragment StoreEntitySet="Activities">
+                <ScalarProperty Name="ContentId" ColumnName="ContentId" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserActivities">
+            <EntityTypeMapping TypeName="DB_RealEstateModel.UserActivity">
+              <MappingFragment StoreEntitySet="UserActivities">
+                <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+                <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
+                <ScalarProperty Name="VisitorId" ColumnName="VisitorId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
