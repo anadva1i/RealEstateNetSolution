@@ -236,6 +236,16 @@ namespace RealEstateNet.Controllers
                 try
                 {
                     context.Favorites.Add(favorite);
+
+                    //Add Activity
+                    var property = context.Properties.FirstOrDefault(c => c.Id == propertyId);
+                    var activity = new UserActivity();
+                    activity.ActivityId = context.Activities.FirstOrDefault(c => c.Name.Equals("Add to Favorites")).Id;
+                    activity.PropertyId = propertyId;
+                    activity.VisitorId = userId;
+                    activity.UserId = property.UserDetailsId;
+                    new DashboardController().SaveActivity(activity);
+
                     context.SaveChanges();
                     return true;
                 }
@@ -258,6 +268,16 @@ namespace RealEstateNet.Controllers
                 {
                     if(favorite != null)
                         context.Favorites.Remove(favorite);
+
+                    //Add Activity
+                    var property = context.Properties.FirstOrDefault(c => c.Id == propertyId);
+                    var activity = new UserActivity();
+                    activity.ActivityId = context.Activities.FirstOrDefault(c => c.Name.Equals("Remove from Favorites")).Id;
+                    activity.PropertyId = propertyId;
+                    activity.VisitorId = userId;
+                    activity.UserId = property.UserDetailsId;
+                    new DashboardController().SaveActivity(activity);
+
                     context.SaveChanges();
                     return true;
                 }
@@ -821,6 +841,16 @@ namespace RealEstateNet.Controllers
                     newReview.Comment = review.Comment;
                     newReview.UserDetailsId = user;
                     context.Reviews.Add(newReview);
+
+                    //Add Activity
+                    var property = context.Properties.FirstOrDefault(c => c.Id == id);
+                    var activity = new UserActivity();
+                    activity.ActivityId = context.Activities.FirstOrDefault(c => c.Name.Equals("Review")).Id;
+                    activity.PropertyId = id;
+                    activity.VisitorId = user;
+                    activity.UserId = property.UserDetailsId;
+                    new DashboardController().SaveActivity(activity);
+
                     context.SaveChanges();
                     return "Review Added Successfully";
                 }

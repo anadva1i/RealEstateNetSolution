@@ -33,6 +33,7 @@ namespace RealEstateNet.Controllers
         {
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
+            model.Activities = MyActivities();
             return View(model);
         }
 
@@ -375,6 +376,15 @@ namespace RealEstateNet.Controllers
                         }
                         context.Locations.Remove(location);
                         context.Contents.Remove(locationContent);
+
+                        //Add Activity
+                        var userId = User.Identity.GetUserId();
+                        int userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
+                        var activity = new UserActivity();
+                        activity.ActivityId = context.Activities.FirstOrDefault(c => c.Name.Equals("Property Remove")).Id;
+                        activity.UserId = userDetailsId;
+                        SaveActivity(activity);
+
                         //remove property
                         context.Properties.Remove(property);
                         context.SaveChanges();
@@ -436,6 +446,13 @@ namespace RealEstateNet.Controllers
                     userDetails.Phone = agent.Phone;
                     if (agent.Picture != null)
                         userDetails.Picture = "../../Content/images/agents/" + agent.Picture.FileName;
+
+                    //Add Activity
+                    int userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
+                    var activity = new UserActivity();
+                    activity.ActivityId = context.Activities.FirstOrDefault(c => c.Name.Equals("Profile Update")).Id;
+                    activity.UserId = userDetailsId;
+                    SaveActivity(activity);
                 }
                 context.SaveChanges();
             }
@@ -849,7 +866,7 @@ namespace RealEstateNet.Controllers
                         var userId = User.Identity.GetUserId();
                         int userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
                         var activity = new UserActivity();
-                        activity.ActivityId = context.Activities.FirstOrDefault(c => c.Name.Equals("Property Upload")).Id;
+                        activity.ActivityId = context.Activities.FirstOrDefault(c => c.Name.Equals("Property Update")).Id;
                         activity.PropertyId = id;
                         activity.UserId = userDetailsId;
                         SaveActivity(activity);
@@ -1142,7 +1159,7 @@ namespace RealEstateNet.Controllers
             }
         }
 
-        private void SaveActivity(UserActivity activity)
+        public void SaveActivity(UserActivity activity)
         {
             using(var context = new DB_RealEstateEntities())
             {
@@ -1150,6 +1167,41 @@ namespace RealEstateNet.Controllers
                 context.SaveChanges();
             }
         }   
+
+        //get Activities
+        public List<ActivityModel> MyActivities()
+        {
+            List<ActivityModel> myActivities = new List<ActivityModel>();
+            using (var context = new DB_RealEstateEntities())
+            {
+                var userId = User.Identity.GetUserId();
+                int userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
+                var db_activities = context.UserActivities.Where(c => c.UserId == userDetailsId);
+                foreach(var activity in db_activities)
+                {
+                    ActivityModel activityModel = new ActivityModel();
+                    var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
+                    var thisActivity = context.Activities.FirstOrDefault(c => c.Id == activity.ActivityId);
+                    activityModel.Icon = thisActivity.Icon;
+                    if (activity.PropertyId != null)
+                    {
+                        activityModel.PropertyId = (int)activity.PropertyId;
+                        var wholeText = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == thisActivity.ContentId).Text;
+                        //var start = "'" + oldText.Substring(0, oldText.IndexOf("<a")) + "'";
+                        //var middle = oldText.Substring(oldText.IndexOf('<'), oldText.IndexOf("a>"));
+                        //var end = "'" + oldText.Substring(oldText.IndexOf("a>"), oldText.IndexOf("!")) + "'";
+                        activityModel.Start = wholeText.Substring(0, wholeText.IndexOf("property"));
+                        activityModel.Middle = wholeText.Substring(activityModel.Start.Count(), 8);
+                    }
+                    else
+                    {
+                        activityModel.Start = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == thisActivity.ContentId).Text;
+                    }
+                    myActivities.Add(activityModel);
+                }
+                return myActivities;
+            }
+        }
 
         public void saveMedia(string picture, string folderName)
         {

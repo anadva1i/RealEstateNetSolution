@@ -5,6 +5,14 @@ using System.Web;
 
 namespace RealEstateNet.Models
 {
+    public class ActivityModel
+    {
+        public string Start { get; set; }
+        public string End { get; set; }
+        public string Middle { get; set; }
+        public string Icon { get; set; }
+        public int PropertyId { get; set; }
+    }
     public class AgentModel
     {
         public HttpPostedFileBase Picture { get; set; }
