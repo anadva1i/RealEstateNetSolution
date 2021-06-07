@@ -1187,11 +1187,27 @@ namespace RealEstateNet.Controllers
                     {
                         activityModel.PropertyId = (int)activity.PropertyId;
                         var wholeText = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == thisActivity.ContentId).Text;
-                        //var start = "'" + oldText.Substring(0, oldText.IndexOf("<a")) + "'";
-                        //var middle = oldText.Substring(oldText.IndexOf('<'), oldText.IndexOf("a>"));
-                        //var end = "'" + oldText.Substring(oldText.IndexOf("a>"), oldText.IndexOf("!")) + "'";
-                        activityModel.Start = wholeText.Substring(0, wholeText.IndexOf("property"));
-                        activityModel.Middle = wholeText.Substring(activityModel.Start.Count(), 8);
+                        string property = "";
+                        int propertyCount = 0;
+                        switch (language)
+                        {
+                            case "EN":
+                                property = "property";
+                                propertyCount = property.Count();
+                                break;
+                            case "RU":
+                                property = "недвижимост";
+                                propertyCount = property.Count() + 1;
+                                break;
+                            case "GE":
+                                property = "ქონება";
+                                propertyCount = property.Count();
+                                break;
+                        }
+                        activityModel.Start = wholeText.Substring(0, wholeText.IndexOf(property));
+                        activityModel.Middle = wholeText.Substring(activityModel.Start.Count(), propertyCount);
+                        var beforeEnd = activityModel.Start.Count() + activityModel.Middle.Count();
+                        activityModel.End = wholeText.Substring(beforeEnd, wholeText.Count()-beforeEnd);
                     }
                     else
                     {
@@ -1235,6 +1251,22 @@ namespace RealEstateNet.Controllers
                     context.SaveChanges();
                 }
             }
+        }
+
+        public List<Contact> MyContacts()
+        {
+            List<Contact> myContacts = new List<Contact>();
+            using (var context = new DB_RealEstateEntities())
+            {
+                var userId = User.Identity.GetUserId();
+                int userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
+                var contacts = context.ConnectedUsers.Where(c=>c.User1 == userDetailsId || c.User2 == userDetailsId);
+                foreach(var contact in contacts)
+                {
+                    Contact myContact = new Contact();
+                }
+            }
+            return myContacts;
         }
 
         [HttpPost]

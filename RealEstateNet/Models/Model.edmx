@@ -75,17 +75,6 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
-        <EntityType Name="Chat">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserDetailsId" Type="int" Nullable="false" />
-          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ReceiveDate" Type="datetime" Nullable="false" />
-          <Property Name="sentType" Type="bit" Nullable="false" />
-          <Property Name="New" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="Cities">
           <Key>
             <PropertyRef Name="Id" />
@@ -93,6 +82,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ContentId" Type="int" Nullable="false" />
           <Property Name="CountryId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConnectedUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User1" Type="int" Nullable="false" />
+          <Property Name="User2" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Content">
           <Key>
@@ -165,6 +162,17 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MediaUrl" Type="nvarchar(max)" Nullable="false" />
           <Property Name="PropertyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConnectedUserId" Type="int" Nullable="false" />
+          <Property Name="SenderId" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="300" />
+          <Property Name="SendingDate" Type="datetime" Nullable="false" />
+          <Property Name="Seen" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Property">
           <Key>
@@ -321,18 +329,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Chat_UserDetails">
-          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
-          <End Role="Chat" Type="Self.Chat" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserDetails">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Chat">
-              <PropertyRef Name="UserDetailsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Cities_Content">
           <End Role="Content" Type="Self.Content" Multiplicity="1" />
           <End Role="Cities" Type="Self.Cities" Multiplicity="*" />
@@ -354,6 +350,30 @@
             </Principal>
             <Dependent Role="Cities">
               <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConnectedUsers_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="ConnectedUsers" Type="Self.ConnectedUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConnectedUsers">
+              <PropertyRef Name="User1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConnectedUsers_UserDetails1">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="ConnectedUsers" Type="Self.ConnectedUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConnectedUsers">
+              <PropertyRef Name="User2" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -506,6 +526,30 @@
             </Principal>
             <Dependent Role="Media">
               <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_ConnectedUsers">
+          <End Role="ConnectedUsers" Type="Self.ConnectedUsers" Multiplicity="1" />
+          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConnectedUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="ConnectedUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="SenderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -889,8 +933,8 @@
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Chat" EntityType="Self.Chat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConnectedUsers" EntityType="Self.ConnectedUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CurrentStatus" EntityType="Self.CurrentStatus" Schema="dbo" store:Type="Tables" />
@@ -900,6 +944,7 @@
           <EntitySet Name="Language" EntityType="Self.Language" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Media" EntityType="Self.Media" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Property" EntityType="Self.Property" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PropertyContent" EntityType="Self.PropertyContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PropertyFeature" EntityType="Self.PropertyFeature" Schema="dbo" store:Type="Tables" />
@@ -918,10 +963,6 @@
             <End Role="Content" EntitySet="Content" />
             <End Role="Activities" EntitySet="Activities" />
           </AssociationSet>
-          <AssociationSet Name="FK_Chat_UserDetails" Association="Self.FK_Chat_UserDetails">
-            <End Role="UserDetails" EntitySet="UserDetails" />
-            <End Role="Chat" EntitySet="Chat" />
-          </AssociationSet>
           <AssociationSet Name="FK_Cities_Content" Association="Self.FK_Cities_Content">
             <End Role="Content" EntitySet="Content" />
             <End Role="Cities" EntitySet="Cities" />
@@ -929,6 +970,14 @@
           <AssociationSet Name="FK_Cities_Countries" Association="Self.FK_Cities_Countries">
             <End Role="Countries" EntitySet="Countries" />
             <End Role="Cities" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConnectedUsers_UserDetails" Association="Self.FK_ConnectedUsers_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="ConnectedUsers" EntitySet="ConnectedUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConnectedUsers_UserDetails1" Association="Self.FK_ConnectedUsers_UserDetails1">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="ConnectedUsers" EntitySet="ConnectedUsers" />
           </AssociationSet>
           <AssociationSet Name="FK_Countries_Content" Association="Self.FK_Countries_Content">
             <End Role="Content" EntitySet="Content" />
@@ -977,6 +1026,14 @@
           <AssociationSet Name="FK_Media_Property" Association="Self.FK_Media_Property">
             <End Role="Property" EntitySet="Property" />
             <End Role="Media" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_ConnectedUsers" Association="Self.FK_Messages_ConnectedUsers">
+            <End Role="ConnectedUsers" EntitySet="ConnectedUsers" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_UserDetails" Association="Self.FK_Messages_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="Messages" EntitySet="Messages" />
           </AssociationSet>
           <AssociationSet Name="FK_Property_CurrentStatus" Association="Self.FK_Property_CurrentStatus">
             <End Role="CurrentStatus" EntitySet="CurrentStatus" />
@@ -1166,18 +1223,6 @@
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="UserDetails" Relationship="Self.FK_UserDetails_Users" FromRole="AspNetUsers" ToRole="UserDetails" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
-        </EntityType>
-        <EntityType Name="Chat">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserDetailsId" Type="Int32" Nullable="false" />
-          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ReceiveDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="sentType" Type="Boolean" Nullable="false" />
-          <Property Name="New" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="UserDetail" Relationship="Self.FK_Chat_UserDetails" FromRole="Chat" ToRole="UserDetails" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -1436,7 +1481,6 @@
           <Property Name="Website" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Landscaping" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_UserDetails_Users" FromRole="UserDetails" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Chats" Relationship="Self.FK_Chat_UserDetails" FromRole="UserDetails" ToRole="Chat" />
           <NavigationProperty Name="Location" Relationship="Self.FK_UserDetails_Location" FromRole="UserDetails" ToRole="Location" />
           <NavigationProperty Name="Properties" Relationship="Self.FK_Property_UserDetails" FromRole="UserDetails" ToRole="Property" />
           <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_UserDetails" FromRole="UserDetails" ToRole="Reviews" />
@@ -1445,6 +1489,9 @@
           <NavigationProperty Name="Favorites" Relationship="DB_RealEstateModel.FK_Favorites_UserDetails" FromRole="UserDetail" ToRole="Favorite" />
           <NavigationProperty Name="UserActivities" Relationship="DB_RealEstateModel.FK_UserActivities_UserDetails" FromRole="UserDetail" ToRole="UserActivity" />
           <NavigationProperty Name="UserActivities1" Relationship="DB_RealEstateModel.FK_UserActivities_UserDetails1" FromRole="UserDetail" ToRole="UserActivity" />
+          <NavigationProperty Name="ConnectedUsers" Relationship="DB_RealEstateModel.FK_ConnectedUsers_UserDetails" FromRole="UserDetail" ToRole="ConnectedUser" />
+          <NavigationProperty Name="ConnectedUsers1" Relationship="DB_RealEstateModel.FK_ConnectedUsers_UserDetails1" FromRole="UserDetail" ToRole="ConnectedUser" />
+          <NavigationProperty Name="Messages" Relationship="DB_RealEstateModel.FK_Messages_UserDetails" FromRole="UserDetail" ToRole="Message" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -1483,18 +1530,6 @@
             </Principal>
             <Dependent Role="UserDetails">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Chat_UserDetails">
-          <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="1" />
-          <End Role="Chat" Type="Self.Chat" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserDetails">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Chat">
-              <PropertyRef Name="UserDetailsId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1868,7 +1903,6 @@
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
-          <EntitySet Name="Chats" EntityType="Self.Chat" />
           <EntitySet Name="Cities" EntityType="Self.City" />
           <EntitySet Name="Contents" EntityType="Self.Content" />
           <EntitySet Name="Countries" EntityType="Self.Country" />
@@ -1901,10 +1935,6 @@
           <AssociationSet Name="FK_UserDetails_Users" Association="Self.FK_UserDetails_Users">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="UserDetails" EntitySet="UserDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Chat_UserDetails" Association="Self.FK_Chat_UserDetails">
-            <End Role="UserDetails" EntitySet="UserDetails" />
-            <End Role="Chat" EntitySet="Chats" />
           </AssociationSet>
           <AssociationSet Name="FK_Cities_Content" Association="Self.FK_Cities_Content">
             <End Role="Content" EntitySet="Contents" />
@@ -2070,6 +2100,24 @@
             <End Role="UserDetail" EntitySet="UserDetails" />
             <End Role="UserActivity" EntitySet="UserActivities" />
           </AssociationSet>
+          <EntitySet Name="ConnectedUsers" EntityType="DB_RealEstateModel.ConnectedUser" />
+          <EntitySet Name="Messages" EntityType="DB_RealEstateModel.Message" />
+          <AssociationSet Name="FK_ConnectedUsers_UserDetails" Association="DB_RealEstateModel.FK_ConnectedUsers_UserDetails">
+            <End Role="UserDetail" EntitySet="UserDetails" />
+            <End Role="ConnectedUser" EntitySet="ConnectedUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConnectedUsers_UserDetails1" Association="DB_RealEstateModel.FK_ConnectedUsers_UserDetails1">
+            <End Role="UserDetail" EntitySet="UserDetails" />
+            <End Role="ConnectedUser" EntitySet="ConnectedUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_ConnectedUsers" Association="DB_RealEstateModel.FK_Messages_ConnectedUsers">
+            <End Role="ConnectedUser" EntitySet="ConnectedUsers" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_UserDetails" Association="DB_RealEstateModel.FK_Messages_UserDetails">
+            <End Role="UserDetail" EntitySet="UserDetails" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Favorite">
           <Key>
@@ -2224,6 +2272,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ConnectedUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User1" Type="Int32" Nullable="false" />
+          <Property Name="User2" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserDetail" Relationship="DB_RealEstateModel.FK_ConnectedUsers_UserDetails" FromRole="ConnectedUser" ToRole="UserDetail" />
+          <NavigationProperty Name="UserDetail1" Relationship="DB_RealEstateModel.FK_ConnectedUsers_UserDetails1" FromRole="ConnectedUser" ToRole="UserDetail" />
+          <NavigationProperty Name="Messages" Relationship="DB_RealEstateModel.FK_Messages_ConnectedUsers" FromRole="ConnectedUser" ToRole="Message" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConnectedUserId" Type="Int32" Nullable="false" />
+          <Property Name="SenderId" Type="Int32" Nullable="false" />
+          <Property Name="Message1" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="SendingDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Seen" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ConnectedUser" Relationship="DB_RealEstateModel.FK_Messages_ConnectedUsers" FromRole="Message" ToRole="ConnectedUser" />
+          <NavigationProperty Name="UserDetail" Relationship="DB_RealEstateModel.FK_Messages_UserDetails" FromRole="Message" ToRole="UserDetail" />
+        </EntityType>
+        <Association Name="FK_ConnectedUsers_UserDetails">
+          <End Type="DB_RealEstateModel.UserDetail" Role="UserDetail" Multiplicity="1" />
+          <End Type="DB_RealEstateModel.ConnectedUser" Role="ConnectedUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetail">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConnectedUser">
+              <PropertyRef Name="User1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConnectedUsers_UserDetails1">
+          <End Type="DB_RealEstateModel.UserDetail" Role="UserDetail" Multiplicity="1" />
+          <End Type="DB_RealEstateModel.ConnectedUser" Role="ConnectedUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetail">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConnectedUser">
+              <PropertyRef Name="User2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_ConnectedUsers">
+          <End Type="DB_RealEstateModel.ConnectedUser" Role="ConnectedUser" Multiplicity="1" />
+          <End Type="DB_RealEstateModel.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConnectedUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="ConnectedUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_UserDetails">
+          <End Type="DB_RealEstateModel.UserDetail" Role="UserDetail" Multiplicity="1" />
+          <End Type="DB_RealEstateModel.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetail">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="SenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2282,18 +2402,6 @@
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Chats">
-            <EntityTypeMapping TypeName="DB_RealEstateModel.Chat">
-              <MappingFragment StoreEntitySet="Chat">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserDetailsId" ColumnName="UserDetailsId" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
-                <ScalarProperty Name="sentType" ColumnName="sentType" />
-                <ScalarProperty Name="New" ColumnName="New" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2558,6 +2666,27 @@
                 <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
                 <ScalarProperty Name="VisitorId" ColumnName="VisitorId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConnectedUsers">
+            <EntityTypeMapping TypeName="DB_RealEstateModel.ConnectedUser">
+              <MappingFragment StoreEntitySet="ConnectedUsers">
+                <ScalarProperty Name="User2" ColumnName="User2" />
+                <ScalarProperty Name="User1" ColumnName="User1" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="DB_RealEstateModel.Message">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="Seen" ColumnName="Seen" />
+                <ScalarProperty Name="SendingDate" ColumnName="SendingDate" />
+                <ScalarProperty Name="Message1" ColumnName="Message" />
+                <ScalarProperty Name="SenderId" ColumnName="SenderId" />
+                <ScalarProperty Name="ConnectedUserId" ColumnName="ConnectedUserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -56,18 +56,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Chats">
-      <EntityTypeMapping TypeName="DB_RealEstateModel.Chat">
-        <MappingFragment StoreEntitySet="Chat">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="UserDetailsId" ColumnName="UserDetailsId" />
-          <ScalarProperty Name="Message" ColumnName="Message" />
-          <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
-          <ScalarProperty Name="sentType" ColumnName="sentType" />
-          <ScalarProperty Name="New" ColumnName="New" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Cities">
       <EntityTypeMapping TypeName="DB_RealEstateModel.City">
         <MappingFragment StoreEntitySet="Cities">
@@ -329,6 +317,27 @@
           <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
           <ScalarProperty Name="VisitorId" ColumnName="VisitorId" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ConnectedUsers">
+      <EntityTypeMapping TypeName="DB_RealEstateModel.ConnectedUser">
+        <MappingFragment StoreEntitySet="ConnectedUsers">
+          <ScalarProperty Name="User2" ColumnName="User2" />
+          <ScalarProperty Name="User1" ColumnName="User1" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Messages">
+      <EntityTypeMapping TypeName="DB_RealEstateModel.Message">
+        <MappingFragment StoreEntitySet="Messages">
+          <ScalarProperty Name="Seen" ColumnName="Seen" />
+          <ScalarProperty Name="SendingDate" ColumnName="SendingDate" />
+          <ScalarProperty Name="Message1" ColumnName="Message" />
+          <ScalarProperty Name="SenderId" ColumnName="SenderId" />
+          <ScalarProperty Name="ConnectedUserId" ColumnName="ConnectedUserId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

@@ -12,15 +12,16 @@ namespace RealEstateNet.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Chat
+    public partial class Message
     {
         public int Id { get; set; }
-        public int UserDetailsId { get; set; }
-        public string Message { get; set; }
-        public System.DateTime ReceiveDate { get; set; }
-        public bool sentType { get; set; }
-        public bool New { get; set; }
+        public int ConnectedUserId { get; set; }
+        public int SenderId { get; set; }
+        public string Message1 { get; set; }
+        public System.DateTime SendingDate { get; set; }
+        public bool Seen { get; set; }
     
+        public virtual ConnectedUser ConnectedUser { get; set; }
         public virtual UserDetail UserDetail { get; set; }
     }
 }

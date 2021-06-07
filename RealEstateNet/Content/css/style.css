@@ -11824,7 +11824,6 @@ a.btn.btn_error{
 }
 .inbox_user_list {
   display: inline-block;
-  padding: 30px 30px 40px;
   width: 100%;
 }
 .inbox_user_list ul{
@@ -11884,7 +11883,7 @@ a.btn.btn_error{
   padding: 10px 0;
 }
 .inbox_user_list .iu_heading {
-  padding-bottom: 25px;
+   padding: 5% 0% 5% 5%;
 }
 .inbox_user_list ul li.contact .wrap .meta{
   display: inline-block;

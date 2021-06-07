@@ -4,13 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cf85694218e741de97a481793e0f5696" Name="Diagram1">
+      <Diagram DiagramId="cf85694218e741de97a481793e0f5696" Name="Diagram1" ZoomLevel="60">
         <EntityTypeShape EntityType="DB_RealEstateModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_RealEstateModel.AspNetRole" Width="1.5" PointX="5.25" PointY="15.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_RealEstateModel.AspNetUserClaim" Width="1.5" PointX="9.75" PointY="14.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_RealEstateModel.AspNetUserLogin" Width="1.5" PointX="9.75" PointY="10.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_RealEstateModel.AspNetUser" Width="1.5" PointX="7.5" PointY="14.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_RealEstateModel.Chat" Width="1.5" PointX="12" PointY="18.25" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_RealEstateModel.City" Width="1.5" PointX="5.25" PointY="20.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_RealEstateModel.Content" Width="1.5" PointX="0.75" PointY="21.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_RealEstateModel.Country" Width="1.5" PointX="3" PointY="18.375" IsExpanded="true" />
@@ -35,7 +34,6 @@
         <AssociationConnector Association="DB_RealEstateModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="DB_RealEstateModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="DB_RealEstateModel.FK_UserDetails_Users" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_RealEstateModel.FK_Chat_UserDetails" ManuallyRouted="false" />
         <AssociationConnector Association="DB_RealEstateModel.FK_Cities_Content" ManuallyRouted="false" />
         <AssociationConnector Association="DB_RealEstateModel.FK_Cities_Countries" ManuallyRouted="false" />
         <AssociationConnector Association="DB_RealEstateModel.FK_Location_Cities" ManuallyRouted="false" />
@@ -80,6 +78,12 @@
         <AssociationConnector Association="DB_RealEstateModel.FK_UserActivities_Property" />
         <AssociationConnector Association="DB_RealEstateModel.FK_UserActivities_UserDetails" />
         <AssociationConnector Association="DB_RealEstateModel.FK_UserActivities_UserDetails1" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.ConnectedUser" Width="1.5" PointX="12" PointY="11.125" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.Message" Width="1.5" PointX="14.25" PointY="12.75" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_ConnectedUsers_UserDetails" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_ConnectedUsers_UserDetails1" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_Messages_ConnectedUsers" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_Messages_UserDetails" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

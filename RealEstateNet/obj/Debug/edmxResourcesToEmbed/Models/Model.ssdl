@@ -70,17 +70,6 @@
     <Property Name="AccessFailedCount" Type="int" Nullable="false" />
     <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
   </EntityType>
-  <EntityType Name="Chat">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserDetailsId" Type="int" Nullable="false" />
-    <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ReceiveDate" Type="datetime" Nullable="false" />
-    <Property Name="sentType" Type="bit" Nullable="false" />
-    <Property Name="New" Type="bit" Nullable="false" />
-  </EntityType>
   <EntityType Name="Cities">
     <Key>
       <PropertyRef Name="Id" />
@@ -88,6 +77,14 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ContentId" Type="int" Nullable="false" />
     <Property Name="CountryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ConnectedUsers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="User1" Type="int" Nullable="false" />
+    <Property Name="User2" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Content">
     <Key>
@@ -160,6 +157,17 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="MediaUrl" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PropertyId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Messages">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ConnectedUserId" Type="int" Nullable="false" />
+    <Property Name="SenderId" Type="int" Nullable="false" />
+    <Property Name="Message" Type="nvarchar" MaxLength="300" />
+    <Property Name="SendingDate" Type="datetime" Nullable="false" />
+    <Property Name="Seen" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="Property">
     <Key>
@@ -316,18 +324,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Chat_UserDetails">
-    <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
-    <End Role="Chat" Type="Self.Chat" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="UserDetails">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Chat">
-        <PropertyRef Name="UserDetailsId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Cities_Content">
     <End Role="Content" Type="Self.Content" Multiplicity="1" />
     <End Role="Cities" Type="Self.Cities" Multiplicity="*" />
@@ -349,6 +345,30 @@
       </Principal>
       <Dependent Role="Cities">
         <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ConnectedUsers_UserDetails">
+    <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+    <End Role="ConnectedUsers" Type="Self.ConnectedUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserDetails">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ConnectedUsers">
+        <PropertyRef Name="User1" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ConnectedUsers_UserDetails1">
+    <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+    <End Role="ConnectedUsers" Type="Self.ConnectedUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserDetails">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ConnectedUsers">
+        <PropertyRef Name="User2" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -501,6 +521,30 @@
       </Principal>
       <Dependent Role="Media">
         <PropertyRef Name="PropertyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Messages_ConnectedUsers">
+    <End Role="ConnectedUsers" Type="Self.ConnectedUsers" Multiplicity="1" />
+    <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ConnectedUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Messages">
+        <PropertyRef Name="ConnectedUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Messages_UserDetails">
+    <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+    <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserDetails">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Messages">
+        <PropertyRef Name="SenderId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -884,8 +928,8 @@
     <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Chat" EntityType="Self.Chat" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ConnectedUsers" EntityType="Self.ConnectedUsers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CurrentStatus" EntityType="Self.CurrentStatus" Schema="dbo" store:Type="Tables" />
@@ -895,6 +939,7 @@
     <EntitySet Name="Language" EntityType="Self.Language" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Media" EntityType="Self.Media" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Property" EntityType="Self.Property" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PropertyContent" EntityType="Self.PropertyContent" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PropertyFeature" EntityType="Self.PropertyFeature" Schema="dbo" store:Type="Tables" />
@@ -913,10 +958,6 @@
       <End Role="Content" EntitySet="Content" />
       <End Role="Activities" EntitySet="Activities" />
     </AssociationSet>
-    <AssociationSet Name="FK_Chat_UserDetails" Association="Self.FK_Chat_UserDetails">
-      <End Role="UserDetails" EntitySet="UserDetails" />
-      <End Role="Chat" EntitySet="Chat" />
-    </AssociationSet>
     <AssociationSet Name="FK_Cities_Content" Association="Self.FK_Cities_Content">
       <End Role="Content" EntitySet="Content" />
       <End Role="Cities" EntitySet="Cities" />
@@ -924,6 +965,14 @@
     <AssociationSet Name="FK_Cities_Countries" Association="Self.FK_Cities_Countries">
       <End Role="Countries" EntitySet="Countries" />
       <End Role="Cities" EntitySet="Cities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ConnectedUsers_UserDetails" Association="Self.FK_ConnectedUsers_UserDetails">
+      <End Role="UserDetails" EntitySet="UserDetails" />
+      <End Role="ConnectedUsers" EntitySet="ConnectedUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ConnectedUsers_UserDetails1" Association="Self.FK_ConnectedUsers_UserDetails1">
+      <End Role="UserDetails" EntitySet="UserDetails" />
+      <End Role="ConnectedUsers" EntitySet="ConnectedUsers" />
     </AssociationSet>
     <AssociationSet Name="FK_Countries_Content" Association="Self.FK_Countries_Content">
       <End Role="Content" EntitySet="Content" />
@@ -972,6 +1021,14 @@
     <AssociationSet Name="FK_Media_Property" Association="Self.FK_Media_Property">
       <End Role="Property" EntitySet="Property" />
       <End Role="Media" EntitySet="Media" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Messages_ConnectedUsers" Association="Self.FK_Messages_ConnectedUsers">
+      <End Role="ConnectedUsers" EntitySet="ConnectedUsers" />
+      <End Role="Messages" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Messages_UserDetails" Association="Self.FK_Messages_UserDetails">
+      <End Role="UserDetails" EntitySet="UserDetails" />
+      <End Role="Messages" EntitySet="Messages" />
     </AssociationSet>
     <AssociationSet Name="FK_Property_CurrentStatus" Association="Self.FK_Property_CurrentStatus">
       <End Role="CurrentStatus" EntitySet="CurrentStatus" />

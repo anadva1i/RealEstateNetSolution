@@ -30,7 +30,6 @@ namespace RealEstateNet.Models
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
-        public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Content> Contents { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
@@ -56,5 +55,7 @@ namespace RealEstateNet.Models
         public virtual DbSet<CurrentStatu> CurrentStatus { get; set; }
         public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<UserActivity> UserActivities { get; set; }
+        public virtual DbSet<ConnectedUser> ConnectedUsers { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
     }
 }

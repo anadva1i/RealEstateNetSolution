@@ -17,13 +17,15 @@ namespace RealEstateNet.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UserDetail()
         {
-            this.Chats = new HashSet<Chat>();
             this.Properties = new HashSet<Property>();
             this.Reviews = new HashSet<Review>();
             this.UserDetails1 = new HashSet<UserDetail>();
             this.Favorites = new HashSet<Favorite>();
             this.UserActivities = new HashSet<UserActivity>();
             this.UserActivities1 = new HashSet<UserActivity>();
+            this.ConnectedUsers = new HashSet<ConnectedUser>();
+            this.ConnectedUsers1 = new HashSet<ConnectedUser>();
+            this.Messages = new HashSet<Message>();
         }
     
         public int Id { get; set; }
@@ -38,8 +40,6 @@ namespace RealEstateNet.Models
         public Nullable<decimal> Landscaping { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Chat> Chats { get; set; }
         public virtual Location Location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Property> Properties { get; set; }
@@ -54,5 +54,11 @@ namespace RealEstateNet.Models
         public virtual ICollection<UserActivity> UserActivities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserActivity> UserActivities1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConnectedUser> ConnectedUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConnectedUser> ConnectedUsers1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Message> Messages { get; set; }
     }
 }
