@@ -48,20 +48,25 @@
                                     </div>
                                 </div>
                                 <ul>
-                                    <li class="contact" style="background: #f7f7f7; padding: 2% 0% 0.5% 3%">
-                                        <a href="#">
-                                            <div class="wrap">
-                                                @*<span class="contact-status"></span>*@
-                                                <img class="img-fluid" src="../Content/images/team/s1.jpg" alt="s1.jpg" />
-                                                <div class="meta">
-                                                    <h5 class="name">Vincent Porter</h5>
-                                                    <p class="preview">I'm going to office.</p>
+                                    @foreach (var contact in Model.Contacts)
+                                    {
+                                        <li class="contact" style="padding: 2% 0% 0.5% 3%">
+                                            <a href="?chatId=@contact.ChatId">
+                                                <div class="wrap">
+                                                    @*<span class="contact-status"></span>*@
+                                                    <img style="width: 50px; height: 50px; object-fit: cover" class="img-fluid" src="@contact.ImageUrl" alt="s1.jpg" />
+                                                    <div class="meta">
+                                                        <h5 class="name">@contact.Name</h5>
+                                                        <p class="preview">@contact.lastMessage</p>
+                                                    </div>
+                                                    @if (@contact.NewMessages > 0)
+                                                    {
+                                                        <div class="m_notif">@contact.NewMessages</div>
+                                                    }
                                                 </div>
-                                                <div class="m_notif">2</div>
-                                            </div>
-                                        </a>
-                                    </li>
-
+                                            </a>
+                                        </li>
+                                    }
                                 </ul>
                             </div>
                         </div>
@@ -71,10 +76,10 @@
                             <div class="user_heading">
                                 <a href="#">
                                     <div class="wrap">
-                                        <img class="img-fluid" src="../Content/images/team/s5.jpg" alt="s5.jpg" />
+                                        <img style="width: 50px; height: 50px; object-fit: cover" class="img-fluid" src="@Model.Header.ImageUrl" alt="s5.jpg" />
                                         <div class="meta">
-                                            <h5 class="name">Joanne Davies</h5>
-                                            <p class="preview">Agent</p>
+                                            <h5 class="name">@Model.Header.Name</h5>
+                                            <p class="preview">@Model.Header.Role</p>
                                         </div>
                                     </div>
                                 </a>
@@ -82,7 +87,7 @@
                             <div class="inbox_chatting_box">
                                 <ul class="chatting_content">
                                     <li class="media sent">
-                                        <img class="img-fluid align-self-start mr-3" src="../Content/images/team/s6.jpg" alt="s6.jpg" />
+                                        @*<img class="img-fluid align-self-start mr-3" src="../Content/images/team/s6.jpg" alt="s6.jpg" />*@
                                         <div class="media-body">
                                             <div class="date_time">Today, 10:31</div>
                                             <p>Hello, John!</p>

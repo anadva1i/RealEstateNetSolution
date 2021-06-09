@@ -41,4 +41,11 @@ namespace RealEstateNet.Models
         public int ChatId { get; set; }
     }
 
+    public class ContactDetails
+    {
+        public string Name { get; set; }
+        public string Role { get; set; }
+        public string ImageUrl { get; set; }
+    }
+
 }

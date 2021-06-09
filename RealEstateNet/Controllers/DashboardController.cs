@@ -12,7 +12,10 @@ using System.Drawing;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Web;
@@ -172,13 +175,15 @@ namespace RealEstateNet.Controllers
             return OldProperty;
         }
 
-        public ActionResult Message(string lang)
+        public ActionResult Message(string lang, int? chatId)
         {
             if (lang == null)
                 lang = "EN";
             language = lang;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
+            model.Contacts = MyContacts();
+            model.Header = getContactDetails(chatId);
             return View(model);
         }
 
@@ -1253,6 +1258,41 @@ namespace RealEstateNet.Controllers
             }
         }
 
+        Socket sck;
+        EndPoint epLocal, epRemote;
+        byte[] buffer;
+        private void Chat()
+        {
+            sck = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            sck.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            //var localIP = GetLocalIP();
+            //var remoteIP = GetLocalIP();
+        }
+
+        public ContactDetails getContactDetails(int? chatId)
+        {
+            ContactDetails contact = new ContactDetails();
+            var myId = User.Identity.GetUserId();
+            var userId = 0;
+            using (var context = new DB_RealEstateEntities())
+            {
+                int myDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(myId)).Id;
+                var chat = context.ConnectedUsers.FirstOrDefault(c => c.Id == chatId);
+                if (chat.User1 == myDetailsId)
+                    userId = chat.User2;
+                else userId = chat.User1;
+                var user = context.UserDetails.FirstOrDefault(c => c.Id == userId);
+                contact.Name = user.Name + " " + user.LastName;
+                if(user.Picture != null)
+                    contact.ImageUrl = user.Picture;
+                else
+                    contact.ImageUrl = "../../Content/images/user.png";
+                contact.Role = ((ClaimsIdentity)User.Identity).Claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+            }
+            return contact;
+        }
+
         public List<Contact> MyContacts()
         {
             List<Contact> myContacts = new List<Contact>();
@@ -1264,6 +1304,22 @@ namespace RealEstateNet.Controllers
                 foreach(var contact in contacts)
                 {
                     Contact myContact = new Contact();
+                    var contactId = 0;
+                    if (contact.User1 == userDetailsId)
+                        contactId = contact.User2;
+                    else
+                        contactId = contact.User1;
+                    var user = context.UserDetails.FirstOrDefault(c => c.Id == contactId);
+                    myContact.Name = user.Name +" "+ user.LastName;
+                    if (user.Picture != null)
+                        myContact.ImageUrl = user.Picture;
+                    else
+                        myContact.ImageUrl = "../../Content/images/user.png";
+                    myContact.ChatId = contact.Id;
+                    myContact.lastMessage = context.Messages.OrderByDescending(c => c.ConnectedUserId == contact.Id).FirstOrDefault().Message1;
+                    myContact.NewMessages = context.Messages.Where(c => c.ConnectedUserId == contact.Id && c.Seen == false && c.SenderId == contactId).Count();
+                    
+                    myContacts.Add(myContact);
                 }
             }
             return myContacts;

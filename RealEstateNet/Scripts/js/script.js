@@ -43,6 +43,8 @@
             accoridonExpAll: false //Expands all the accordion menu on click
         });
         HeartIcon();
+        if (window.location.href.indexOf("chatId") > -1)
+            changeBg();
     });
 
     function mobileNavToggle() {
@@ -1456,4 +1458,16 @@ function deleteImage(src, index) {
 function stayHere() {
     event.preventDefault();
     $("#next-img").click();
+}
+
+function changeBg() {
+    var url = window.location.href;
+    var id = url.substring(url.indexOf("=") + 1, url.length) - 1;
+    console.log(id)
+    $(".contact").each(function (index) {
+        if (index == id)
+            $(this).css("background", "#f7f7f7")
+        else
+            $(this).css("background", "#ffffff")
+    });
 }

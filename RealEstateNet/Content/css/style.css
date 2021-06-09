@@ -167,11 +167,11 @@ body.body_overlay:before{
 }
 img {
   max-width: 100%;}
-
 p {
-  font-size: 14px;
-  color: #484848;
-  font-weight: 400;}
+    font-size: 14px;
+    color: #484848;
+    font-weight: 400;
+}
 
 ul,
 ol {
