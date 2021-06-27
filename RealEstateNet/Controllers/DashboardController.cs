@@ -1257,18 +1257,6 @@ namespace RealEstateNet.Controllers
                 }
             }
         }
-
-        Socket sck;
-        EndPoint epLocal, epRemote;
-        byte[] buffer;
-        private void Chat()
-        {
-            sck = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            sck.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            //var localIP = GetLocalIP();
-            //var remoteIP = GetLocalIP();
-        }
-
         public ContactDetails getContactDetails(int? chatId)
         {
             ContactDetails contact = new ContactDetails();
@@ -1278,17 +1266,21 @@ namespace RealEstateNet.Controllers
             {
                 int myDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(myId)).Id;
                 var chat = context.ConnectedUsers.FirstOrDefault(c => c.Id == chatId);
-                if (chat.User1 == myDetailsId)
-                    userId = chat.User2;
-                else userId = chat.User1;
-                var user = context.UserDetails.FirstOrDefault(c => c.Id == userId);
-                contact.Name = user.Name + " " + user.LastName;
-                if(user.Picture != null)
-                    contact.ImageUrl = user.Picture;
-                else
-                    contact.ImageUrl = "../../Content/images/user.png";
-                contact.Role = ((ClaimsIdentity)User.Identity).Claims
-                .FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+                if (chat != null)
+                {
+                    if (chat.User1 == myDetailsId)
+                        userId = chat.User2;
+                    else userId = chat.User1;
+                    var user = context.UserDetails.FirstOrDefault(c => c.Id == userId);
+                    contact.Name = user.Name + " " + user.LastName;
+                    if (user.Picture != null)
+                        contact.ImageUrl = user.Picture;
+                    else
+                        contact.ImageUrl = "../../Content/images/user.png";
+                    contact.Role = ((ClaimsIdentity)User.Identity).Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+                }
+                else contact.Info = "Search for user to start conversation";                
             }
             return contact;
         }

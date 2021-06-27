@@ -664,3 +664,42 @@ C:\Users\user user\Desktop\New folder\RealEstateNetSolution\RealEstateNet\obj\De
 C:\Users\user user\Desktop\New folder\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.csproj.CopyComplete
 C:\Users\user user\Desktop\New folder\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.dll
 C:\Users\user user\Desktop\New folder\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.pdb
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.Authorization.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.SignalR.Core.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.Extensions.Options.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.Extensions.Primitives.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Buffers.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.ComponentModel.Annotations.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.IO.Pipelines.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Memory.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Numerics.Vectors.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Threading.Channels.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Threading.Tasks.Extensions.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.Authorization.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.Connections.Abstractions.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.Http.Features.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.SignalR.Common.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.SignalR.Core.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNetCore.SignalR.Protocols.Json.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.Extensions.Logging.Abstractions.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.Extensions.Options.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.Extensions.Primitives.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Buffers.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.IO.Pipelines.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Memory.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Numerics.Vectors.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Threading.Channels.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Threading.Tasks.Extensions.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNet.SignalR.Core.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNet.SignalR.Core.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Web.Providers.dll
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNetSolution\RealEstateNet\bin\System.Web.Providers.xml

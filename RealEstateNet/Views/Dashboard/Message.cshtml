@@ -29,11 +29,11 @@
                         </div>
                     </div>
                     @*<div class="col-lg-12 mb10">
-                        <div class="breadcrumb_content style2">
-                            <h2 class="breadcrumb_title">Message</h2>
-                            <p>We are glad to see you again!</p>
-                        </div>
-                    </div>*@
+                            <div class="breadcrumb_content style2">
+                                <h2 class="breadcrumb_title">Message</h2>
+                                <p>We are glad to see you again!</p>
+                            </div>
+                        </div>*@
                 </div>
                 <div class="row">
                     <div class="col-lg-5 col-xl-4">
@@ -73,42 +73,53 @@
                     </div>
                     <div class="col-lg-7 col-xl-8">
                         <div class="message_container">
-                            <div class="user_heading">
-                                <a href="#">
-                                    <div class="wrap">
-                                        <img style="width: 50px; height: 50px; object-fit: cover" class="img-fluid" src="@Model.Header.ImageUrl" alt="s5.jpg" />
-                                        <div class="meta">
-                                            <h5 class="name">@Model.Header.Name</h5>
-                                            <p class="preview">@Model.Header.Role</p>
+                            @if (Model.Header.Name != null)
+                            {
+                                <div class="user_heading">
+                                    <a href="#">
+                                        <div class="wrap">
+                                            <img style="width: 50px; height: 50px; object-fit: cover" class="img-fluid" src="@Model.Header.ImageUrl" alt="s5.jpg" />
+                                            <div class="meta">
+                                                <h5 class="name">@Model.Header.Name</h5>
+                                                <p class="preview">@Model.Header.Role</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="inbox_chatting_box">
-                                <ul class="chatting_content">
-                                    <li class="media sent">
-                                        @*<img class="img-fluid align-self-start mr-3" src="../Content/images/team/s6.jpg" alt="s6.jpg" />*@
-                                        <div class="media-body">
-                                            <div class="date_time">Today, 10:31</div>
-                                            <p>Hello, John!</p>
-                                        </div>
-                                    </li>
-                                    <li class="media reply">
-                                        <div class="media-body text-right">
-                                            <div class="date_time">Today, 10:35</div>
-                                            <p>The project finally complete! Let's go to!</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="mi_text">
-                                <div class="message_input">
-                                    <form class="form-inline">
-                                        <input class="form-control" type="search" placeholder="Enter text here..." aria-label="Search">
-                                        <button class="btn" type="submit">Send Message</button>
-                                    </form>
+                                    </a>
                                 </div>
-                            </div>
+                                <div class="inbox_chatting_box">
+                                    <ul class="chatting_content" id="discussion" style="padding-bottom: 50px">
+                                        <li class="media sent">
+                                            @*<img class="img-fluid align-self-start mr-3" src="../Content/images/team/s6.jpg" alt="s6.jpg" />*@
+                                            <div class="media-body">
+                                                <div class="date_time">Today, 10:31</div>
+                                                <p>Hello, John!</p>
+                                            </div>
+                                        </li>
+                                        <li class="media reply">
+                                            <div class="media-body text-right">
+                                                <div class="date_time">Today, 10:35</div>
+                                                <p>The project finally complete! Let's go to!</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="mi_text">
+                                    <div class="message_input">
+                                        <form class="form-inline" onsubmit="return false">
+                                            <input style="display: none" type="text" id="displayname" value="@User.Identity.Name" />
+                                            <input id="message" class="form-control" type="search" placeholder="Enter text here..." aria-label="Search">
+                                            <button class="btn" type="submit" id="sendmessage">Send Message</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div style="width: auto; text-align: center; padding-top: 28%">
+                                    <h4>Select conversation to send message</h4>
+                                    <i class="flaticon-envelope" style="color: #ff5a5f; font-size: 60px"></i>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -117,3 +128,38 @@
         </div>
     </div>
 </section>
+@section scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        $(function () {
+            var url = window.location.href;
+            var chatId = url.substring(url.indexOf("=") + 1, url.length);
+            var chat = $.connection.chatHub;
+            chat.client.addNewMessageToPage = function (date, message, from) {
+                if (htmlEncode(from) == $('#displayname').val()) {
+                    $('#discussion').append('<li class="media reply"><div class="media-body text-right"><div class="date_time">' + htmlEncode(date)
+                        + '</div><p>' + htmlEncode(message)
+                        + '</p></div></li>');
+                }
+                else {
+                $('#discussion').append('<li class="media sent"><div class="media-body"><div class="date_time">' + htmlEncode(date)
+                    + '</div><p>' + htmlEncode(message)
+                        + '</p></div></li>');
+                }
+            };
+            $('#message').focus();
+            $.connection.hub.start().done(function () {
+                chat.server.join(chatId);
+                $('#sendmessage').click(function () {
+                    chat.server.send($('#message').val(), chatId, $('#displayname').val());
+                    $('#message').val('').focus();
+                });
+            });
+        });
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+    </script>
+}
