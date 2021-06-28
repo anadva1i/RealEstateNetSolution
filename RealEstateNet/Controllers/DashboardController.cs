@@ -184,6 +184,7 @@ namespace RealEstateNet.Controllers
             model.User = getUserDetails();
             model.Contacts = MyContacts();
             model.Header = getContactDetails(chatId);
+            model.Chat = GetMessages(chatId);
             return View(model);
         }
 
@@ -1315,6 +1316,58 @@ namespace RealEstateNet.Controllers
                 }
             }
             return myContacts;
+        }
+
+        public List<TextMessage> GetMessages(int? chatId)
+        {
+            List<TextMessage> messages = new List<TextMessage>();
+            using(var context = new DB_RealEstateEntities())
+            {
+                var ourMessages = context.Messages.Where(c => c.ConnectedUserId == chatId);
+                var connectedUsers = context.ConnectedUsers.FirstOrDefault(c => c.Id == chatId);
+                var user1 = connectedUsers.User1;
+                var user2 = connectedUsers.User2;
+                var user1Id = context.UserDetails.FirstOrDefault(c => c.Id == user1).UserId;
+                var user2Id = context.UserDetails.FirstOrDefault(c => c.Id == user2).UserId;
+                var user1Email = context.AspNetUsers.FirstOrDefault(c => c.Id.Equals(user1Id)).UserName;
+                var user2Email = context.AspNetUsers.FirstOrDefault(c => c.Id.Equals(user2Id)).UserName;
+                foreach (var msg in ourMessages)
+                {
+                    TextMessage message = new TextMessage();
+                    message.Text = msg.Message1;
+                    message.SendingDate = msg.SendingDate.ToString("MM/dd/yyyy HH:mm");
+                    if (msg.SenderId == user1)
+                        message.Sender = user1Email;
+                    else message.Sender = user2Email;
+                    messages.Add(message);
+                }
+            }
+            return messages;
+        }
+
+        public void SendMessage(int chatId, TextMessage text)
+        {
+            using(var context = new DB_RealEstateEntities())
+            {
+                var user = context.AspNetUsers.FirstOrDefault(c => c.UserName.Equals(text.Sender)).Id;
+                var userId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(user)).Id;
+                Message message = new Message();
+                message.ConnectedUserId = chatId;
+                message.SenderId = userId;
+                message.SendingDate = Convert.ToDateTime(text.SendingDate);
+                message.Message1 = text.Text;
+                message.Seen = false;
+                context.Messages.Add(message);
+                context.SaveChanges();
+            }
+        }
+
+        private void MarkAsSeen(int chatId)
+        {
+            using(var context = new DB_RealEstateEntities())
+            {
+
+            }
         }
 
         [HttpPost]

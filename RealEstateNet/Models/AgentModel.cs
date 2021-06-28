@@ -49,4 +49,11 @@ namespace RealEstateNet.Models
         public string Info { get; set; }
     }
 
+    public class TextMessage
+    {
+        public string Sender { get; set; }
+        public string SendingDate { get; set; }
+        public string Text { get; set; }
+    }
+
 }
