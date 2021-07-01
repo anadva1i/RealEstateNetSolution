@@ -88,19 +88,28 @@
                                 </div>
                                 <div class="inbox_chatting_box">
                                     <ul class="chatting_content" id="discussion" style="padding-bottom: 50px">
-                                        <li class="media sent">
-                                            @*<img class="img-fluid align-self-start mr-3" src="../Content/images/team/s6.jpg" alt="s6.jpg" />*@
-                                            <div class="media-body">
-                                                <div class="date_time">Today, 10:31</div>
-                                                <p>Hello, John!</p>
-                                            </div>
-                                        </li>
-                                        <li class="media reply">
-                                            <div class="media-body text-right">
-                                                <div class="date_time">Today, 10:35</div>
-                                                <p>The project finally complete! Let's go to!</p>
-                                            </div>
-                                        </li>
+                                        @foreach (var text in Model.Chat)
+                                        {
+                                            if (text.Sender == User.Identity.Name)
+                                            {
+                                                <li class="media reply">
+                                                    <div class="media-body text-right">
+                                                        <div class="date_time">@text.SendingDate</div>
+                                                        <p>@text.Text</p>
+                                                    </div>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="media sent">
+                                                    @*<img class="img-fluid align-self-start mr-3" src="../Content/images/team/s6.jpg" alt="s6.jpg" />*@
+                                                    <div class="media-body">
+                                                        <div class="date_time">@text.SendingDate</div>
+                                                        <p>@text.Text</p>
+                                                    </div>
+                                                </li>
+                                            }
+                                        }
                                     </ul>
                                 </div>
                                 <div class="mi_text">

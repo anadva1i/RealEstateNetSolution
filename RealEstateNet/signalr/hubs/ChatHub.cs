@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR;
+using RealEstateNet.Controllers;
 using RealEstateNet.Models;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,18 @@ namespace RealEstateNet.signalr.hubs
         public void Send(string message, string chatId, string from)
         {
             DateTime now = DateTime.Now;
-            Clients.Group("chat"+chatId).addNewMessageToPage(now.ToString(), message, from);    
+            Clients.Group("chat"+chatId).addNewMessageToPage(now.ToString("MM/dd/yyyy HH:mm"), message, from);
+            TextMessage text = new TextMessage();
+            text.Sender = from;
+            text.SendingDate = now.ToString();
+            text.Text = message;
+            ControllerCall(Convert.ToInt32(chatId), text);
+        }
+
+        private void ControllerCall(int chatId, TextMessage message)
+        {
+            DashboardController controller = new DashboardController();
+            controller.SendMessage(chatId, message);
         }
     }
 }
