@@ -175,15 +175,15 @@ namespace RealEstateNet.Controllers
             return OldProperty;
         }
 
-        public ActionResult Message(string lang, int? chatId)
+        public ActionResult Message(string lang, string email, int? chatId)
         {
             if (lang == null)
                 lang = "EN";
             language = lang;
             dynamic model = new ExpandoObject();
-            model.User = getUserDetails();
-            model.Contacts = MyContacts();
             model.Header = getContactDetails(chatId);
+            model.User = getUserDetails();
+            model.Contacts = MyContacts(email);
             model.Chat = GetMessages(chatId);
             return View(model);
         }
@@ -1260,6 +1260,7 @@ namespace RealEstateNet.Controllers
         }
         public ContactDetails getContactDetails(int? chatId)
         {
+            MarkAsSeen(chatId);
             ContactDetails contact = new ContactDetails();
             var myId = User.Identity.GetUserId();
             var userId = 0;
@@ -1286,33 +1287,96 @@ namespace RealEstateNet.Controllers
             return contact;
         }
 
-        public List<Contact> MyContacts()
+        public Contact UserSearch(string email)
+        {
+            using (var context = new DB_RealEstateEntities())
+            {
+                Contact newContact = new Contact();
+                var friend = context.AspNetUsers.FirstOrDefault(c => c.UserName.Equals(email)).Id;
+                if (friend != null)
+                {
+                    var userId = User.Identity.GetUserId();
+                    int userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
+                    var friendDetails = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(friend));
+                    var contact = context.ConnectedUsers.FirstOrDefault(c => (c.User1 == userDetailsId && c.User2 == friendDetails.Id) || (c.User2 == userDetailsId && c.User1 == friendDetails.Id));
+                    newContact.Name = friendDetails.Name + " " + friendDetails.LastName;
+                    if (friendDetails.Picture != null)
+                        newContact.ImageUrl = friendDetails.Picture;
+                    else
+                        newContact.ImageUrl = "../../Content/images/user.png";
+                    if (contact != null)
+                    {
+                        newContact.ChatId = contact.Id;
+                        //newContact.lastMessage = context.Messages.OrderByDescending(c => c.Id).FirstOrDefault(c => c.ConnectedUserId == contact.Id).Message1;
+                        //newContact.NewMessages = context.Messages.Where(c => c.ConnectedUserId == contact.Id && c.Seen == false && c.SenderId == friendDetails.Id).Count();
+                    }
+                    else AddContact(friendDetails.Id);
+                }
+                return newContact;
+            }
+        }
+
+        private bool AddContact(int contactId)
+        {
+            try
+            {
+                using (var context = new DB_RealEstateEntities())
+                {
+                    var myId = User.Identity.GetUserId();
+                    var myDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(myId)).Id;
+                    //add connectedUsers
+                    ConnectedUser connect = new ConnectedUser();
+                    connect.User1 = myDetailsId;
+                    connect.User2 = contactId;
+                    context.ConnectedUsers.Add(connect);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public List<Contact> MyContacts(string email)
         {
             List<Contact> myContacts = new List<Contact>();
             using (var context = new DB_RealEstateEntities())
             {
                 var userId = User.Identity.GetUserId();
                 int userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
-                var contacts = context.ConnectedUsers.Where(c=>c.User1 == userDetailsId || c.User2 == userDetailsId);
-                foreach(var contact in contacts)
+                if(email != null && email != "")
                 {
-                    Contact myContact = new Contact();
-                    var contactId = 0;
-                    if (contact.User1 == userDetailsId)
-                        contactId = contact.User2;
-                    else
-                        contactId = contact.User1;
-                    var user = context.UserDetails.FirstOrDefault(c => c.Id == contactId);
-                    myContact.Name = user.Name +" "+ user.LastName;
-                    if (user.Picture != null)
-                        myContact.ImageUrl = user.Picture;
-                    else
-                        myContact.ImageUrl = "../../Content/images/user.png";
-                    myContact.ChatId = contact.Id;
-                    myContact.lastMessage = context.Messages.OrderByDescending(c => c.ConnectedUserId == contact.Id).FirstOrDefault().Message1;
-                    myContact.NewMessages = context.Messages.Where(c => c.ConnectedUserId == contact.Id && c.Seen == false && c.SenderId == contactId).Count();
-                    
-                    myContacts.Add(myContact);
+                    myContacts.Clear();
+                    Contact newContact = UserSearch(email);
+                    myContacts.Add(newContact);
+                }
+                else
+                {
+                    var contacts = context.ConnectedUsers.Where(c => c.User1 == userDetailsId || c.User2 == userDetailsId);
+                    foreach (var contact in contacts)
+                    {
+                        var messages = context.Messages.FirstOrDefault(c => c.ConnectedUserId == contact.Id);
+                        if(messages != null)
+                        {
+                            Contact myContact = new Contact();
+                            var contactId = 0;
+                            if (contact.User1 == userDetailsId)
+                                contactId = contact.User2;
+                            else
+                                contactId = contact.User1;
+                            var user = context.UserDetails.FirstOrDefault(c => c.Id == contactId);
+                            myContact.Name = user.Name + " " + user.LastName;
+                            if (user.Picture != null)
+                                myContact.ImageUrl = user.Picture;
+                            else
+                                myContact.ImageUrl = "../../Content/images/user.png";
+                            myContact.ChatId = contact.Id;
+                            myContact.lastMessage = context.Messages.OrderByDescending(c => c.Id).FirstOrDefault(c => c.ConnectedUserId == contact.Id).Message1;
+                            myContact.NewMessages = context.Messages.Where(c => c.ConnectedUserId == contact.Id && c.Seen == false && c.SenderId == contactId).Count();
+                            myContacts.Add(myContact);
+                        }
+                    }
                 }
             }
             return myContacts;
@@ -1325,21 +1389,24 @@ namespace RealEstateNet.Controllers
             {
                 var ourMessages = context.Messages.Where(c => c.ConnectedUserId == chatId);
                 var connectedUsers = context.ConnectedUsers.FirstOrDefault(c => c.Id == chatId);
-                var user1 = connectedUsers.User1;
-                var user2 = connectedUsers.User2;
-                var user1Id = context.UserDetails.FirstOrDefault(c => c.Id == user1).UserId;
-                var user2Id = context.UserDetails.FirstOrDefault(c => c.Id == user2).UserId;
-                var user1Email = context.AspNetUsers.FirstOrDefault(c => c.Id.Equals(user1Id)).UserName;
-                var user2Email = context.AspNetUsers.FirstOrDefault(c => c.Id.Equals(user2Id)).UserName;
-                foreach (var msg in ourMessages)
+                if(connectedUsers != null)
                 {
-                    TextMessage message = new TextMessage();
-                    message.Text = msg.Message1;
-                    message.SendingDate = msg.SendingDate.ToString("MM/dd/yyyy HH:mm");
-                    if (msg.SenderId == user1)
-                        message.Sender = user1Email;
-                    else message.Sender = user2Email;
-                    messages.Add(message);
+                    var user1 = connectedUsers.User1;
+                    var user2 = connectedUsers.User2;
+                    var user1Id = context.UserDetails.FirstOrDefault(c => c.Id == user1).UserId;
+                    var user2Id = context.UserDetails.FirstOrDefault(c => c.Id == user2).UserId;
+                    var user1Email = context.AspNetUsers.FirstOrDefault(c => c.Id.Equals(user1Id)).UserName;
+                    var user2Email = context.AspNetUsers.FirstOrDefault(c => c.Id.Equals(user2Id)).UserName;
+                    foreach (var msg in ourMessages)
+                    {
+                        TextMessage message = new TextMessage();
+                        message.Text = msg.Message1;
+                        message.SendingDate = msg.SendingDate.ToString("MM/dd/yyyy HH:mm");
+                        if (msg.SenderId == user1)
+                            message.Sender = user1Email;
+                        else message.Sender = user2Email;
+                        messages.Add(message);
+                    }
                 }
             }
             return messages;
@@ -1362,11 +1429,30 @@ namespace RealEstateNet.Controllers
             }
         }
 
-        private void MarkAsSeen(int chatId)
+        public bool MarkAsSeen(int? chatId)
         {
             using(var context = new DB_RealEstateEntities())
             {
-
+                var userId = User.Identity.GetUserId();
+                var userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
+                var chat = context.Messages.Where(c => c.ConnectedUserId == chatId && c.SenderId != userDetailsId && c.Seen == false);
+                if (chat != null)
+                {
+                    try
+                    {
+                        foreach (var c in chat)
+                        {
+                            c.Seen = true;
+                        }
+                        context.SaveChanges();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+                else return false;
             }
         }
 

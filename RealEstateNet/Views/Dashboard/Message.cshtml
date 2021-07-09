@@ -41,16 +41,19 @@
                             <div class="inbox_user_list">
                                 <div class="iu_heading">
                                     <div class="candidate_revew_search_box">
-                                        <form class="form-inline">
-                                            <input class="form-control" type="search" placeholder="Serach" aria-label="Search">
-                                            <button class="btn" type="submit"><span class="flaticon-magnifying-glass"></span></button>
-                                        </form>
+                                        @*@using (Html.BeginForm("UserSearch", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-inline", role = "form" }))
+                                        {*@   
+                                            <form class="form-inline">
+                                                <input class="form-control" type="search" placeholder="Search by email" aria-label="Search" name="email">
+                                                <button class="btn" type="submit"><span class="flaticon-magnifying-glass"></span></button>
+                                            </form>
+                                        @*}*@
                                     </div>
                                 </div>
                                 <ul>
                                     @foreach (var contact in Model.Contacts)
                                     {
-                                        <li class="contact" style="padding: 2% 0% 0.5% 3%">
+                                        <li class="contact" id="@contact.ChatId" style="padding: 2% 0% 0.5% 3%">
                                             <a href="?chatId=@contact.ChatId">
                                                 <div class="wrap">
                                                     @*<span class="contact-status"></span>*@
@@ -66,7 +69,7 @@
                                                 </div>
                                             </a>
                                         </li>
-                                    }
+                                     }
                                 </ul>
                             </div>
                         </div>

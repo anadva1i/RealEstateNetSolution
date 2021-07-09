@@ -1462,10 +1462,12 @@ function stayHere() {
 
 function changeBg() {
     var url = window.location.href;
-    var id = url.substring(url.indexOf("=") + 1, url.length) - 1;
-    console.log(id)
+    var id = url.substring(url.indexOf("=") + 1, url.length);
+    console.log("contactId:" + id);
     $(".contact").each(function (index) {
-        if (index == id)
+        var thisId = $(this).attr("id");
+        console.log("thisId" + thisId);
+        if (thisId == id)
             $(this).css("background", "#f7f7f7")
         else
             $(this).css("background", "#ffffff")
