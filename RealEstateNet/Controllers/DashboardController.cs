@@ -56,9 +56,42 @@ namespace RealEstateNet.Controllers
             model.Registered = RegisteredUser();
             model.Property = PrePropertyUpdate(propertyId);
             model.User = getUserDetails();
+            model.Services = GetServices(lang);
             return View(model);
         }
 
+        private PropertyServices GetServices(string lang)
+        {
+            using (var context = new DB_RealEstateEntities())
+            {
+                PropertyServices service = new PropertyServices();
+                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                foreach(var s in context.Services)
+                {
+                    switch (s.ContentId)
+                    {
+                        case 194:
+                            service.Vip = context.Translations.FirstOrDefault(c => c.ContentId == s.ContentId && c.LanguageId == langId).Text + " - " + s.Price +"₾";
+                            break;
+                        case 195:
+                            service.SuperVip = context.Translations.FirstOrDefault(c => c.ContentId == s.ContentId && c.LanguageId == langId).Text + " - " + s.Price + "₾";
+                            break;
+                        case 196:
+                            service.VipPlus = context.Translations.FirstOrDefault(c => c.ContentId == s.ContentId && c.LanguageId == langId).Text + " - " + s.Price + "₾";
+                            break;
+                        case 250:
+                            service.Update = context.Translations.FirstOrDefault(c => c.ContentId == s.ContentId && c.LanguageId == langId).Text + " - " + s.Price + "₾";
+                            break;
+                        case 251:
+                            service.Border = context.Translations.FirstOrDefault(c => c.ContentId == s.ContentId && c.LanguageId == langId).Text + " - " + s.Price + "₾";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                return service;
+            }
+        }
         private CreateListingModel PrePropertyUpdate(int? propertyId)
         {
             CreateListingModel OldProperty = new CreateListingModel();

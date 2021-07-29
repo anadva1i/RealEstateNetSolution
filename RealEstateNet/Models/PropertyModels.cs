@@ -264,4 +264,13 @@ namespace RealEstateNet.Models
         public string CurrentStatus { get; set; }
         public int Views { get; set; }
     }
+
+    public class PropertyServices
+    {
+        public string SuperVip { get; set; }
+        public string VipPlus { get; set; }
+        public string Vip { get; set; }
+        public string Update { get; set; }
+        public string Border { get; set; }
+    }
 }
