@@ -141,9 +141,11 @@ namespace RealEstateNet.Controllers
                     var statusContentId = context.Status.FirstOrDefault(c => c.Id == db_property.StatusId).ContentId;
                     var status = context.Translations.FirstOrDefault(c => c.ContentId == statusContentId && c.LanguageId == langId).Text;
                     property.Status = status;
-                    var contentNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + db_property.Id)).Id;
+                    var contentType = context.Contents.FirstOrDefault(c => c.Id == typeContentId).Type;
+                    var contentStatus = context.Contents.FirstOrDefault(c => c.Id == statusContentId).Type;
+                    var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
                     var contentAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + db_property.Id)).Id;
-                    property.Name = context.Translations.FirstOrDefault(c => c.ContentId == contentNameId && c.LanguageId == langId).Text;
+                    property.Name = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == langId).Text;
                     property.Address = context.Translations.FirstOrDefault(c => c.ContentId == contentAddressId && c.LanguageId == langId).Text;
                     var userId = db_property.UserDetailsId;
                     var user = context.UserDetails.FirstOrDefault(c => c.Id == userId);
@@ -313,7 +315,6 @@ namespace RealEstateNet.Controllers
             {
                 var db_property = context.Properties.FirstOrDefault(c => c.Id == propertyId);
                 int langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
-                var contentTitle = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + propertyId)).Id;
                 var contentDescription = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingDescription" + propertyId)).Id;
                 var contentAddress = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + propertyId)).Id;
                 var location = context.Locations.FirstOrDefault(c => c.ContentId == contentAddress);
@@ -331,7 +332,6 @@ namespace RealEstateNet.Controllers
                         property.IsFavorite = true;
                 }
                 property.Id = propertyId;
-                property.Title = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentTitle).Text;
                 property.Description = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentDescription).Text;
                 property.Address = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentAddress).Text;
                 property.Price = db_property.Price;
@@ -360,6 +360,10 @@ namespace RealEstateNet.Controllers
                 var propertyStatusId = db_property.StatusId;
                 var propertyStatusContent = context.Status.FirstOrDefault(c => c.Id == propertyStatusId).ContentId;
                 property.PropertyStatus = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == propertyStatusContent).Text;
+                var contentType = context.Contents.FirstOrDefault(c => c.Id == propertyTypeContent).Type;
+                var contentStatus = context.Contents.FirstOrDefault(c => c.Id == propertyStatusContent).Type;
+                var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
+                property.Title = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == titleContent).Text;
             }
             return property;
         }
@@ -405,9 +409,13 @@ namespace RealEstateNet.Controllers
                             {
                                 var property = context.Properties.FirstOrDefault(c => c.Id == propertyId);
                                 var picture = context.Media.FirstOrDefault(c => c.PropertyId == propertyId).MediaUrl;
-                                var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + propertyId)).Id;
+                                var TypeContent = context.PropertyTypes.FirstOrDefault(c => c.Id == property.PropertyTypeId).ContentId;
+                                var StatusContent = context.Status.FirstOrDefault(c => c.Id == property.StatusId).ContentId;
+                                var contentType = context.Contents.FirstOrDefault(c => c.Id == TypeContent).Type;
+                                var contentStatus = context.Contents.FirstOrDefault(c => c.Id == StatusContent).Type;
+                                var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
                                 var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
-                                var name = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == PropertyNameId).Text;
+                                var name = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == titleContent).Text;
                                 recentlyViewed.Id = propertyId;
                                 recentlyViewed.Area = property.PropertySize;
                                 recentlyViewed.Baths = property.Bathrooms;
@@ -431,9 +439,13 @@ namespace RealEstateNet.Controllers
                                 {
                                     var property = context.Properties.FirstOrDefault(c => c.Id == propertyId);
                                     var picture = context.Media.FirstOrDefault(c => c.PropertyId == propertyId).MediaUrl;
-                                    var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + propertyId)).Id;
+                                    var TypeContent = context.PropertyTypes.FirstOrDefault(c => c.Id == property.PropertyTypeId).ContentId;
+                                    var StatusContent = context.Status.FirstOrDefault(c => c.Id == property.StatusId).ContentId;
+                                    var contentType = context.Contents.FirstOrDefault(c => c.Id == TypeContent).Type;
+                                    var contentStatus = context.Contents.FirstOrDefault(c => c.Id == StatusContent).Type;
+                                    var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
                                     var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
-                                    var name = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == PropertyNameId).Text;
+                                    var name = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == titleContent).Text;
                                     recentlyViewed.Id = propertyId;
                                     recentlyViewed.Area = property.PropertySize;
                                     recentlyViewed.Baths = property.Bathrooms;
@@ -587,9 +599,11 @@ namespace RealEstateNet.Controllers
                     var PropertyStatus = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == StatusContent).Text;
                     if (hasContent)
                     {
-                        var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + PropertyId)).Id;
+                        var contentType = context.Contents.FirstOrDefault(c => c.Id == TypeContent).Type;
+                        var contentStatus = context.Contents.FirstOrDefault(c => c.Id == StatusContent).Type;
+                        var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
                         var PropertyAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + PropertyId)).Id;
-                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == PropertyNameId && c.LanguageId == langId).Text;
+                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == langId).Text;
                         property.Address = context.Translations.FirstOrDefault(c => c.ContentId == PropertyAddressId && c.LanguageId == langId).Text;
                     }
                     var AgentId = DbProperty.UserDetailsId;
@@ -639,9 +653,11 @@ namespace RealEstateNet.Controllers
                     var PropertyStatus = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == StatusContent).Text;
                     if (hasContent)
                     {
-                        var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + PropertyId)).Id;
+                        var contentType = context.Contents.FirstOrDefault(c => c.Id == TypeContent).Type;
+                        var contentStatus = context.Contents.FirstOrDefault(c => c.Id == StatusContent).Type;
+                        var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
                         var PropertyAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + PropertyId)).Id;
-                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == PropertyNameId && c.LanguageId == langId).Text;
+                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == langId).Text;
                         property.Address = context.Translations.FirstOrDefault(c => c.ContentId == PropertyAddressId && c.LanguageId == langId).Text;
                     }
                     var AgentId = DbProperty.UserDetailsId;
@@ -691,9 +707,11 @@ namespace RealEstateNet.Controllers
                     var PropertyStatus = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == StatusContent).Text;
                     if (hasContent)
                     {
-                        var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + PropertyId)).Id;
+                        var contentType = context.Contents.FirstOrDefault(c => c.Id == TypeContent).Type;
+                        var contentStatus = context.Contents.FirstOrDefault(c => c.Id == StatusContent).Type;
+                        var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
                         var PropertyAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + PropertyId)).Id;
-                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == PropertyNameId && c.LanguageId == langId).Text;
+                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == langId).Text;
                         property.Address = context.Translations.FirstOrDefault(c => c.ContentId == PropertyAddressId && c.LanguageId == langId).Text;
                     }
                     var AgentId = DbProperty.UserDetailsId;
@@ -743,9 +761,11 @@ namespace RealEstateNet.Controllers
                     var PropertyStatus = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == StatusContent).Text;
                     if (hasContent)
                     {
-                        var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + PropertyId)).Id;
+                        var contentType = context.Contents.FirstOrDefault(c => c.Id == TypeContent).Type;
+                        var contentStatus = context.Contents.FirstOrDefault(c => c.Id == StatusContent).Type;
+                        var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
                         var PropertyAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + PropertyId)).Id;
-                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == PropertyNameId && c.LanguageId == langId).Text;
+                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == langId).Text;
                         property.Address = context.Translations.FirstOrDefault(c => c.ContentId == PropertyAddressId && c.LanguageId == langId).Text;
                     }
                     var AgentId = DbProperty.UserDetailsId;
@@ -898,9 +918,11 @@ namespace RealEstateNet.Controllers
                     var PropertyStatus = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == StatusContent).Text;
                     if (hasContent)
                     {
-                        var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + PropertyId)).Id;
+                        var contentType = context.Contents.FirstOrDefault(c => c.Id == TypeContent).Type;
+                        var contentStatus = context.Contents.FirstOrDefault(c => c.Id == StatusContent).Type;
+                        var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
                         var PropertyAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + PropertyId)).Id;
-                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == PropertyNameId && c.LanguageId == langId).Text;
+                        property.Name = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == langId).Text;
                         property.Address = context.Translations.FirstOrDefault(c => c.ContentId == PropertyAddressId && c.LanguageId == langId).Text;
                     }
                     var AgentId = p.UserDetailsId;
@@ -1096,12 +1118,15 @@ namespace RealEstateNet.Controllers
                     bool hasContent = context.PropertyContents.Any(c => c.propertyId == PropertyId);
                     bool hasMedia = context.Media.Any(c => c.PropertyId == PropertyId);
                     var TypeContent = context.PropertyTypes.FirstOrDefault(c => c.Id == PropertyTypeId).ContentId;
+                    var StatusContent = context.Status.FirstOrDefault(c => c.Id == p.StatusId).ContentId;
                     var PropertyType = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == TypeContent).Text;
                     if (hasContent)
                     {
-                        var PropertyNameId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + PropertyId)).Id;
+                        var contentType = context.Contents.FirstOrDefault(c => c.Id == TypeContent).Type;
+                        var contentStatus = context.Contents.FirstOrDefault(c => c.Id == StatusContent).Type;
+                        var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
                         var PropertyAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + PropertyId)).Id;
-                        thisProperty.Name = context.Translations.FirstOrDefault(c => c.ContentId == PropertyNameId && c.LanguageId == langId).Text;
+                        thisProperty.Name = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == langId).Text;
                         thisProperty.Address = context.Translations.FirstOrDefault(c => c.ContentId == PropertyAddressId && c.LanguageId == langId).Text;
                     }
                     var AgentId = p.UserDetailsId;
