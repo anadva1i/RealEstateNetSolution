@@ -99,6 +99,11 @@ namespace RealEstateNet.Models
         public string Sauna { get; set; }
         public string WindowCoverings { get; set; }
         public string media { get; set; }
+        public string Vip { get; set; }
+        public string SuperVip { get; set; }
+        public string VipPlus { get; set; }
+        public string Update { get; set; }
+        public string Color { get; set; }
         public List<string> pictures { get; set; }
     }
 
