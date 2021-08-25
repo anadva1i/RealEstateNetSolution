@@ -241,7 +241,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\hypothecCalculatorController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -734,6 +736,8 @@
     <Content Include="Views\Dashboard\Properties.cshtml" />
     <Content Include="Views\Dashboard\Reviews.cshtml" />
     <Content Include="Views\Dashboard\Saved_Search.cshtml" />
+    <Content Include="Views\Services\Index.cshtml" />
+    <Content Include="Views\hypothecCalculator\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,43 @@
+﻿<h2 style="text-align: center; margin: 50px;">იპოთეკური კალკულატორი</h2>
+<div class="col-lg-12">
+    <div class="application_statics">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="chart_circle_doughnut mt30">
+                    <h4>Payment Calculator</h4>
+                    <canvas class="mt50 mb50" id="myChart"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-6">
+                <div class="my_profile_setting_input ui_kit_select_search form-group">
+                    <label for="formGroupGEL"><small>წინასწარი ₾</small></label>
+                    <input onkeyup="AdvancedRate()" type="number" class="form-control" id="formGroupGEL" />
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-6">
+                <div class="my_profile_setting_input form-group">
+                    <label for="formGroupRate"><small>წინასწარი %</small></label>
+                    <input onkeyup="AdvancedAmount()" type="text" class="form-control" id="formGroupRate" value="10">
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-6">
+                <div class="my_profile_setting_input form-group">
+                    <label for="formGroupYear"><small>წელი</small></label>
+                    <input onkeyup="Calculate()" type="number" class="form-control" id="formGroupYear" value="10">
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-4">
+                <div class="my_profile_setting_input form-group">
+                    <label for="formGroupMonth"><small>თვე</small></label>
+                    <input onkeyup="Calculate()" type="number" class="form-control" id="formGroupMonth" value="0">
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-2">
+                <div class="my_profile_setting_input form-group">
+                    <label for="formGroupCompound"><small>განაკვეთი %</small></label>
+                    <input onkeyup="Calculate()" type="number" class="form-control" id="formGroupCompound" value="9">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
