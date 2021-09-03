@@ -1,11 +1,17 @@
-﻿<h2 style="text-align: center; margin: 50px;">იპოთეკური კალკულატორი</h2>
-<div class="col-lg-12">
-    <div class="application_statics">
+﻿@*<h2 style="text-align: center; margin: 50px;">იპოთეკური კალკულატორი</h2>*@
+<div class="col-lg-12"> 
+    <div class="application_statics" style="width: 60%; margin: auto">
         <div class="row">
             <div class="col-lg-12">
                 <div class="chart_circle_doughnut mt30">
-                    <h4>Payment Calculator</h4>
+                    <h4 style="text-align: center">Payment Calculator</h4>
                     <canvas class="mt50 mb50" id="myChart"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-6">
+                <div class="my_profile_setting_input ui_kit_select_search form-group">
+                    <label for="formGroupGEL"><small>ქონების ღირებულება ₾</small></label>
+                    <input onkeyup="AdvancedRate()" type="number" class="form-control" id="formGroupGEL" />
                 </div>
             </div>
             <div class="col-lg-6 col-xl-6">
