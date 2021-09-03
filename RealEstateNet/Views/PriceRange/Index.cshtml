@@ -1,0 +1,115 @@
+﻿﻿
+<style>
+    .home1-overlay:before {
+        background-color: white;
+    }
+
+    .home1_adsrchfrm {
+        background-color: white;
+        border: 10px solid #24324a;
+    }
+
+    .home-text h2, .home-text h3 {
+        margin-top: 40px;
+    }
+
+    .home_adv_srch_opt {
+        margin-top: 90px;
+    }
+</style>
+<section class="home-one home1-overlay" style="padding: 0;">
+    <div class="container">
+        <div class="row posr">
+            <div class="col-lg-12">
+                <div class="home_content" style="padding: 90px 0 50px; ">
+                    <div class="home-text text-center">
+                        <h3 class="fz40" style="color: black;">Find Your Dream Home Price</h3>
+                        @*<p class="fz18 color-white">From as low as $10 per day with limited time offer discounts.</p>*@
+                    </div>
+                    @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    {
+        <div class="home_adv_srch_opt">
+            <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                @{int i = 0;}
+                @*@foreach (var status in Model.Status)
+                    {
+                        string active = "";
+                        if (i == 0)
+                        {
+                            active = "active";
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link @active" id="pills-home-tab" onclick="changeStatus('@status')" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">@status</a>
+                            @if (active == "active")
+                            {
+                                <input id="input-status" name="status" value="@status" style="display: none" />
+                            }
+                        </li>
+                        i++;
+                    }*@
+            </ul>
+            <div class="tab-content home1_adsrchfrm" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="home1-advnc-search">
+                        <ul class="h1ads_1st_list mb0" style="text-align: center">
+                            <li class="list-inline-item">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="exampleInputName1" placeholder="Size..." name="keyword">
+                                </div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="search_option_two">
+                                    <div class="candidate_revew_select">
+                                        <select name="type" class="selectpicker w100 show-tick">
+                                            <option>Property Type</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="exampleInputEmail" placeholder="Location" name="location">
+                                    <label for="exampleInputEmail"><span class="flaticon-maps-and-flags"></span></label>
+                                </div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="search_option_two">
+                                    <div class="candidate_revew_select">
+                                        <select name="status" class="selectpicker w100 show-tick">
+                                            <option>Status</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="search_option_two">
+                                    <div class="candidate_revew_select">
+                                        <select name="status" class="selectpicker w100 show-tick">
+                                            <option>State</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <br>
+                        <ul class="h1ads_1st_list mb0" style="text-align: center">
+                            <li class="list-inline-item">
+                                <div class="search_option_button">
+                                    <button id="formSearch" type="submit" class="btn btn-thm">Search</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="warning" style="text-align: center; background-color: lightgray; width: 40%; padding: 20px; border-radius: 5px; margin: auto; margin-bottom: 8%;">
+    <img src="~/Content/images/warning.png" style="width: 20px" />
+    <h4>უძრავი ქონების საშუალო ღირებულება განისაზღვრება საიტზე არსებული ანალოგიური ობიექტების საშუალო ღირებულების მიხედვით.</h4>
+</div>

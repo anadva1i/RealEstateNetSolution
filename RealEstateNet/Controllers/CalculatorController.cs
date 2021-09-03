@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace RealEstateNet.Controllers
 {
-    public class hypothecCalculatorController : Controller
+    public class CalculatorController : Controller
     {
         // GET: hypothecCalculator
         public ActionResult Index()
