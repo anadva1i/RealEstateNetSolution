@@ -60,6 +60,25 @@ namespace RealEstateNet.Controllers
             return View();
         }
 
+        public ActionResult Calculator()
+        {
+            dynamic model = new ExpandoObject();
+            model.User = getUserDetails();
+            return View(model);
+        }
+        public ActionResult PriceRange()
+        {
+            dynamic model = new ExpandoObject();
+            model.User = getUserDetails();
+            return View(model);
+        }
+        public ActionResult Services()
+        {
+            dynamic model = new ExpandoObject();
+            model.User = getUserDetails();
+            return View(model);
+        }
+
         public ActionResult Property(int id, string lang)
         {
             dynamic model = new ExpandoObject();
