@@ -228,7 +228,7 @@ namespace RealEstateNet.Controllers
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
             {
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("realestate.dreamhouse.geo@gmail.com", "REAL110estate"),
+                Credentials = new NetworkCredential("homellandd@gmail.com", "guja19921992"),
                 EnableSsl = true
             };
 

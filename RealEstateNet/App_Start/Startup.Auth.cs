@@ -60,8 +60,8 @@ namespace RealEstateNet
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "976790916262-oesdh1oo2rr6d7iqj0tmftrtpv0flqlj.apps.googleusercontent.com",
-                ClientSecret = "Pylb40UmC9P9m9DyPaBwX71n"
+                ClientId = "1049843284797-8l2qltf9n7clc4ld2aiff7vrjdjk2n92.apps.googleusercontent.com",
+                ClientSecret = "WHHmUm9_MQ5A5FQsvAqHJ5tb"
             });
         }
     }
