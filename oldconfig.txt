@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   For more information on how to configure your ASP.NET application, please visit
   https://go.microsoft.com/fwlink/?LinkId=301880
@@ -9,11 +9,16 @@
     <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
   </configSections>
   <connectionStrings>
-    <add name="DefaultConnection" connectionString="Data Source=
-N1NWPLSK12SQL-v01.shr.prod.ams1.secureserver.net;Initial Catalog=DB_RealEstate;User Id=anadvali;Password=Asdf1234!;" providerName="System.Data.SqlClient" />
-    <add name="DB_RealEstateEntities" connectionString="metadata=res://*/Models.Model.csdl|res://*/Models.Model.ssdl|res://*/Models.Model.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=
-N1NWPLSK12SQL-v01.shr.prod.ams1.secureserver.net;initial catalog=DB_RealEstate;User Id=anadvali;Password=Asdf1234!;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient"/>
+	  <!--Ana-->
+    <add name="DefaultConnection" connectionString="Data Source=DESKTOP-EC2IVBB\SQLEXPRESS;Initial Catalog=DB_RealEstate;Integrated Security=True" providerName="System.Data.SqlClient" />
+	  <add name="DB_RealEstateEntities" connectionString="metadata=res://*/Models.Model.csdl|res://*/Models.Model.ssdl|res://*/Models.Model.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=DESKTOP-EC2IVBB\SQLEXPRESS;initial catalog=DB_RealEstate;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+	  <!--Mamuka-->
+	  <!--<add name="DefaultConnection" connectionString="Data Source=OMEN-BY-HP\SQLEXPRESS;Initial Catalog=DB_RealEstate;Integrated Security=True" providerName="System.Data.SqlClient" />
+	  <add name="DB_RealEstateEntities" connectionString="metadata=res://*/Models.Model.csdl|res://*/Models.Model.ssdl|res://*/Models.Model.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=OMEN-BY-HP\SQLEXPRESS;initial catalog=DB_RealEstate;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+	  <!--<add name="DefaultConnection" connectionString="Server=G10USER12\SQLEXPRESS;Database=DB_RealEstate;User Id=sa;Password=12345678;" providerName="System.Data.SqlClient" />
+    <add name="DB_RealEstateEntities" connectionString="metadata=res://*/Models.Model.csdl|res://*/Models.Model.ssdl|res://*/Models.Model.msl;provider=System.Data.SqlClient;provider connection string=&quot;Server=G10USER12\SQLEXPRESS;Database=DB_RealEstate;User Id=sa;Password=12345678;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
   </connectionStrings>
+	 
   <appSettings>
     <add key="webpages:Version" value="3.0.0.0" />
     <add key="webpages:Enabled" value="false" />
@@ -21,24 +26,17 @@ N1NWPLSK12SQL-v01.shr.prod.ams1.secureserver.net;initial catalog=DB_RealEstate;U
     <add key="UnobtrusiveJavaScriptEnabled" value="true" />
   </appSettings>
   <system.web>
-    <customErrors mode="Off"/>
-  	<trust level="Full"/>
-    <roleManager enabled="true" />
+	  <roleManager enabled="true" />
     <authentication mode="None" />
-    <compilation targetFramework="4.7.2" tempDirectory="G:\PleskVhosts\hland.ge\tmp">
-	<assemblies> 
-			<add assembly="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51"/> 
-		</assemblies>
-	</compilation>
-	<httpRuntime maxRequestLength="1048576" targetFramework="4.7.2" />
+    <compilation debug="true" targetFramework="4.7.2" />
+    <httpRuntime maxRequestLength="1048576" targetFramework="4.7.2" />
   </system.web>
-
   <system.webServer>
-    <security>
-      <requestFiltering>
-        <requestLimits maxAllowedContentLength="1073741824" />
-      </requestFiltering>
-    </security>
+	  <security>
+		  <requestFiltering>
+			  <requestLimits maxAllowedContentLength="1073741824" />
+		  </requestFiltering>
+	  </security>
     <modules>
       <remove name="FormsAuthentication" />
     </modules>
@@ -106,6 +104,9 @@ N1NWPLSK12SQL-v01.shr.prod.ams1.secureserver.net;initial catalog=DB_RealEstate;U
     </providers>
   </entityFramework>
   <system.codedom>
+    <compilers>
+      <compiler language="c#;cs;csharp" extension=".cs" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:default /nowarn:1659;1699;1701" />
+      <compiler language="vb;vbs;visualbasic;vbscript" extension=".vb" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.VBCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:default /nowarn:41008 /define:_MYTYPE=\&quot;Web\&quot; /optionInfer+" />
+    </compilers>
   </system.codedom>
 </configuration>
-<!--ProjectGuid: B219EF18-4822-46A5-8656-BF0DF12EB6EE-->
