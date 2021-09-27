@@ -9,7 +9,7 @@
             <div class="col-lg-12">
                 <div class="home_content">
                     <div class="home-text text-center">
-                        <h2 class="fz55">Find Your Dream Home</h2>
+                        <h2 class="fz55">@Model.Translation.Heading</h2>
                         @*<p class="fz18 color-white">From as low as $10 per day with limited time offer discounts.</p>*@
                     </div>
                     @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
@@ -40,14 +40,14 @@
                                         <ul class="h1ads_1st_list mb0">
                                             <li class="list-inline-item">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" id="exampleInputName1" placeholder="Enter keyword..." name="keyword">
+                                                    <input type="text" class="form-control" id="exampleInputName1" placeholder="@Model.Translation.Keyword" name="keyword">
                                                 </div>
                                             </li>
                                             <li class="list-inline-item">
                                                 <div class="search_option_two">
                                                     <div class="candidate_revew_select">
                                                         <select name="type" class="selectpicker w100 show-tick">
-                                                            <option>Property Type</option>
+                                                            <option>@Model.Translation.Type</option>
                                                             @foreach (var type in Model.Type)
                                                             {
                                                                 <option>@type</option>
@@ -58,14 +58,14 @@
                                             </li>
                                             <li class="list-inline-item">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" id="exampleInputEmail" placeholder="Location" name="location">
+                                                    <input type="text" class="form-control" id="exampleInputEmail" placeholder="@Model.Translation.Location" name="location">
                                                     <label for="exampleInputEmail"><span class="flaticon-maps-and-flags"></span></label>
                                                 </div>
                                             </li>
                                             <li class="list-inline-item">
                                                 <div class="small_dropdown2">
                                                     <div id="prncgs" class="btn dd_btn">
-                                                        <span>Price</span>
+                                                        <span>@Model.Translation.Price</span>
                                                         <label for="exampleInputEmail2"><span class="fa fa-angle-down"></span></label>
                                                     </div>
                                                     <div class="dd_content2">
@@ -80,11 +80,11 @@
                                             <li class="custome_fields_520 list-inline-item">
                                                 <div class="navbered">
                                                     <div class="mega-dropdown">
-                                                        <span id="show_advbtn" class="dropbtn">Advanced <i class="flaticon-more pl10 flr-520"></i></span>
+                                                        <span id="show_advbtn" class="dropbtn">@Model.Translation.Advanced <i class="flaticon-more pl10 flr-520"></i></span>
                                                         <div class="dropdown-content">
                                                             <div class="row p15">
                                                                 <div class="col-lg-12">
-                                                                    <h4 class="text-thm3">Amenities</h4>
+                                                                    <h4 class="text-thm3">@Model.Translation.Amenities</h4>
                                                                 </div>
                                                                 @for (int a = 1; a <= 5; a++)
                                                                 {
@@ -115,7 +115,7 @@
                                                                         <li class="list-inline-item">
                                                                             <div class="candidate_revew_select">
                                                                                 <select name="bathrooms" class="selectpicker w100 show-tick">
-                                                                                    <option>Bathrooms</option>
+                                                                                    <option>@Model.Translation.Bathrooms</option>
                                                                                     <option>1</option>
                                                                                     <option>2</option>
                                                                                     <option>3</option>
@@ -130,7 +130,7 @@
                                                                         <li class="list-inline-item">
                                                                             <div class="candidate_revew_select">
                                                                                 <select name="bedrooms" class="selectpicker w100 show-tick">
-                                                                                    <option>Bedrooms</option>
+                                                                                    <option>@Model.Translation.Bedrooms</option>
                                                                                     <option>1</option>
                                                                                     <option>2</option>
                                                                                     <option>3</option>
@@ -145,7 +145,7 @@
                                                                         <li class="list-inline-item">
                                                                             <div class="candidate_revew_select">
                                                                                 <select name="state" class="selectpicker w100 show-tick">
-                                                                                    <option>State</option>
+                                                                                    <option>@Model.Translation.State</option>
                                                                                     @foreach (var state in Model.States)
                                                                                     {
                                                                                         <option>@state</option>
@@ -156,7 +156,7 @@
                                                                         <li class="list-inline-item">
                                                                             <div class="candidate_revew_select">
                                                                                 <select id="cityName" name="city" class="selectpicker w100 show-tick">
-                                                                                    <option>Built-up Area</option>
+                                                                                    <option>@Model.Translation.Area</option>
                                                                                     @foreach (var city in Model.Cities)
                                                                                     {
                                                                                         <option>@city</option>
@@ -168,7 +168,7 @@
                                                                 </div>
                                                                 <div class="col-lg-1 col-xl-2">
                                                                     <div class="mega_dropdown_content_closer">
-                                                                        <h5 class="text-thm text-right mt15"><span id="hide_advbtn" class="curp">Hide</span></h5>
+                                                                        <h5 class="text-thm text-right mt15"><span id="hide_advbtn" class="curp">@Model.Translation.Hide</span></h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -178,7 +178,7 @@
                                             </li>
                                             <li class="list-inline-item">
                                                 <div class="search_option_button">
-                                                    <button id="formSearch" type="submit" class="btn btn-thm">Search</button>
+                                                    <button id="formSearch" type="submit" class="btn btn-thm">@Model.Translation.Search</button>
                                                 </div>
                                             </li>
                                         </ul>

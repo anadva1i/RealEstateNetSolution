@@ -43,6 +43,8 @@ namespace RealEstateNet.Controllers
             model.Batumi = GetCity(lang, "Batumi");
             model.Language = lang;
             model.User = getUserDetails();
+            model.Translation = TranslateHome(lang);
+            model.HeaderTranslation = TranslateHeader(lang);
             return View(model);
         }
 
@@ -60,22 +62,25 @@ namespace RealEstateNet.Controllers
             return View();
         }
 
-        public ActionResult Calculator()
+        public ActionResult Calculator(string lang)
         {
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
+            model.HeaderTranslation = TranslateHeader(lang);
             return View(model);
         }
-        public ActionResult PriceRange()
+        public ActionResult PriceRange(string lang)
         {
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
+            model.HeaderTranslation = TranslateHeader(lang);
             return View(model);
         }
-        public ActionResult Services()
+        public ActionResult Services(string lang)
         {
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
+            model.HeaderTranslation = TranslateHeader(lang);
             return View(model);
         }
 
@@ -95,6 +100,7 @@ namespace RealEstateNet.Controllers
             model.TotalReviews = GetTotalReviews(id);
             model.ExistedReviews = GetExistedReviews(id);
             model.User = getUserDetails();
+            model.HeaderTranslation = TranslateHeader(lang);
             return View(model);
         }
         public UserDetails getUserDetails()
@@ -130,6 +136,7 @@ namespace RealEstateNet.Controllers
             model.SearchResult = search;
             model.User = getUserDetails();
             model.Page = SearchedPage;
+            model.HeaderTranslation = TranslateHeader(lang);
             return View(model);
         }
 
@@ -1099,7 +1106,7 @@ namespace RealEstateNet.Controllers
                                join l in context.Languages on translation.LanguageId equals l.Id
                                where translation.Text.Equals(searchModel.keyword) && l.Abbr.Equals(lang)
                                select p;
-                if(!searchModel.city.Equals("Built-up Area"))
+                if(!searchModel.city.Equals("Built-up Area") && !searchModel.city.Equals("ქალაქი") && !searchModel.city.Equals("город"))
                     property = from city in context.Cities
                                join content in context.Contents on city.ContentId equals content.Id
                                join location in context.Locations on city.Id equals location.CityId
@@ -1107,21 +1114,21 @@ namespace RealEstateNet.Controllers
                                join translation in context.Translations on content.Id equals translation.ContentId
                                where translation.Text.Equals(searchModel.city)
                                select p;
-                if (!searchModel.state.Equals("State"))
+                if (!searchModel.state.Equals("State") && !searchModel.state.Equals("მდგომარეობა") && !searchModel.state.Equals("Состояние"))
                     property = from state in context.States
                                join content in context.Contents on state.ContentId equals content.Id
                                join p in property on state.Id equals p.StateId
                                join translation in context.Translations on content.Id equals translation.ContentId
                                where translation.Text.Equals(searchModel.state)
                                select p;
-                if (!searchModel.bedrooms.Equals("Bedrooms"))
+                if (!searchModel.bedrooms.Equals("Bedrooms") && !searchModel.bedrooms.Equals("Спальни") && !searchModel.bedrooms.Equals("საძინებელი"))
                 {
                     int beds = int.Parse(searchModel.bedrooms);
                     property = from p in property
                                where p.Bedrooms == beds
                                select p;
                 }                    
-                if (!searchModel.bathrooms.Equals("Bathrooms"))
+                if (!searchModel.bathrooms.Equals("Bathrooms") && !searchModel.bathrooms.Equals("სველი წერტილი") && !searchModel.bathrooms.Equals("Ванные комнаты"))
                 {
                     int baths = int.Parse(searchModel.bathrooms);
                     property = from p in property
@@ -1186,6 +1193,46 @@ namespace RealEstateNet.Controllers
                 agent.Image = user.Picture;
             }
             return agent;
+        }
+
+        private HeaderModel TranslateHeader(string lang)
+        {
+            HeaderModel header = new HeaderModel();
+            header.Language = TranslateContent("Header_Language", lang);
+            header.Login = TranslateContent("Header_Login", lang);
+            header.Register = TranslateContent("Header_Register", lang);
+            return header;
+        }
+
+        private HomePageModel TranslateHome(string lang)
+        {
+            HomePageModel search = new HomePageModel();
+            search.Heading = TranslateContent("Home_Heading", lang);
+            search.Keyword = TranslateContent("Search_Keyword", lang);
+            search.Location = TranslateContent("Search_Location", lang);
+            search.Type = TranslateContent("Search_type", lang);
+            search.Price = TranslateContent("Search_Price", lang);
+            search.Advanced = TranslateContent("Search_Advanced", lang);
+            search.Search = TranslateContent("Search_Search", lang);
+            search.Amenities = TranslateContent("Search_Amenities", lang);
+            search.Bathrooms = TranslateContent("Search_Bath", lang);
+            search.Bedrooms = TranslateContent("Search_Bed", lang);
+            search.State = TranslateContent("Search_State", lang);
+            search.Area = TranslateContent("Search_Area", lang);
+            search.Hide = TranslateContent("Search_hide", lang);
+            return search;
+        }
+
+        public string TranslateContent(string keyword, string lang)
+        {
+            string translation = "";
+            using(var context = new DB_RealEstateEntities())
+            {
+                int langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                int contentId = context.Contents.FirstOrDefault(c => c.Type.Equals(keyword)).Id;
+                translation = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentId).Text;
+            }
+            return translation;
         }
     }
 }
