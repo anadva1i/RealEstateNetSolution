@@ -1,0 +1,48 @@
+﻿@model dynamic
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    @*<li class="list-inline-item add_listing"><a href="page-add-new-property.html"><span class="flaticon-plus"></span><span class="dn-lg"> Create Listing</span></a></li>*@
+
+
+    @*<ul class="nav nav-inverse navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>*@
+    <li class="user_setting">
+        <div class="dropdown">
+            @{string imageUrl = "../../Content/images/user.png";
+                if (Model.User.Image != null)
+                {
+                    imageUrl = Model.User.Image;
+                }
+             }  
+            <a class="btn dropdown-toggle" href="#" data-toggle="dropdown"><img class="rounded-circle" src="@imageUrl" alt="e1.png" style="width: 50px; height: 50px; object-fit: cover"><span class="dn-1199"></span></a>
+            <div class="dropdown-menu">
+                <div class="user_set_header">
+                    <img style="width: 50px; height: 50px; float: left; object-fit: cover" class="rounded-circle" src="@imageUrl" alt="e1.png">
+                    <p>@Model.User.Name @Model.User.LastName <br><span class="address">@User.Identity.GetUserName()</span></p>
+                </div>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="user_setting_content">
+                        <a class="dropdown-item active" href="../Dashboard/My_Profile">My Profile</a>
+                        <a class="dropdown-item" href="../Dashboard/Message">Messages</a>
+                        <a class="dropdown-item" href="#">Purchase history</a>
+                        <a class="dropdown-item" href="#">Help</a>
+                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </li>
+
+    <li class="list-inline-item add_listing"><a href="~/Dashboard/AddNewProperty"><span class="flaticon-plus"></span><span class="dn-lg"> Create Listing</span></a></li>
+}
+else
+{
+    <li class="list-inline-item "><a href="../Account/Login" class="btn flaticon-user" style="display: inline-block; padding: 0"> Login/</a><a href="../Account/Register" style="display: inline-block; padding: 0">Register</a></li>
+}

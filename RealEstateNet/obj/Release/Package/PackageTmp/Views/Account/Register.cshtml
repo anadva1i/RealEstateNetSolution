@@ -1,0 +1,83 @@
+﻿@using RealEstateNet.Models
+@model RealEstateNet.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<!-- Inner Page Breadcrumb -->
+<section class="inner_page_breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="breadcrumb_content">
+                    <h4 class="breadcrumb_title">Register</h4>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="../../">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Register</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="our-log-reg bgc-fa">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-lg-6 offset-lg-3">
+                <div class="sign_up_form inner_page">
+                    <div class="heading">
+                        <h3 class="text-center">Register to start learning</h3>
+                        <p class="text-center">
+                            Have an account?
+                            @Html.ActionLink("Login", "Login")
+                        </p>
+                    </div>
+                    <div class="details">
+                        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <div class="form-group ui_kit_select_search mb0">
+                                @*@Html.DropDownListFor(m => m.UserRole, new SelectList(Enum.GetValues(typeof(AgentRoles))), "Select Gender")*@
+                                <select class="selectpicker" name="Role" data-live-search="true" data-width="100%" id="sel">
+                                    <option data-tokens="SelectRole" value="1">Single User</option>
+                                    <option data-tokens="Agent/Agency" value="2">Agent</option>
+                                    <option data-tokens="SingleUser" value="3">Multi User</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                @*<div class="col-md-10">*@
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                                @*</div>*@
+                            </div>
+                            <div class="form-group">
+                                @*<div class="col-md-10">*@
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                                @*</div>*@
+                            </div>
+                            <div class="form-group">
+                                @*<div class="col-md-10">*@
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm password" })
+                                @*</div>*@
+                            </div>
+                            <div class="form-group">
+                                @*  <div class="col-md-offset-2 col-md-10">*@
+                                <button type="submit" class="btn btn-log btn-block btn-thm2">Register</button>
+                                @*</div>*@
+                            </div>
+                            <div class="divide">
+                                <span class="lf_divider"></span>
+                                <hr>
+                            </div>
+                        }
+                        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

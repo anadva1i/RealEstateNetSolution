@@ -62,25 +62,25 @@ namespace RealEstateNet.Controllers
             return View();
         }
 
-        public ActionResult Calculator(string lang)
+        public ActionResult Calculator()
         {
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
-            model.HeaderTranslation = TranslateHeader(lang);
+            model.HeaderTranslation = TranslateHeader(language);
             return View(model);
         }
-        public ActionResult PriceRange(string lang)
+        public ActionResult PriceRange()
         {
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
-            model.HeaderTranslation = TranslateHeader(lang);
+            model.HeaderTranslation = TranslateHeader(language);
             return View(model);
         }
-        public ActionResult Services(string lang)
+        public ActionResult Services()
         {
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
-            model.HeaderTranslation = TranslateHeader(lang);
+            model.HeaderTranslation = TranslateHeader(language);
             return View(model);
         }
 

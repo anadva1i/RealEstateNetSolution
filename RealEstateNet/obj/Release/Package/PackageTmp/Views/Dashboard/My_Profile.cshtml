@@ -1,0 +1,223 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+@if (ViewBag.TheResult == true)
+{
+    <div class="alert alert-success">
+        <strong>Thank you!</strong> Your query has been submitted.
+    </div>
+}
+<section class="our-dashbord dashbord bgc-f7 pb50">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-xl-2 dn-992 pl0"></div>
+            <div class="col-lg-9 col-xl-10 maxw100flex-992">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="dashboard_navigationbar dn db-992">
+                            <div class="dropdown">
+                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10"></i> Dashboard Navigation</button>
+                                <ul id="myDropdown" class="dropdown-content">
+                                    <li><a href="page-dashboard.html"><span class="flaticon-layers"></span> Dashboard</a></li>
+                                    <li><a href="page-message.html"><span class="flaticon-envelope"></span> Message</a></li>
+                                    <li><a href="page-my-properties.html"><span class="flaticon-home"></span> My Properties</a></li>
+                                    <li><a href="page-my-favorites.html"><span class="flaticon-heart"></span> My Favorites</a></li>
+                                    <li><a href="page-my-savesearch.html"><span class="flaticon-magnifying-glass"></span> Saved Search</a></li>
+                                    <li><a href="page-my-review.html"><span class="flaticon-chat"></span> My Reviews</a></li>
+                                    <li><a href="page-my-packages.html"><span class="flaticon-box"></span> My Package</a></li>
+                                    <li class="active"><a href="page-my-profile.html"><span class="flaticon-user"></span> My Profile</a></li>
+                                    <li><a href="page-add-new-property.html"><span class="flaticon-filter-results-button"></span> Add New Listing</a></li>
+                                    <li><a href="page-login.html"><span class="flaticon-logout"></span> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb10">
+                        <div class="breadcrumb_content style2">
+                            <h2 class="breadcrumb_title">My Profile</h2>
+                            <p>We are glad to see you again!</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="my_dashboard_review">
+                            <div class="row">
+                                <div class="col-xl-2">
+                                    <h4>Profile Information</h4>
+                                </div>
+                                <div class="col-xl-10">
+                                    @using (Html.BeginForm("My_Profile", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                                    {
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <span id="agent-pic" style="display: none">@Model.UserDetails.PictureURL</span>
+                                                <div class="wrap-custom-file">
+                                                    <input type="file" name="Picture" id="agentPic" accept=".jpg, .png" />
+                                                    <label for="agentPic">
+                                                        <span><i class="flaticon-download"></i> Upload Photo </span>
+                                                    </label>
+                                                </div>
+                                                <p>*minimum 260px x 260px</p>
+                                            </div>
+                                            @if (@Model.Role == "Single User" || @Model.Role == "Agent")
+                                            {
+                                                <div class="col-lg-6 col-xl-6">
+                                                    <div class="my_profile_setting_input form-group">
+                                                        <label for="formGroupExampleInput3">First Name</label>
+                                                        <input name="Name" type="text" class="form-control" id="Name" value="@Model.UserDetails.Name" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-xl-6">
+                                                    <div class="my_profile_setting_input form-group">
+                                                        <label for="formGroupExampleInput4">Last Name</label>
+                                                        <input name="LastName" type="text" class="form-control" id="LastName" value="@Model.UserDetails.LastName" required>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="Phone">Phone</label>
+                                                    <input name="Phone" type="text" class="form-control" id="Phone" value="@Model.UserDetails.Phone" required>
+                                                </div>
+                                            </div>
+                                            @if (@Model.Role == "Multi User" || @Model.Role == "Agent")
+                                            {
+                                                <div class="col-lg-6 col-xl-6">
+                                                    <div class="my_profile_setting_input form-group">
+                                                        <label for="CompanyName">Company Name</label>
+                                                        <input name="CompanyName" type="text" class="form-control" id="CompanyName" value="@Model.UserDetails.CompanyName" required>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="col-xl-12 text-right">
+                                                <div class="my_profile_setting_input">
+                                                    <button class="btn btn2">Update Profile</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="my_dashboard_review mt30">
+                                <div class="row">
+                                    <div class="col-xl-2">
+                                        <h4>Social Media</h4>
+                                    </div>
+                                    <div class="col-xl-10">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="formGroupExampleSkype">Skype</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleSkype" placeholder="alitfn">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="formGroupExampleWebsite">Website</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleWebsite" placeholder="creativelayers@gmail.com">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="formGroupExampleFaceBook">Facebook</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleFaceBook">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="formGroupExampleTwitter">Twitter</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleTwitter">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="formGroupExampleLinkedin">Linkedin</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleLinkedin">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="formGroupExampleInstagram">Instagram</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleInstagram">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="formGroupExampleGooglePlus">Google Plus</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleGooglePlus">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="formGroupExampleYoutube">Youtube</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleYoutube">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="formGroupExamplePinterest">Pinterest</label>
+                                                    <input type="text" class="form-control" id="formGroupExamplePinterest">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="my_profile_setting_input form-group">
+                                                    <label for="formGroupExampleVimeo">Vimeo</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleVimeo">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 text-right">
+                                                <div class="my_profile_setting_input">
+                                                    <button class="btn btn2">Update Profile</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="my_dashboard_review mt30">
+                            <div class="row">
+                                <div class="col-xl-2">
+                                    <h4>Change password</h4>
+                                </div>
+                                <div class="col-xl-10">
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <div class="my_profile_setting_input form-group">
+                                                <label for="formGroupExampleOldPass">Old Password</label>
+                                                <input type="text" class="form-control" id="formGroupExampleOldPass" placeholder="alitfn">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-xl-6">
+                                            <div class="my_profile_setting_input form-group">
+                                                <label for="formGroupExampleNewPass">New Password</label>
+                                                <input type="text" class="form-control" id="formGroupExampleNewPass">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-xl-6">
+                                            <div class="my_profile_setting_input form-group">
+                                                <label for="formGroupExampleConfPass">Confirm New Password</label>
+                                                <input type="text" class="form-control" id="formGroupExampleConfPass">
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12">
+                                            <div class="my_profile_setting_input float-right fn-520">
+                                                <button class="btn btn2">Update Profile</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @Html.Partial("_DashboardFooter")
+            </div>
+        </div>
+    </div>
+</section>

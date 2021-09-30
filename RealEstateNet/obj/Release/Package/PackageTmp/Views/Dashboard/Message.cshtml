@@ -1,0 +1,177 @@
+﻿
+@{
+    ViewBag.Title = "Message";
+}
+
+<section class="our-dashbord dashbord bgc-f7 pb50">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-xl-2 dn-992 pl0"></div>
+            <div class="col-lg-9 col-xl-10 maxw100flex-992">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="dashboard_navigationbar dn db-992">
+                            <div class="dropdown">
+                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10"></i> Dashboard Navigation</button>
+                                <ul id="myDropdown" class="dropdown-content">
+                                    <li><a href="page-dashboard.html"><span class="flaticon-layers"></span> Dashboard</a></li>
+                                    <li class="active"><a href="page-message.html"><span class="flaticon-envelope"></span> Message</a></li>
+                                    <li><a href="page-my-properties.html"><span class="flaticon-home"></span> My Properties</a></li>
+                                    <li><a href="page-my-favorites.html"><span class="flaticon-heart"></span> My Favorites</a></li>
+                                    <li><a href="page-my-savesearch.html"><span class="flaticon-magnifying-glass"></span> Saved Search</a></li>
+                                    <li><a href="page-my-review.html"><span class="flaticon-chat"></span> My Reviews</a></li>
+                                    <li><a href="page-my-packages.html"><span class="flaticon-box"></span> My Package</a></li>
+                                    <li><a href="page-my-profile.html"><span class="flaticon-user"></span> My Profile</a></li>
+                                    <li><a href="page-add-new-property.html"><span class="flaticon-filter-results-button"></span> Add New Listing</a></li>
+                                    <li><a href="page-login.html"><span class="flaticon-logout"></span> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-lg-12 mb10">
+                            <div class="breadcrumb_content style2">
+                                <h2 class="breadcrumb_title">Message</h2>
+                                <p>We are glad to see you again!</p>
+                            </div>
+                        </div>*@
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 col-xl-4">
+                        <div class="message_container">
+                            <div class="inbox_user_list">
+                                <div class="iu_heading">
+                                    <div class="candidate_revew_search_box">
+                                        @*@using (Html.BeginForm("UserSearch", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-inline", role = "form" }))
+                                        {*@   
+                                            <form class="form-inline">
+                                                <input class="form-control" type="search" placeholder="Search by email" aria-label="Search" name="email">
+                                                <button class="btn" type="submit"><span class="flaticon-magnifying-glass"></span></button>
+                                            </form>
+                                        @*}*@
+                                    </div>
+                                </div>
+                                <ul>
+                                    @foreach (var contact in Model.Contacts)
+                                    {
+                                        <li class="contact" id="@contact.ChatId" style="padding: 2% 0% 0.5% 3%">
+                                            <a href="?chatId=@contact.ChatId">
+                                                <div class="wrap">
+                                                    @*<span class="contact-status"></span>*@
+                                                    <img style="width: 50px; height: 50px; object-fit: cover" class="img-fluid" src="@contact.ImageUrl" alt="s1.jpg" />
+                                                    <div class="meta">
+                                                        <h5 class="name">@contact.Name</h5>
+                                                        <p class="preview">@contact.lastMessage</p>
+                                                    </div>
+                                                    @if (@contact.NewMessages > 0)
+                                                    {
+                                                        <div class="m_notif">@contact.NewMessages</div>
+                                                    }
+                                                </div>
+                                            </a>
+                                        </li>
+                                     }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-xl-8">
+                        <div class="message_container">
+                            @if (Model.Header.Name != null)
+                            {
+                                <div class="user_heading">
+                                    <a href="#">
+                                        <div class="wrap">
+                                            <img style="width: 50px; height: 50px; object-fit: cover" class="img-fluid" src="@Model.Header.ImageUrl" alt="s5.jpg" />
+                                            <div class="meta">
+                                                <h5 class="name">@Model.Header.Name</h5>
+                                                <p class="preview">@Model.Header.Role</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="inbox_chatting_box">
+                                    <ul class="chatting_content" id="discussion" style="padding-bottom: 50px">
+                                        @foreach (var text in Model.Chat)
+                                        {
+                                            if (text.Sender == User.Identity.Name)
+                                            {
+                                                <li class="media reply">
+                                                    <div class="media-body text-right">
+                                                        <div class="date_time">@text.SendingDate</div>
+                                                        <p>@text.Text</p>
+                                                    </div>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="media sent">
+                                                    @*<img class="img-fluid align-self-start mr-3" src="../Content/images/team/s6.jpg" alt="s6.jpg" />*@
+                                                    <div class="media-body">
+                                                        <div class="date_time">@text.SendingDate</div>
+                                                        <p>@text.Text</p>
+                                                    </div>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="mi_text">
+                                    <div class="message_input">
+                                        <form class="form-inline" onsubmit="return false">
+                                            <input style="display: none" type="text" id="displayname" value="@User.Identity.Name" />
+                                            <input id="message" class="form-control" type="search" placeholder="Enter text here..." aria-label="Search">
+                                            <button class="btn" type="submit" id="sendmessage">Send Message</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div style="width: auto; text-align: center; padding-top: 28%">
+                                    <h4>Select conversation to send message</h4>
+                                    <i class="flaticon-envelope" style="color: #ff5a5f; font-size: 60px"></i>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                @Html.Partial("_DashboardFooter")
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        $(function () {
+            var url = window.location.href;
+            var chatId = url.substring(url.indexOf("=") + 1, url.length);
+            var chat = $.connection.chatHub;
+            chat.client.addNewMessageToPage = function (date, message, from) {
+                if (htmlEncode(from) == $('#displayname').val()) {
+                    $('#discussion').append('<li class="media reply"><div class="media-body text-right"><div class="date_time">' + htmlEncode(date)
+                        + '</div><p>' + htmlEncode(message)
+                        + '</p></div></li>');
+                }
+                else {
+                $('#discussion').append('<li class="media sent"><div class="media-body"><div class="date_time">' + htmlEncode(date)
+                    + '</div><p>' + htmlEncode(message)
+                        + '</p></div></li>');
+                }
+            };
+            $('#message').focus();
+            $.connection.hub.start().done(function () {
+                chat.server.join(chatId);
+                $('#sendmessage').click(function () {
+                    chat.server.send($('#message').val(), chatId, $('#displayname').val());
+                    $('#message').val('').focus();
+                });
+            });
+        });
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+    </script>
+}

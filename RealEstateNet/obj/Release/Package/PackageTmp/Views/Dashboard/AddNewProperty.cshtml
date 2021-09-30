@@ -1,0 +1,440 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "AddNewProperty";
+}
+@if (!Model.Registered)
+{
+    @Html.Partial("_ModalUserDetails")
+}
+<!-- Our Dashbord -->
+<section class="our-dashbord dashbord bgc-f7 pb50">
+    <div class="container-fluid ovh">
+        <div class="row">
+            <div class="col-lg-3 col-xl-2 dn-992 pl0"></div>
+            <div class="col-lg-9 col-xl-10 maxw100flex-992">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="dashboard_navigationbar dn db-992">
+                            <div class="dropdown">
+                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10"></i> Dashboard Navigation</button>
+                                <ul id="myDropdown" class="dropdown-content">
+                                    <li><a href="page-dashboard.html"><span class="flaticon-layers"></span> Dashboard</a></li>
+                                    <li><a href="page-message.html"><span class="flaticon-envelope"></span> Message</a></li>
+                                    <li><a href="page-my-properties.html"><span class="flaticon-home"></span> My Properties</a></li>
+                                    <li><a href="page-my-favorites.html"><span class="flaticon-heart"></span> My Favorites</a></li>
+                                    <li><a href="page-my-savesearch.html"><span class="flaticon-magnifying-glass"></span> Saved Search</a></li>
+                                    <li><a href="page-my-review.html"><span class="flaticon-chat"></span> My Reviews</a></li>
+                                    <li><a href="page-my-packages.html"><span class="flaticon-box"></span> My Package</a></li>
+                                    <li><a href="page-my-profile.html"><span class="flaticon-user"></span> My Profile</a></li>
+                                    <li class="active"><a href="page-add-new-property.html"><span class="flaticon-filter-results-button"></span> Add New Listing</a></li>
+                                    <li><a href="page-login.html"><span class="flaticon-logout"></span> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb10">
+                        <div class="breadcrumb_content style2">
+                            <h2 class="breadcrumb_title">@Model.PageModel.AddNewProperty_Heading</h2>
+                            <p>@Model.PageModel.AddNewProperty_Description</p>
+                        </div>
+                    </div>
+                    @{var controller = "CreateListing"; }
+                    @if (Model.Property.Id > 0)
+                    {
+                        controller = "EditListing";
+                    }
+
+                    @using (Html.BeginForm(controller, "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    {
+                        <input type="text" name="Id" value="@Model.Property.Id" style="display: none">
+                        <div class="col-lg-12">
+                            <div class="my_dashboard_review">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4 class="mb30">@Model.PageModel.CreateListing</h4>
+                                    </div>
+                                    
+                                    <div class="col-lg-12">
+                                        <div class="my_profile_setting_textarea">
+                                            <label for="propertyDescription">@Model.PageModel.PropertyDescriptionGE</label>
+                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionGE">@Model.Property.DescriptionGE</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="my_profile_setting_textarea">
+                                            <label for="propertyDescription">@Model.PageModel.PropertyDescriptionEN</label>
+                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionEN">@Model.Property.DescriptionEN</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="my_profile_setting_textarea">
+                                            <label for="propertyDescription">@Model.PageModel.PropertyDescriptionRU</label>
+                                            <textarea class="form-control" id="propertyDescription" rows="7" name="DescriptionRU">@Model.Property.DescriptionRU</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-6">
+                                        <div class="my_profile_setting_input ui_kit_select_search form-group">
+                                            <label>@Model.PageModel.PropertyType</label>
+                                            <select class="selectpicker" data-live-search="true" data-width="100%" name="Type">
+                                                <option data-tokens="@Model.Property.Type">
+                                                    @Model.Property.Type
+                                                </option>
+                                                @foreach (var type in Model.TypeModels)
+                                                {
+                                                    if (!type.Equals(@Model.Property.Type))
+                                                    {
+                                                        <option data-tokens="@type">
+                                                            @type
+                                                        </option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-6">
+                                        <div class="my_profile_setting_input ui_kit_select_search form-group">
+                                            <label>@Model.PageModel.PropertyStatus</label>
+                                            <select class="selectpicker" data-live-search="true" data-width="100%" name="Status">
+                                                <option data-tokens="@Model.Property.Status">
+                                                    @Model.Property.Status
+                                                </option>
+                                                @foreach (var status in Model.StatusModels)
+                                                {
+                                                    if (!status.Equals(@Model.Property.Status))
+                                                    {
+                                                        <option data-tokens="@status">
+                                                            @status
+                                                        </option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-xl-4">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="formGroupExamplePrice">@Model.PageModel.PropertyPrice</label>
+                                            <input type="number" class="form-control" id="formGroupExamplePrice" name="Price" value="@Model.Property.Price" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-xl-4">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="formGroupExampleArea">@Model.PageModel.PropertyArea</label>
+                                            <input type="number" class="form-control" id="formGroupExampleArea" name="Area" value="@Model.Property.Area">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-xl-4">
+                                        <div class="my_profile_setting_input ui_kit_select_search form-group">
+                                            <label for="formGroupExampleRooms">@Model.PageModel.PropertyRooms</label>
+                                            <input type="number" class="form-control" id="formGroupExampleRooms" name="Rooms" value="@Model.Property.Rooms">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="my_dashboard_review mt30">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4 class="mb30">@Model.PageModel.Location</h4>
+                                    </div>
+                                    <div class="col-lg-12 col-xl-12">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="propertyAddress">@Model.PageModel.AddressGE</label>
+                                            <input type="text" class="form-control" id="propertyAddressGE" name="AddressGE" placeholder="Drag map marker to get the address" value="@Model.Property.AddressEN" readonly="true" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-6">
+                                        <div class="my_profile_setting_input ui_kit_select_search form-group">
+                                            <label>@Model.PageModel.Country</label>
+                                            <select class="selectpicker" data-live-search="true" data-width="100%" name="Country">
+                                                @foreach (var country in Model.Countries)
+                                                {
+                                                    <option data-tokens="@country">
+                                                        @country
+                                                    </option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-6">
+                                        <div class="my_profile_setting_input ui_kit_select_search form-group">
+                                            <label>@Model.PageModel.City</label>
+                                            <select class="selectpicker" data-live-search="true" data-width="100%" name="City">
+                                                <option data-tokens="@Model.Property.City">
+                                                    @Model.Property.City
+                                                </option>
+                                                @foreach (var city in Model.Cities)
+                                                {
+                                                    if (!city.Equals(@Model.Property.City))
+                                                    {
+                                                        <option data-tokens="@city">
+                                                            @city
+                                                        </option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="my_profile_setting_input form-group">
+                                            <div class="h400 bdrs8" id="map-canvas"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-xl-4">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="googleMapLat">@Model.PageModel.Latitude</label>
+                                            <input type="text" class="form-control" id="googleMapLat" name="Latitude" value="@Model.Property.Latitude">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-xl-4">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="googleMapLong">@Model.PageModel.Longitude</label>
+                                            <input type="text" class="form-control" id="googleMapLong" name="Longitude" value="@Model.Property.Longitude">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-xl-4">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="zipCode">@Model.PageModel.Zip</label>
+                                            <input type="text" class="form-control" id="zipCode" name="Zip" value="@Model.Property.Zip">
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-xl-12">
+                    <div class="my_profile_setting_input">
+                        <button class="btn btn1 float-left">Back</button>
+                        <button class="btn btn2 float-right">Next</button>
+                    </div>
+                </div>*@
+                                </div>
+                            </div>
+                            <div class="my_dashboard_review mt30">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4 class="mb30">@Model.PageModel.DetailedInformation</h4>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="propertyId">@Model.PageModel.PropertyId</label>
+                                            <input type="text" class="form-control" id="propertyId" name="CadastralCode" value="@Model.Property.CadastralCode">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="bedRooms">@Model.PageModel.Bedrooms</label>
+                                            <input type="number" class="form-control" id="bedRooms" name="Bedrooms" value="@Model.Property.Bedrooms">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="bathRooms">@Model.PageModel.Bathrooms</label>
+                                            <input type="number" class="form-control" id="bathRooms" name="Bathrooms" value="@Model.Property.Bathrooms">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="garages">@Model.PageModel.Garages</label>
+                                            <input type="number" class="form-control" id="garages" name="Garages" value="@Model.Property.Garages">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="my_profile_setting_input form-group">
+                                            <label for="garagesSize">@Model.PageModel.CeilingSize</label>
+                                            <input type="number" class="form-control" id="garagesSize" name="CeilingSize" value="@Model.Property.CeilingSize">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="my_profile_setting_input ui_kit_select_search form-group">
+                                            <label for="yearBuild">State</label>
+                                            <select class="selectpicker" data-live-search="true" data-width="100%" name="State">
+                                                <option data-tokens="@Model.Property.State">
+                                                    @Model.Property.State
+                                                </option>
+                                                @foreach (var state in Model.StateModels)
+                                                {
+                                                    if (!state.Equals(@Model.Property.State))
+                                                    {
+                                                        <option data-tokens="@state">
+                                                            @state
+                                                        </option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12">
+                                        <h4>@Model.PageModel.Amenities</h4>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                        <ul class="ui_kit_checkbox selectable-list">
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="AirConditioning" @Model.Property.AirConditioning>
+                                                    <label class="custom-control-label" for="customCheck1">@Model.FeaturesModel.Feature_AirConditioning</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="Yard" @Model.Property.Yard>
+                                                    <label class="custom-control-label" for="customCheck2">@Model.FeaturesModel.Feature_Yard</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck3" name="SwimmingPool" @Model.Property.SwimmingPool>
+                                                    <label class="custom-control-label" for="customCheck3">@Model.FeaturesModel.Feature_SwimmingPool</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                        <ul class="ui_kit_checkbox selectable-list">
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck6" name="Tv" @Model.Property.Tv>
+                                                    <label class="custom-control-label" for="customCheck6">@Model.FeaturesModel.Feature_TV</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck7" name="Fireplace" @Model.Property.Fireplace>
+                                                    <label class="custom-control-label" for="customCheck7">@Model.FeaturesModel.Feature_Fireplace</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck8" name="Refrigirator" @Model.Property.Refrigirator>
+                                                    <label class="custom-control-label" for="customCheck8">@Model.FeaturesModel.Feature_Refrigirator</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                        <ul class="ui_kit_checkbox selectable-list">
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck11" name="Wifi" @Model.Property.Wifi>
+                                                    <label class="custom-control-label" for="customCheck11">@Model.FeaturesModel.Feature_Wifi</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck12" name="Sauna" @Model.Property.Sauna>
+                                                    <label class="custom-control-label" for="customCheck12">@Model.FeaturesModel.Feature_Sauna</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck13" name="WindowCoverings" @Model.Property.WindowCoverings>
+                                                    <label class="custom-control-label" for="customCheck13">@Model.FeaturesModel.Feature_WindowCoverings</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="my_dashboard_review mt30">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4 class="mb30">Services</h4>
+                                    </div>
+
+                                    <div class="col-xl-12">
+                                        <h4>VIP Services</h4>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" name="SuperVip" id="flexRadioDefault1">
+                                            <label class="custom-control-label" for="flexRadioDefault1">
+                                                @Model.Services.SuperVip
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" name="VipPlus" id="flexRadioDefault2">
+                                            <label class="custom-control-label" for="flexRadioDefault2">
+                                                @Model.Services.VipPlus
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" name="Vip" id="flexRadioDefault3">
+                                            <label class="custom-control-label" for="flexRadioDefault3">
+                                                @Model.Services.Vip
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-12" style="margin-top: 20px">
+                                        <h4>Update</h4>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" name="Update" id="flexRadioDefault4">
+                                            <label class="custom-control-label" for="flexRadioDefault4">
+                                                @Model.Services.Update
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-12" style="margin-top: 20px">
+                                        <h4>Add Color</h4>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" name="Color" id="flexRadioDefault5">
+                                            <label class="custom-control-label" for="flexRadioDefault5">
+                                                @Model.Services.Border
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                    <div class="my_dashboard_review mt30">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h4 class="mb30">@Model.PageModel.PropertyMedia</h4>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <ul class="mb0" id="ul-images">
+                                                    @if (Model.Property.pictures != null)
+                                                    {
+                                                        foreach (var picture in Model.Property.pictures)
+                                                        {
+                                                            var count = 1;
+                                                            <li id="li-@count" class="list-inline-item">
+                                                                <div class="portfolio_item">
+                                                                    <img class="img-fluid" id="myImg" style="width: 200px; height: 200px; object-fit: cover" src="@picture">
+                                                                    <div class="edu_stats_list" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><span class="flaticon-garbage" onclick="deleteImage('@picture', @count)"></span></div>
+                                                                </div>
+                                                            </li>
+                                                            count++;
+                                                        }
+                                                    }
+
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="portfolio_upload">
+                                                    <input style="cursor: pointer; line-height: 0;" id="select-files" type="file" accept="image/x-png,image/jpeg" multiple="" />
+                                                    <div class="icon"><span class="flaticon-download"></span></div>
+                                                    <p>Select images</p>
+                                                </div>
+                                            </div>
+                                            <textarea type="file" name="media" id="media" style="display: none"></textarea>
+                                            <div class="col-xl-12">
+                                                <div class="my_profile_setting_input">
+                                                    @*<button class="btn btn1 float-left">Back</button>*@
+                                                    <button class="btn btn2 float-right">@Model.PageModel.Next</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                            @Html.Partial("_DashboardFooter")
+                        </div>
+        </div>
+    </div>
+</section>
