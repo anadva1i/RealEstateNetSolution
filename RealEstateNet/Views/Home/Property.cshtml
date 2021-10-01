@@ -1,7 +1,7 @@
 ﻿@model dynamic
 @{
     ViewBag.Title = "Property";
-} 
+}
 <div class="alert alert-primary alert-dismissable" style="position: fixed; width: 100%; z-index:1; top: 83px; right: 0; display: none">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     <b id="alertMessage"></b>
@@ -44,7 +44,7 @@
             <div class="h600" id="map-canvas"></div>
         </div>
         <div class="tab-pane fade" id="street_view" role="tabpanel" aria-labelledby="street-view-tab">
-            <iframe class="h600 w100"  src="https://maps.google.com/maps?q='+@Model.Details.Latitude+','+@Model.Details.Longitude+'&hl=es&z=14&amp;output=embed" frameborder="0" allowfullscreen></iframe>
+            <iframe class="h600 w100" src="https://maps.google.com/maps?q='+@Model.Details.Latitude+','+@Model.Details.Longitude+'&hl=es&z=14&amp;output=embed" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
 </div>
@@ -351,17 +351,17 @@
                             <h4 class="mb30">Description</h4>
                             <p class="mb25">@Model.Details.Description</p>
                             @*<p class="gpara second_para white_goverlay mt10 mb10">Fully furnished. Elegantly appointed condominium unit situated on premier location. PS6. The wide entry hall leads to a large living room with dining area. This expansive 2 bedroom and 2 renovated marble bathroom apartment has great windows. Despite the interior views, the apartments Southern and Eastern exposures allow for lovely natural light to fill every room. The master suite is surrounded by handcrafted milkwork and features incredible walk-in closet and storage space.</p>
-                <div class="collapse" id="collapseExample">
-                    <div class="card card-body">
-                        <p class="mt10 mb10">Fully furnished. Elegantly appointed condominium unit situated on premier location. PS6. The wide entry hall leads to a large living room with dining area. This expansive 2 bedroom and 2 renovated marble bathroom apartment has great windows. Despite the interior views, the apartments Southern and Eastern exposures allow for lovely natural light to fill every room. The master suite is surrounded by handcrafted milkwork and features incredible walk-in closet and storage space.</p>
-                        <p class="mt10 mb10">Fully furnished. Elegantly appointed condominium unit situated on premier location. PS6. The wide entry hall leads to a large living room with dining area. This expansive 2 bedroom and 2 renovated marble bathroom apartment has great windows. Despite the interior views, the apartments Southern and Eastern exposures allow for lovely natural light to fill every room. The master suite is surrounded by handcrafted milkwork and features incredible walk-in closet and storage space.</p>
-                    </div>
-                </div>
-                <p class="overlay_close">
-                    <a class="text-thm fz14" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        Show More <span class="flaticon-download-1 fz12"></span>
-                    </a>
-                </p>*@
+                                <div class="collapse" id="collapseExample">
+                                    <div class="card card-body">
+                                        <p class="mt10 mb10">Fully furnished. Elegantly appointed condominium unit situated on premier location. PS6. The wide entry hall leads to a large living room with dining area. This expansive 2 bedroom and 2 renovated marble bathroom apartment has great windows. Despite the interior views, the apartments Southern and Eastern exposures allow for lovely natural light to fill every room. The master suite is surrounded by handcrafted milkwork and features incredible walk-in closet and storage space.</p>
+                                        <p class="mt10 mb10">Fully furnished. Elegantly appointed condominium unit situated on premier location. PS6. The wide entry hall leads to a large living room with dining area. This expansive 2 bedroom and 2 renovated marble bathroom apartment has great windows. Despite the interior views, the apartments Southern and Eastern exposures allow for lovely natural light to fill every room. The master suite is surrounded by handcrafted milkwork and features incredible walk-in closet and storage space.</p>
+                                    </div>
+                                </div>
+                                <p class="overlay_close">
+                                    <a class="text-thm fz14" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        Show More <span class="flaticon-download-1 fz12"></span>
+                                    </a>
+                                </p>*@
                         </div>
                     </div>
                     <div class="col-lg-12">
@@ -647,38 +647,38 @@
                             </div>
                         </div>
                         @*@using (Html.BeginForm("SendEmail", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
-                        {*@
-                            <ul class="sasw_list mb0">
-                                <li class="search_area">
-                                    <div class="form-group">
-                                        <input style="display: none" id="mail_to" type="text" class="form-control" value="@Model.Agent.Email">
-                                    </div>
-                                </li>
-                                <li class="search_area">
-                                    <div class="form-group">
-                                        <input id="subject" type="text" class="form-control" placeholder="Subject">
-                                    </div>
-                                </li>
-                                <li class="search_area">
-                                    <div class="form-group">
-                                        <input id="mail_from" type="email" class="form-control" placeholder="Email">
-                                    </div>
-                                </li>
-                                <li class="search_area">
-                                    <div class="form-group">
-                                        <textarea id="body" class="form-control required" rows="5" required="required" placeholder="I'm interest in [ Listing Single ]"></textarea>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="search_option_button">
-                                        <button type="submit" class="btn btn-block btn-thm" onclick="sendEmail()">Send Email</button>
-                                    </div>
-                                </li>
-                            </ul>
+                            {*@
+                        <ul class="sasw_list mb0">
+                            <li class="search_area">
+                                <div class="form-group">
+                                    <input style="display: none" id="mail_to" type="text" class="form-control" value="@Model.Agent.Email">
+                                </div>
+                            </li>
+                            <li class="search_area">
+                                <div class="form-group">
+                                    <input id="subject" type="text" class="form-control" placeholder="Subject">
+                                </div>
+                            </li>
+                            <li class="search_area">
+                                <div class="form-group">
+                                    <input id="mail_from" type="email" class="form-control" placeholder="Email">
+                                </div>
+                            </li>
+                            <li class="search_area">
+                                <div class="form-group">
+                                    <textarea id="body" class="form-control required" rows="5" required="required" placeholder="I'm interest in [ Listing Single ]"></textarea>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="search_option_button">
+                                    <button type="submit" class="btn btn-block btn-thm" onclick="sendEmail()">Send Email</button>
+                                </div>
+                            </li>
+                        </ul>
                         @*}*@
                     </div>
                 </div>
-                
+
                 <div class="terms_condition_widget">
                     <h4 class="title">Featured Properties</h4>
                     <div class="sidebar_feature_property_slider">
@@ -793,4 +793,9 @@
         </div>
     </div>
 </section>
-
+@Scripts.Render("~/Scripts/js/chart.min.js")
+@Scripts.Render("~/Scripts/js/chartjs-plugin-doughnutlabel.min.js")
+@Scripts.Render("~/Scripts/js/chart-custome.js")
+@Scripts.Render("https://maps.googleapis.com/maps/api/js?key=AIzaSyDNqYDW64-u6cZhsDc9CP_sZV51wHy-eN0&libraries=places&region=GE&callback=initMap")
+@Scripts.Render("~/Scripts/js/googlemaps1.js")
+@Scripts.Render("~/Scripts/js/googlemaps2.js")
