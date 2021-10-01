@@ -1195,7 +1195,7 @@ namespace RealEstateNet.Controllers
             return agent;
         }
 
-        private HeaderModel TranslateHeader(string lang)
+        public HeaderModel TranslateHeader(string lang)
         {
             HeaderModel header = new HeaderModel();
             header.Language = TranslateContent("Header_Language", lang);
