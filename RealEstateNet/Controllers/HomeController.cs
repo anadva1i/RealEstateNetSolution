@@ -45,6 +45,7 @@ namespace RealEstateNet.Controllers
             model.User = getUserDetails();
             model.Translation = TranslateHome(lang);
             model.HeaderTranslation = TranslateHeader(lang);
+            model.BestDeals = GetBestDeals(lang);
             return View(model);
         }
 
@@ -174,6 +175,48 @@ namespace RealEstateNet.Controllers
                     property.Name = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == langId).Text;
                     property.Address = context.Translations.FirstOrDefault(c => c.ContentId == contentAddressId && c.LanguageId == langId).Text;
                     var userId = db_property.UserDetailsId;
+                    var user = context.UserDetails.FirstOrDefault(c => c.Id == userId);
+                    property.AgentName = user.Name + " " + user.LastName;
+                    property.AgentPic = user.Picture;
+                    properties.Add(property);
+                }
+            }
+            return properties;
+        }
+
+        private List<PropertySmallView> GetBestDeals(string lang)
+        {
+            List<PropertySmallView> properties = new List<PropertySmallView>();
+            using (var context = new DB_RealEstateEntities())
+            {
+                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                var saleContentId = context.Contents.FirstOrDefault(c => c.Type.Equals("PropertyStatus_Buy")).Id;
+                var saleId = context.Status.FirstOrDefault(c => c.ContentId == saleContentId).Id;
+                var propertiesForSale = context.Properties.Where(c => c.StatusId == saleId).OrderByDescending(c=>c.PropertySize).ThenBy(n => n.Price).Take(3);
+                foreach (var s in propertiesForSale)
+                {
+                    PropertySmallView property = new PropertySmallView();
+                    property.Id = s.Id;
+                    property.Price = s.Price;
+                    property.Area = s.PropertySize;
+                    property.Baths = s.Bathrooms;
+                    property.Beds = s.Bedrooms;
+                    property.DatePublished = s.DatePublished.ToString("MMMM dd");
+                    var media = context.Media.FirstOrDefault(c => c.PropertyId == s.Id);
+                    property.ImageUrl = media.MediaUrl;
+                    var typeContentId = context.PropertyTypes.FirstOrDefault(c => c.Id == s.PropertyTypeId).ContentId;
+                    var type = context.Translations.FirstOrDefault(c => c.ContentId == typeContentId && c.LanguageId == langId).Text;
+                    property.Type = type;
+                    var statusContentId = context.Status.FirstOrDefault(c => c.Id == s.StatusId).ContentId;
+                    var status = context.Translations.FirstOrDefault(c => c.ContentId == statusContentId && c.LanguageId == langId).Text;
+                    property.Status = status;
+                    var contentType = context.Contents.FirstOrDefault(c => c.Id == typeContentId).Type;
+                    var contentStatus = context.Contents.FirstOrDefault(c => c.Id == statusContentId).Type;
+                    var titleContent = context.Contents.FirstOrDefault(c => c.Type.Contains(contentType) && c.Type.Contains(contentStatus)).Id;
+                    var contentAddressId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingAddress" + s.Id)).Id;
+                    property.Name = context.Translations.FirstOrDefault(c => c.ContentId == titleContent && c.LanguageId == langId).Text;
+                    property.Address = context.Translations.FirstOrDefault(c => c.ContentId == contentAddressId && c.LanguageId == langId).Text;
+                    var userId = s.UserDetailsId;
                     var user = context.UserDetails.FirstOrDefault(c => c.Id == userId);
                     property.AgentName = user.Name + " " + user.LastName;
                     property.AgentPic = user.Picture;

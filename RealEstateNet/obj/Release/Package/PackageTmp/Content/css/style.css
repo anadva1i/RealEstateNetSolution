@@ -6177,8 +6177,8 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
   -o-box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
   box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
 }
-.testimonial_grid_slider.owl-carousel.owl-theme .owl-nav{
-  margin: 0;
+.feature_property_slider.owl-carousel.owl-theme .owl-nav {
+    margin: 0;
 }
 .testimonial_grid_slider.owl-carousel.owl-theme .owl-dots .owl-dot {
   background-color: transparent;

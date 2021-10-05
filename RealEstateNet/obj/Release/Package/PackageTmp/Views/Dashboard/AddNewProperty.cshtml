@@ -53,7 +53,7 @@
                                     <div class="col-lg-12">
                                         <h4 class="mb30">@Model.PageModel.CreateListing</h4>
                                     </div>
-                                    
+
                                     <div class="col-lg-12">
                                         <div class="my_profile_setting_textarea">
                                             <label for="propertyDescription">@Model.PageModel.PropertyDescriptionGE</label>
@@ -198,11 +198,11 @@
                                     </div>
 
                                     @*<div class="col-xl-12">
-                    <div class="my_profile_setting_input">
-                        <button class="btn btn1 float-left">Back</button>
-                        <button class="btn btn2 float-right">Next</button>
-                    </div>
-                </div>*@
+                                            <div class="my_profile_setting_input">
+                                                <button class="btn btn1 float-left">Back</button>
+                                                <button class="btn btn2 float-right">Next</button>
+                                            </div>
+                                        </div>*@
                                 </div>
                             </div>
                             <div class="my_dashboard_review mt30">
@@ -390,51 +390,55 @@
                                     </div>
                                 </div>
                             </div>
-                                    <div class="my_dashboard_review mt30">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <h4 class="mb30">@Model.PageModel.PropertyMedia</h4>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <ul class="mb0" id="ul-images">
-                                                    @if (Model.Property.pictures != null)
-                                                    {
-                                                        foreach (var picture in Model.Property.pictures)
-                                                        {
-                                                            var count = 1;
-                                                            <li id="li-@count" class="list-inline-item">
-                                                                <div class="portfolio_item">
-                                                                    <img class="img-fluid" id="myImg" style="width: 200px; height: 200px; object-fit: cover" src="@picture">
-                                                                    <div class="edu_stats_list" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><span class="flaticon-garbage" onclick="deleteImage('@picture', @count)"></span></div>
-                                                                </div>
-                                                            </li>
-                                                            count++;
-                                                        }
-                                                    }
+                            <div class="my_dashboard_review mt30">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4 class="mb30">@Model.PageModel.PropertyMedia</h4>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <ul class="mb0" id="ul-images">
+                                            @if (Model.Property.pictures != null)
+                                            {
+                                                foreach (var picture in Model.Property.pictures)
+                                                {
+                                                    var count = 1;
+                                                    <li id="li-@count" class="list-inline-item">
+                                                        <div class="portfolio_item">
+                                                            <img class="img-fluid" id="myImg" style="width: 200px; height: 200px; object-fit: cover" src="@picture">
+                                                            <div class="edu_stats_list" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><span class="flaticon-garbage" onclick="deleteImage('@picture', @count)"></span></div>
+                                                        </div>
+                                                    </li>
+                                                    count++;
+                                                }
+                                            }
 
-                                                </ul>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="portfolio_upload">
-                                                    <input style="cursor: pointer; line-height: 0;" id="select-files" type="file" accept="image/x-png,image/jpeg" multiple="" />
-                                                    <div class="icon"><span class="flaticon-download"></span></div>
-                                                    <p>Select images</p>
-                                                </div>
-                                            </div>
-                                            <textarea type="file" name="media" id="media" style="display: none"></textarea>
-                                            <div class="col-xl-12">
-                                                <div class="my_profile_setting_input">
-                                                    @*<button class="btn btn1 float-left">Back</button>*@
-                                                    <button class="btn btn2 float-right">@Model.PageModel.Next</button>
-                                                </div>
-                                            </div>
+                                        </ul>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="portfolio_upload">
+                                            <input style="cursor: pointer; line-height: 0;" id="select-files" type="file" accept="image/x-png,image/jpeg" multiple="" />
+                                            <div class="icon"><span class="flaticon-download"></span></div>
+                                            <p>Select images</p>
+                                        </div>
+                                    </div>
+                                    <textarea type="file" name="media" id="media" style="display: none"></textarea>
+                                    <div class="col-xl-12">
+                                        <div class="my_profile_setting_input">
+                                            @*<button class="btn btn1 float-left">Back</button>*@
+                                            <button class="btn btn2 float-right">@Model.PageModel.Next</button>
                                         </div>
                                     </div>
                                 </div>
-                                }
                             </div>
-                            @Html.Partial("_DashboardFooter")
                         </div>
+                    }
+                </div>
+                @Html.Partial("_DashboardFooter")
+            </div>
         </div>
     </div>
 </section>
+
+@Scripts.Render("https://maps.googleapis.com/maps/api/js?key=AIzaSyDNqYDW64-u6cZhsDc9CP_sZV51wHy-eN0&libraries=places&region=GE&callback=initMap")
+@Scripts.Render("~/Scripts/js/googlemaps1.js")
+@Scripts.Render("~/Scripts/js/googlemaps2.js")
