@@ -46,6 +46,9 @@ namespace RealEstateNet.Controllers
             model.Translation = TranslateHome(lang);
             model.HeaderTranslation = TranslateHeader(lang);
             model.BestDeals = GetBestDeals(lang);
+            model.Latest = getLatestUpdatesForFooter(lang, "all");
+            model.New = getLatestUpdatesForFooter(lang, "new");
+            model.Constraction = getLatestUpdatesForFooter(lang, "underConstruction");
             return View(model);
         }
 
@@ -68,6 +71,9 @@ namespace RealEstateNet.Controllers
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             model.HeaderTranslation = TranslateHeader(language);
+            model.Latest = getLatestUpdatesForFooter(language, "all");
+            model.New = getLatestUpdatesForFooter(language, "new");
+            model.Constraction = getLatestUpdatesForFooter(language, "underConstruction");
             return View(model);
         }
         public ActionResult PriceRange()
@@ -75,6 +81,9 @@ namespace RealEstateNet.Controllers
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             model.HeaderTranslation = TranslateHeader(language);
+            model.Latest = getLatestUpdatesForFooter(language, "all");
+            model.New = getLatestUpdatesForFooter(language, "new");
+            model.Constraction = getLatestUpdatesForFooter(language, "underConstruction");
             return View(model);
         }
         public ActionResult Services()
@@ -82,6 +91,9 @@ namespace RealEstateNet.Controllers
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             model.HeaderTranslation = TranslateHeader(language);
+            model.Latest = getLatestUpdatesForFooter(language, "all");
+            model.New = getLatestUpdatesForFooter(language, "new");
+            model.Constraction = getLatestUpdatesForFooter(language, "underConstruction");
             return View(model);
         }
 
@@ -102,6 +114,9 @@ namespace RealEstateNet.Controllers
             model.ExistedReviews = GetExistedReviews(id);
             model.User = getUserDetails();
             model.HeaderTranslation = TranslateHeader(lang);
+            model.New = getLatestUpdatesForFooter(lang, "new");
+            model.Latest = getLatestUpdatesForFooter(lang, "all");
+            model.Constraction = getLatestUpdatesForFooter(lang, "underConstruction");
             return View(model);
         }
         public UserDetails getUserDetails()
@@ -138,6 +153,9 @@ namespace RealEstateNet.Controllers
             model.User = getUserDetails();
             model.Page = SearchedPage;
             model.HeaderTranslation = TranslateHeader(lang);
+            model.Latest = getLatestUpdatesForFooter(lang, "all");
+            model.New = getLatestUpdatesForFooter(lang, "new");
+            model.Constraction = getLatestUpdatesForFooter(lang, "underConstruction");
             return View(model);
         }
 
@@ -1264,6 +1282,57 @@ namespace RealEstateNet.Controllers
             search.Area = TranslateContent("Search_Area", lang);
             search.Hide = TranslateContent("Search_hide", lang);
             return search;
+        }
+
+        private List<Property> PropertiesByType(string type)
+        {
+            List<Property> properties = new List<Property>();
+            using (var context = new DB_RealEstateEntities())
+            {
+                switch (type)
+                {
+                    case "new":
+                        int contentId = context.Contents.FirstOrDefault(c => c.Type.Equals("Status_new")).Id;
+                        int stateId = context.States.FirstOrDefault(c => c.ContentId == contentId).Id;
+                        var new_properties = context.Properties.Where(c => c.StateId == stateId).OrderByDescending(c => c.Id).Take(5);
+                        foreach (var p in new_properties)
+                            properties.Add(p);
+                        break;
+                    case "underConstruction":
+                        int contentId2 = context.Contents.FirstOrDefault(c => c.Type.Equals("Status_underConstraction")).Id;
+                        int stateId2 = context.States.FirstOrDefault(c => c.ContentId == contentId2).Id;
+                        var new_properties2 = context.Properties.Where(c => c.StateId == stateId2).OrderByDescending(c => c.Id).Take(5);
+                        foreach (var p in new_properties2)
+                            properties.Add(p);
+                        break;
+                    case "all":
+                        var new_properties3 = context.Properties.OrderByDescending(c => c.Id).Take(5);
+                        foreach (var p in new_properties3)
+                            properties.Add(p);
+                        break;
+                }
+            }
+            return properties;
+        }
+
+        private List<FooterUpdates> getLatestUpdatesForFooter(string lang, string type)
+        {
+            List<FooterUpdates> updates = new List<FooterUpdates>();
+            using(var context = new DB_RealEstateEntities())
+            {
+                var properties = PropertiesByType(type);
+                foreach (var p in properties)
+                {
+                    var contentId = context.Contents.FirstOrDefault(c => c.Type.Equals("ListingTitle" + p.Id)).Id;
+                    var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                    var title = context.Translations.FirstOrDefault(c => c.ContentId == contentId && c.LanguageId == langId).Text;
+                    FooterUpdates update = new FooterUpdates();
+                    update.Id = p.Id;
+                    update.Title = title;
+                    updates.Add(update);
+                }
+            }
+            return updates;
         }
 
         public string TranslateContent(string keyword, string lang)

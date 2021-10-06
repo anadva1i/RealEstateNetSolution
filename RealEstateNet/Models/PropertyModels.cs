@@ -278,4 +278,10 @@ namespace RealEstateNet.Models
         public string Update { get; set; }
         public string Border { get; set; }
     }
+
+    public class FooterUpdates
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+    }
 }
