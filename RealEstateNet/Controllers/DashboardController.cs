@@ -34,38 +34,39 @@ namespace RealEstateNet.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             model.Activities = MyActivities();
             return View(model);
         }
 
-        public ActionResult AddNewProperty(string lang, int? propertyId)
+        public ActionResult AddNewProperty(int? propertyId)
         {
-            if (lang == null) 
-                lang = "EN";
-            language = lang;
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
-            model.TypeModels = GetPropertyType(lang);
-            model.StatusModels = GetPropertyStatus(lang);
-            model.StateModels = GetPropertyState(lang);
+            model.TypeModels = GetPropertyType();
+            model.StatusModels = GetPropertyStatus();
+            model.StateModels = GetPropertyState();
             model.PageModel = addNewPropertyPageModel();
-            model.Countries = GetCountries(lang);
-            model.Cities = GetCities(lang);
-            model.FeaturesModel = getFeatures(lang);
+            model.Countries = GetCountries();
+            model.Cities = GetCities();
+            model.FeaturesModel = getFeatures();
             model.Registered = RegisteredUser();
             model.Property = PrePropertyUpdate(propertyId);
             model.User = getUserDetails();
-            model.Services = GetServices(lang);
+            model.Services = GetServices();
             return View(model);
         }
 
-        private PropertyServices GetServices(string lang)
+        private PropertyServices GetServices()
         {
             using (var context = new DB_RealEstateEntities())
             {
                 PropertyServices service = new PropertyServices();
-                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
                 foreach(var s in context.Services)
                 {
                     switch (s.ContentId)
@@ -200,11 +201,10 @@ namespace RealEstateNet.Controllers
             return OldProperty;
         }
 
-        public ActionResult Message(string lang, string email, int? chatId)
+        public ActionResult Message(string email, int? chatId)
         {
-            if (lang == null)
-                lang = "EN";
-            language = lang;
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.Header = getContactDetails(chatId);
             model.User = getUserDetails();
@@ -213,11 +213,10 @@ namespace RealEstateNet.Controllers
             return View(model);
         }
 
-        public ActionResult Properties(string lang, int page, string search)
+        public ActionResult Properties(int page, string search)
         {
-            if (lang == null)
-                lang = "EN";
-            language = lang;
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.Properties = MyProperties(page, search);
             model.Page = propertiesPages;
@@ -226,11 +225,10 @@ namespace RealEstateNet.Controllers
             return View(model);
         }
 
-        public ActionResult Favorites(string lang, int page)
+        public ActionResult Favorites(int page)
         {
-            if (lang == null)
-                lang = "EN";
-            language = lang;
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.Favorites = GetFavorites(page);
             model.Page = favoritesPages;
@@ -238,41 +236,37 @@ namespace RealEstateNet.Controllers
             return View(model);
         }
 
-        public ActionResult Packages(string lang)
+        public ActionResult Packages()
         {
-            if (lang == null)
-                lang = "EN";
-            language = lang;
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             return View(model);
         }
 
-        public ActionResult My_Profile(string lang)
+        public ActionResult My_Profile()
         {
-            if (lang == null)
-                lang = "EN";
-            language = lang;
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.Role = GetUserRole();
             model.UserDetails = GetAgent();
             model.User = getUserDetails();
             return View(model);
         }
-        public ActionResult Saved_Search(string lang)
+        public ActionResult Saved_Search()
         {
-            if (lang == null)
-                lang = "EN";
-            language = lang;
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             return View(model);
         }
-        public ActionResult Reviews(string lang)
+        public ActionResult Reviews()
         {
-            if (lang == null)
-                lang = "EN";
-            language = lang;
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             return View(model);
@@ -437,6 +431,8 @@ namespace RealEstateNet.Controllers
         [HttpPost]
         public ActionResult My_Profile(AgentModel agent)
         {
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             AgentModel newAgent = new AgentModel();
             var userId = User.Identity.GetUserId();
             using(var context = new DB_RealEstateEntities())
@@ -633,13 +629,13 @@ namespace RealEstateNet.Controllers
             return role;
         }
 
-        private List<string> GetCountries(string lang)
+        private List<string> GetCountries()
         {
             List<string> countries = new List<string>();
             using (var context = new DB_RealEstateEntities())
             {
                 var contentIds = context.Countries.Select(c => c.ContentId);
-                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
                 foreach (var id in contentIds)
                 {
                     bool has = context.Translations.Any(c => c.LanguageId == langId && c.ContentId == id);
@@ -653,13 +649,13 @@ namespace RealEstateNet.Controllers
             return countries;
         }
 
-        private List<string> GetCities(string lang)
+        private List<string> GetCities()
         {
             List<string> cities = new List<string>();
             using (var context = new DB_RealEstateEntities())
             {
                 var contentIds = context.Cities.Select(c => c.ContentId);
-                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
                 foreach (var id in contentIds)
                 {
                     bool has = context.Translations.Any(c => c.LanguageId == langId && c.ContentId == id);
@@ -673,13 +669,13 @@ namespace RealEstateNet.Controllers
             return cities;
         }
 
-        private List<string> GetPropertyType(string lang)
+        private List<string> GetPropertyType()
         {
             List<string> propertyType = new List<string>();
             using (var context = new DB_RealEstateEntities())
             {
                 var contentIds = context.PropertyTypes.Select(c => c.ContentId);
-                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
                 foreach(var id in contentIds)
                 {
                     bool has = context.Translations.Any(c => c.LanguageId == langId && c.ContentId == id);
@@ -693,13 +689,13 @@ namespace RealEstateNet.Controllers
             return propertyType;
         }
 
-        private List<string> GetPropertyStatus(string lang)
+        private List<string> GetPropertyStatus()
         {
             List<string> propertyStatus = new List<string>();
             using (var context = new DB_RealEstateEntities())
             {
                 var contentIds = context.Status.Select(c => c.ContentId);
-                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
                 foreach (var id in contentIds)
                 {
                     bool has = context.Translations.Any(c => c.LanguageId == langId && c.ContentId == id);
@@ -712,13 +708,13 @@ namespace RealEstateNet.Controllers
             }
             return propertyStatus;
         }
-        private List<string> GetPropertyState(string lang)
+        private List<string> GetPropertyState()
         {
             List<string> propertyState = new List<string>();
             using (var context = new DB_RealEstateEntities())
             {
                 var contentIds = context.States.Select(c => c.ContentId);
-                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
                 foreach (var id in contentIds)
                 {
                     bool has = context.Translations.Any(c => c.LanguageId == langId && c.ContentId == id);
@@ -751,12 +747,12 @@ namespace RealEstateNet.Controllers
             return addNewPropertyPageModel;
         }
 
-        private FeaturesModel getFeatures(string lang)
+        private FeaturesModel getFeatures()
         {
             FeaturesModel featuresModel = new FeaturesModel();
             using (var context = new DB_RealEstateEntities())
             {
-                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
+                var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(language)).Id;
                 PropertyInfo[] properties = typeof(FeaturesModel).GetProperties();
                 foreach (PropertyInfo property in properties)
                 {
@@ -915,7 +911,9 @@ namespace RealEstateNet.Controllers
 
         [HttpPost]
         public ActionResult CreateListing(CreateListingModel model)
-        {            
+        {
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             try
             {
                 using (var scope = new System.Transactions.TransactionScope())

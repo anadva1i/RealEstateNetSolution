@@ -20,42 +20,40 @@ namespace RealEstateNet.Controllers
     public class HomeController : Controller
     {
         private int SearchedPage;
-        private string language = "EN";
+        public string language = "GE";
         Similars similar;
-        public ActionResult Index(string lang)
+        public ActionResult Index()
         {
-            if (lang == null)
-                lang = "EN";
-            language = lang;
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
-            model.Status = GetStatuses(lang);
-            model.Type = GetTypes(lang);
-            model.Amenity = GetAmenities(lang);
-            model.Cities = GetCities(lang);
-            model.States = GetState(lang);
-            model.VIP = GetVIP(lang);
-            model.SuperVIP = GetSuperVIP(lang);
-            model.VIP_Plus = GetVIP_Plus(lang);
-            model.Urgently = GetUrgently(lang);
-            model.Tbilisi = GetCity(lang, "Tbilisi");
-            model.Mtskheta = GetCity(lang, "Mtskheta");
-            model.Kutaisi = GetCity(lang, "Kutaisi");
-            model.Batumi = GetCity(lang, "Batumi");
-            model.Language = lang;
+            model.Status = GetStatuses(language);
+            model.Type = GetTypes(language);
+            model.Amenity = GetAmenities(language);
+            model.Cities = GetCities(language);
+            model.States = GetState(language);
+            model.VIP = GetVIP(language);
+            model.SuperVIP = GetSuperVIP(language);
+            model.VIP_Plus = GetVIP_Plus(language);
+            model.Urgently = GetUrgently(language);
+            model.Tbilisi = GetCity(language, "Tbilisi");
+            model.Mtskheta = GetCity(language, "Mtskheta");
+            model.Kutaisi = GetCity(language, "Kutaisi");
+            model.Batumi = GetCity(language, "Batumi");
+            model.Language = language;
             model.User = getUserDetails();
-            model.Translation = TranslateHome(lang);
-            model.HeaderTranslation = TranslateHeader(lang);
-            model.BestDeals = GetBestDeals(lang);
-            model.Latest = getLatestUpdatesForFooter(lang, "all");
-            model.New = getLatestUpdatesForFooter(lang, "new");
-            model.Constraction = getLatestUpdatesForFooter(lang, "underConstruction");
+            model.Translation = TranslateHome(language);
+            model.HeaderTranslation = TranslateHeader(language);
+            model.BestDeals = GetBestDeals(language);
+            model.Latest = getLatestUpdatesForFooter(language, "all");
+            model.New = getLatestUpdatesForFooter(language, "new");
+            model.Constraction = getLatestUpdatesForFooter(language, "underConstruction");
             return View(model);
         }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
@@ -68,6 +66,8 @@ namespace RealEstateNet.Controllers
 
         public ActionResult Calculator()
         {
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             model.HeaderTranslation = TranslateHeader(language);
@@ -78,6 +78,8 @@ namespace RealEstateNet.Controllers
         }
         public ActionResult PriceRange()
         {
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             model.HeaderTranslation = TranslateHeader(language);
@@ -88,6 +90,8 @@ namespace RealEstateNet.Controllers
         }
         public ActionResult Services()
         {
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             model.HeaderTranslation = TranslateHeader(language);
@@ -97,26 +101,26 @@ namespace RealEstateNet.Controllers
             return View(model);
         }
 
-        public ActionResult Property(int id, string lang)
+        public ActionResult Property(int id)
         {
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
-            if (String.IsNullOrWhiteSpace(lang))
-                lang = "EN";
             model.Media = GetMedia(id);
-            model.Details = GetPropertyDetails(id, lang);
-            model.Features = GetPropertyFeatures(id, lang);
+            model.Details = GetPropertyDetails(id, language);
+            model.Features = GetPropertyFeatures(id, language);
             model.Agent = GetAgent(id);
-            model.Similars = GetsimilarProperties(lang);
+            model.Similars = GetsimilarProperties(language);
             var ip = getIP();
-            model.Recently = GetRecentlyViewed(ip, id, lang);
+            model.Recently = GetRecentlyViewed(ip, id, language);
             model.PropertyId = id;
             model.TotalReviews = GetTotalReviews(id);
             model.ExistedReviews = GetExistedReviews(id);
             model.User = getUserDetails();
-            model.HeaderTranslation = TranslateHeader(lang);
-            model.New = getLatestUpdatesForFooter(lang, "new");
-            model.Latest = getLatestUpdatesForFooter(lang, "all");
-            model.Constraction = getLatestUpdatesForFooter(lang, "underConstruction");
+            model.HeaderTranslation = TranslateHeader(language);
+            model.New = getLatestUpdatesForFooter(language, "new");
+            model.Latest = getLatestUpdatesForFooter(language, "all");
+            model.Constraction = getLatestUpdatesForFooter(language, "underConstruction");
             return View(model);
         }
         public UserDetails getUserDetails()
@@ -138,24 +142,24 @@ namespace RealEstateNet.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Search(string lang, SearchModel search)
+        public ActionResult Search(SearchModel search)
         {
+            if (Request.Cookies["lang"] != null)
+                language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
-            if (lang == null)
-                lang = "EN";
-            model.Result = SearchedResult(lang, search);
-            model.Status = GetStatuses(lang);
-            model.Type = GetTypes(lang);
-            model.Amenity = GetAmenities(lang);
-            model.Cities = GetCities(lang);
-            model.States = GetState(lang);
+            model.Result = SearchedResult(language, search);
+            model.Status = GetStatuses(language);
+            model.Type = GetTypes(language);
+            model.Amenity = GetAmenities(language);
+            model.Cities = GetCities(language);
+            model.States = GetState(language);
             model.SearchResult = search;
             model.User = getUserDetails();
             model.Page = SearchedPage;
-            model.HeaderTranslation = TranslateHeader(lang);
-            model.Latest = getLatestUpdatesForFooter(lang, "all");
-            model.New = getLatestUpdatesForFooter(lang, "new");
-            model.Constraction = getLatestUpdatesForFooter(lang, "underConstruction");
+            model.HeaderTranslation = TranslateHeader(language);
+            model.Latest = getLatestUpdatesForFooter(language, "all");
+            model.New = getLatestUpdatesForFooter(language, "new");
+            model.Constraction = getLatestUpdatesForFooter(language, "underConstruction");
             return View(model);
         }
 

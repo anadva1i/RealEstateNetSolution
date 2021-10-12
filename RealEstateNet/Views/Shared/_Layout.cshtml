@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="advanced custom search, agency, agent, business, clean, corporate, directory, google maps, homes, idx agent, listing properties, membership packages, property, real broker, real estate, real estate agent, real estate agency, realtor">
+    <meta name="keywords" content="hland, home land, agency, agent, business, clean, corporate, directory, google maps, homes, idx agent, listing properties, membership packages, property, real broker, real estate, real estate agent, real estate agency, realtor, ჰლანდ, ჰომე ლანდ, ჰოუმ ლენდ, ბინები, ბინების ქირაობა, ბინის ყიდვა, ბინის გაყიდვა, ბინები დღიურად, hland.ge, hland.com, homeland.ge">
     <meta name="description" content="Home Land - Real Estate">
     <title>Home land - @ViewBag.Title</title>
     @*@Styles.Render("~/Content/css")
@@ -46,9 +46,9 @@
                             <li>
                                 <a href="#"><span class="title">@Model.HeaderTranslation.Language</span></a>
                                 <ul>
-                                    <li><a href="?lang=GE">ქართული</a></li>
-                                    <li><a href="?lang=EN">English</a></li>
-                                    <li><a href="?lang=RU">русский</a></li>
+                                    <li><a href="javascript:setLanguage('GE')">ქართული</a></li>
+                                    <li><a href="javascript:setLanguage('EN')">English</a></li>
+                                    <li><a href="javascript:setLanguage('RU')">русский</a></li>
                                 </ul>
                             </li>
                             @Html.Partial("_LoginPartial")
@@ -65,7 +65,7 @@
                     <div class="main_logo_home2 text-center" onclick="window.open('../')">
                         <img class="nav_logo_img img-fluid mt20" src="../Content/images/header-logo2.png" alt="header-logo2.png" />
                         <span class="mt20">Home Land</span>
-                    </div>       
+                    </div>
                     <ul class="menu_bar_home2">
                         <li class="list-inline-item list_s"><a href="../Account/Login"><span class="flaticon-user"></span></a></li>
                         @*<li class="list-inline-item"><a href="#menu"><span></span></a></li>*@
@@ -73,10 +73,10 @@
                 </div>
             </div><!-- /.mobile-menu -->
             @*<nav id="menu" class="stylehome1">
-                <ul>
-                    @Html.Partial("_LoginPartial")
-                </ul>
-            </nav>*@
+                    <ul>
+                        @Html.Partial("_LoginPartial")
+                    </ul>
+                </nav>*@
         </div>
 
         @*<div class="navbar navbar-inverse navbar-fixed-top">

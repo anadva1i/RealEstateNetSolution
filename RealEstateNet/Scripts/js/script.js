@@ -1,7 +1,5 @@
 ﻿(function ($) {
-
     "use strict";
-
     /* ----- Preloader ----- */
     function preloaderLoad() {
         if ($('.preloader').length) {
@@ -1057,7 +1055,6 @@ if ($('.single_product_slider').children().length > 1) {
         scrollToTop();
         wowAnimation();
         mobileNavToggle();
-
         // extending for text toggle
         $.fn.extend({
             toggleText: function (a, b) {
@@ -1097,7 +1094,6 @@ if ($('.single_product_slider').children().length > 1) {
         // add your functions
         counterNumber();
         preloaderLoad();
-
     });
     // window on Scroll function
     $(window).on('scroll', function () {
@@ -1256,7 +1252,6 @@ function LoadPager(last) {
             currentPage = url.substring(url.indexOf("=") + 1, url.indexOf("&"));
     }
     else currentPage = $("#currentPage").val();
-    console.log("current page: " + currentPage);
     ActivatePage(currentPage);
     switch (last) {
         case 0:
@@ -1487,4 +1482,10 @@ function changeBg() {
         else
             $(this).css("background", "#ffffff")
     });
+}
+
+
+function setLanguage(lang) {
+    document.cookie = "lang=" + lang;
+    location.reload();
 }

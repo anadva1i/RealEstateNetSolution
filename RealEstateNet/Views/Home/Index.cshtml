@@ -12,7 +12,7 @@
                         <h2 class="fz55">@Model.Translation.Heading</h2>
                         @*<p class="fz18 color-white">From as low as $10 per day with limited time offer discounts.</p>*@
                     </div>
-                    @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form", lang = "GE" }))
                     {
                         <div class="home_adv_srch_opt">
                             <ul class="nav nav-pills" id="pills-tab" role="tablist">
@@ -508,7 +508,7 @@
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-4 col-xl-4">
-                <a href="Home/Services">
+                <a href="Home/Services/javascript:Language()">
                     <div class="why_chose_us">
                         <div class="icon">
                             <span class="flaticon-high-five"></span>
