@@ -209,9 +209,7 @@ C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution
 C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\bin\Microsoft.Owin.Security.OAuth.xml
 C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.csprojAssemblyReference.cache
 C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.csproj.CoreCompileInputs.cache
-C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.csproj.CopyComplete
 C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.dll
 C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.pdb
 C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\bin\Microsoft.Extensions.DependencyInjection.Abstractions.dll
@@ -1083,3 +1081,4 @@ C:\Users\mamuk\OneDrive\Desktop\Desktop\RealEstate\RealEstateNetSolution\RealEst
 C:\Users\mamuk\OneDrive\Desktop\Desktop\RealEstate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.csproj.CopyComplete
 C:\Users\mamuk\OneDrive\Desktop\Desktop\RealEstate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.dll
 C:\Users\mamuk\OneDrive\Desktop\Desktop\RealEstate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.pdb
+C:\Users\U\OneDrive\Documents\Career\Freelance\Real Estate\RealEstateNetSolution\RealEstateNet\obj\Debug\RealEstateNet.csproj.AssemblyReference.cache
