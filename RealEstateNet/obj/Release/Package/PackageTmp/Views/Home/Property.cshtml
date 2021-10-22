@@ -343,12 +343,12 @@
                             <div class="lsd_list">
                                 <ul class="mb0">
                                     <li class="list-inline-item"><a href="#">@Model.Details.PropertyType</a></li>
-                                    <li class="list-inline-item"><a href="#">Bedrooms: @Model.Details.Bedrooms</a></li>
-                                    <li class="list-inline-item"><a href="#">Bathrooms: @Model.Details.Bathrooms</a></li>
-                                    <li class="list-inline-item"><a href="#">Sq Ft: @Model.Details.PropertySize</a></li>
+                                    <li class="list-inline-item"><a href="#">@Model.Translation.Search_Bed: @Model.Details.Bedrooms</a></li>
+                                    <li class="list-inline-item"><a href="#">@Model.Translation.Search_Bath: @Model.Details.Bathrooms</a></li>
+                                    <li class="list-inline-item"><a href="#">@Model.Translation.Property_SqMtr: @Model.Details.PropertySize</a></li>
                                 </ul>
                             </div>
-                            <h4 class="mb30">Description</h4>
+                            <h4 class="mb30">@Model.Translation.Property_Description</h4>
                             <p class="mb25">@Model.Details.Description</p>
                             @*<p class="gpara second_para white_goverlay mt10 mb10">Fully furnished. Elegantly appointed condominium unit situated on premier location. PS6. The wide entry hall leads to a large living room with dining area. This expansive 2 bedroom and 2 renovated marble bathroom apartment has great windows. Despite the interior views, the apartments Southern and Eastern exposures allow for lovely natural light to fill every room. The master suite is surrounded by handcrafted milkwork and features incredible walk-in closet and storage space.</p>
                                 <div class="collapse" id="collapseExample">
@@ -368,14 +368,14 @@
                         <div class="additional_details">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <h4 class="mb15">Property Details</h4>
+                                    <h4 class="mb15">@Model.Translation.Property_Details</h4>
                                 </div>
                                 <div class="col-md-6 col-lg-6 col-xl-4">
                                     <ul class="list-inline-item">
-                                        <li><p>Cadastral Code :</p></a></li>
-                                        <li><p>Price :</p></a></li>
-                                        <li><p>Property Size :</p></a></li>
-                                        <li><p>State :</p></a></li>
+                                        <li><p>@Model.Translation.Cadastral_Code :</p></a></li>
+                                        <li><p>@Model.Translation.Search_Price :</p></a></li>
+                                        <li><p>@Model.Translation.Search_Area :</p></a></li>
+                                        <li><p>@Model.Translation.Search_State :</p></a></li>
                                     </ul>
                                     <ul class="list-inline-item">
                                         <li><p><span>@Model.Details.CadastralCode</span></p></a></li>
@@ -386,10 +386,10 @@
                                 </div>
                                 <div class="col-md-6 col-lg-6 col-xl-4">
                                     <ul class="list-inline-item">
-                                        <li><p>Bedrooms :</p></a></li>
-                                        <li><p>Bathrooms :</p></a></li>
-                                        <li><p>Garage :</p></a></li>
-                                        <li><p>Ceiling Size :</p></a></li>
+                                        <li><p>@Model.Translation.Search_Bed :</p></a></li>
+                                        <li><p>@Model.Translation.Search_Bath :</p></a></li>
+                                        <li><p>@Model.Translation.Property_Garage :</p></a></li>
+                                        <li><p>@Model.Translation.Property_CeilingSize :</p></a></li>
                                     </ul>
                                     <ul class="list-inline-item">
                                         <li><p><span>@Model.Details.Bedrooms</span></p></a></li>
@@ -400,8 +400,8 @@
                                 </div>
                                 <div class="col-md-6 col-lg-6 col-xl-4">
                                     <ul class="list-inline-item">
-                                        <li><p>Property Type :</p></a></li>
-                                        <li><p>Property Status :</p></a></li>
+                                        <li><p>@Model.Translation.Search_type :</p></a></li>
+                                        <li><p>@Model.Translation.Property_Status :</p></a></li>
                                     </ul>
                                     <ul class="list-inline-item">
                                         <li><p><span>@Model.Details.PropertyType</span></p></a></li>
@@ -416,7 +416,7 @@
                         <div class="application_statics mt30">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <h4 class="mb10">Features</h4>
+                                    <h4 class="mb10">@Model.Translation.Property_Features</h4>
                                 </div>
                                 @for (var i = 0; i < 3; i++)
                                 {
@@ -433,7 +433,7 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="application_statics mt30">
-                            <h4 class="mb30">Location <small id="address" class="float-right">@Model.Details.Address</small></h4>
+                            <h4 class="mb30">@Model.Translation.Search_Location <small id="address" class="float-right">@Model.Details.Address</small></h4>
                             <div class="property_video p0">
                                 <div class="thumb">
                                     <span id="latitude" style="display: none">@Model.Details.Latitude</span>
@@ -451,7 +451,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="chart_circle_doughnut mt30">
-                                        <h4>Payment Calculator</h4>
+                                        <h4>@Model.Translation.Property_PaymentCalculator</h4>
                                         <canvas class="mt50 mb50" id="myChart"></canvas>
                                     </div>
                                 </div>
@@ -495,7 +495,7 @@
                             <div class="product_single_content">
                                 <div class="mbp_pagination_comments mt30">
                                     <ul class="total_reivew_view">
-                                        <li class="list-inline-item sub_titles">@Model.TotalReviews.Total Reviews</li>
+                                        <li class="list-inline-item sub_titles">@Model.TotalReviews.Total @Model.Translation.Property_Reviews</li>
                                         <li class="list-inline-item">
                                             <ul class="star_list">
                                                 @for (var i = 1; i <= 5; i++)
@@ -513,7 +513,7 @@
                                             </ul>
                                         </li>
                                         <li class="list-inline-item avrg_review">( @Model.TotalReviews.Stars out of 5 )</li>
-                                        <li class="list-inline-item write_review">Write a Review</li>
+                                        <li class="list-inline-item write_review">@Model.Translation.Property_WriteReview</li>
                                     </ul>
                                     @foreach (var existedReview in Model.ExistedReviews)
                                     {
@@ -556,7 +556,7 @@
                             <div class="product_single_content">
                                 <div class="mbp_pagination_comments mt30">
                                     <div class="mbp_comment_form style2">
-                                        <h4>Write a Review</h4>
+                                        <h4>@Model.Translation.Property_WriteReview</h4>
                                         @using (Html.BeginForm("AddReview", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "comments-form", role = "form" }))
                                         {
                                             <input type="hidden" name="Id" value="@Model.PropertyId">
@@ -588,7 +588,7 @@
                     }
 
                     <div class="col-lg-12">
-                        <h4 class="mt30 mb30">Similar Properties</h4>
+                        <h4 class="mt30 mb30">@Model.Translation.Property_Similar</h4>
                     </div>
                     @foreach (var similar in Model.Similars)
                     {
@@ -656,22 +656,22 @@
                             </li>
                             <li class="search_area">
                                 <div class="form-group">
-                                    <input id="subject" type="text" class="form-control" placeholder="Subject">
+                                    <input id="subject" type="text" class="form-control" placeholder="@Model.Translation.Property_subject">
                                 </div>
                             </li>
                             <li class="search_area">
                                 <div class="form-group">
-                                    <input id="mail_from" type="email" class="form-control" placeholder="Email">
+                                    <input id="mail_from" type="email" class="form-control" placeholder="@Model.Translation.Property_Email">
                                 </div>
                             </li>
                             <li class="search_area">
                                 <div class="form-group">
-                                    <textarea id="body" class="form-control required" rows="5" required="required" placeholder="I'm interest in [ Listing Single ]"></textarea>
+                                    <textarea id="body" class="form-control required" rows="5" required="required" placeholder="@Model.Translation.Property_Body"></textarea>
                                 </div>
                             </li>
                             <li>
                                 <div class="search_option_button">
-                                    <button type="submit" class="btn btn-block btn-thm" onclick="sendEmail()">Send Email</button>
+                                    <button type="submit" class="btn btn-block btn-thm" onclick="sendEmail()">@Model.Translation.Property_SendEmail</button>
                                 </div>
                             </li>
                         </ul>
@@ -680,7 +680,7 @@
                 </div>
 
                 <div class="terms_condition_widget">
-                    <h4 class="title">Featured Properties</h4>
+                    <h4 class="title">Featured</h4>
                     <div class="sidebar_feature_property_slider">
                         <div class="item">
                             <div class="feat_property home7 agent">
@@ -772,7 +772,7 @@
                     </div>
                 </div>
                 <div class="sidebar_feature_listing">
-                    <h4 class="title">Recently Viewed</h4>
+                    <h4 class="title">@Model.Translation.Property_RecentlyViewed</h4>
                     @foreach (var view in Model.Recently)
                     {
                         <div style="cursor: pointer" class="media" onclick="PropertyUrl(@view.Id)">
@@ -781,9 +781,9 @@
                                 <h5 class="mt-0 post_title">@view.Name</h5>
                                 <a href="#">₾@view.Price/<small>/mo</small></a>
                                 <ul class="mb0">
-                                    <li class="list-inline-item">Beds: @view.Beds</li>
-                                    <li class="list-inline-item">Baths: @view.Baths</li>
-                                    <li class="list-inline-item">Sq Ft: @view.Area</li>
+                                    <li class="list-inline-item">@Model.Translation.Search_Bed: @view.Beds</li>
+                                    <li class="list-inline-item">@Model.Translation.Search_Bath: @view.Baths</li>
+                                    <li class="list-inline-item">@Model.Translation.Property_SqMtr: @view.Area</li>
                                 </ul>
                             </div>
                         </div>
