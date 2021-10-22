@@ -57,9 +57,14 @@
                                                 </div>
                                             </li>
                                             <li class="list-inline-item">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" id="exampleInputEmail" placeholder="@Model.Translation.Location" name="location">
-                                                    <label for="exampleInputEmail"><span class="flaticon-maps-and-flags"></span></label>
+                                                <div class="search_option_two">
+                                                    <select id="cityName" name="city" class="selectpicker w100 show-tick">
+                                                        <option>@Model.Translation.Location</option>
+                                                        @foreach (var city in Model.Cities)
+                                                        {
+                                                            <option>@city</option>
+                                                        }
+                                                    </select>
                                                 </div>
                                             </li>
                                             <li class="list-inline-item">
@@ -155,13 +160,9 @@
                                                                         </li>
                                                                         <li class="list-inline-item">
                                                                             <div class="candidate_revew_select">
-                                                                                <select id="cityName" name="city" class="selectpicker w100 show-tick">
-                                                                                    <option>@Model.Translation.Area</option>
-                                                                                    @foreach (var city in Model.Cities)
-                                                                                    {
-                                                                                        <option>@city</option>
-                                                                                    }
-                                                                                </select>
+                                                                                <input type="text" class="form-control" id="exampleInputEmail" placeholder="@Model.Translation.Area" name="location">
+                                                                                <label for="exampleInputEmail"></label>
+                                                                 
                                                                             </div>
                                                                         </li>
                                                                     </ul>
@@ -253,7 +254,7 @@
                                     </div>
                                     <div class="fp_footer">
                                         <ul class="fp_meta float-left mb0">
-                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; border-radius: 50%"></a></li>
+                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; height: 40px; border-radius: 50%"></a></li>
                                             <li class="list-inline-item"><a href="#">@vip.AgentName</a></li>
                                         </ul>
                                         <div class="fp_pdate float-right">@vip.DatePublished</div>
@@ -308,7 +309,7 @@
                                     </div>
                                     <div class="fp_footer">
                                         <ul class="fp_meta float-left mb0">
-                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; border-radius: 50%"></a></li>
+                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; height: 40px; border-radius: 50%"></a></li>
                                             <li class="list-inline-item"><a href="#">@vip.AgentName</a></li>
                                         </ul>
                                         <div class="fp_pdate float-right">@vip.DatePublished</div>
@@ -363,7 +364,7 @@
                                     </div>
                                     <div class="fp_footer">
                                         <ul class="fp_meta float-left mb0">
-                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; border-radius: 50%"></a></li>
+                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; height: 40px; border-radius: 50%"></a></li>
                                             <li class="list-inline-item"><a href="#">@vip.AgentName</a></li>
                                         </ul>
                                         <div class="fp_pdate float-right">@vip.DatePublished</div>
@@ -420,7 +421,7 @@
                                     </div>
                                     <div class="fp_footer">
                                         <ul class="fp_meta float-left mb0">
-                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; border-radius: 50%"></a></li>
+                                            <li class="list-inline-item"><a href="#"><img src="@vip.AgentPic" alt="pposter1.png" style="width: 40px; height: 40px; border-radius: 50%"></a></li>
                                             <li class="list-inline-item"><a href="#">@vip.AgentName</a></li>
                                         </ul>
                                         <div class="fp_pdate float-right">@vip.DatePublished</div>

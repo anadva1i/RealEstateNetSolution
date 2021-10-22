@@ -23,6 +23,35 @@ namespace RealEstateNet.Models
 
     }
 
+    public class PropertyPageModel
+    {
+        public string Property_SqMtr { get; set; }
+        public string Property_Description { get; set; }
+        public string Property_Details { get; set; }
+        public string Cadastral_Code { get; set; }
+        public string Property_Status { get; set; }
+        public string Property_Garage { get; set; }
+        public string Property_CeilingSize { get; set; }
+        public string Property_ListedBy { get; set; }
+        public string Property_subject { get; set; }
+        public string Property_Email { get; set; }
+        public string Property_Body { get; set; }
+        public string Property_SendEmail { get; set; }
+        public string Property_Features { get; set; }
+        public string Property_PaymentCalculator { get; set; }
+        public string Property_Reviews { get; set; }
+        public string Property_WriteReview { get; set; }
+        public string Property_Similar { get; set; }
+        public string Property_RecentlyViewed { get; set; }
+        public string Search_Bed { get; set; }
+        public string Search_Bath { get; set; }
+        public string Search_Price { get; set; }
+        public string Search_Area { get; set; }
+        public string Search_State { get; set; }
+        public string Search_type { get; set; }
+        public string Search_Location { get; set; }
+    }
+
     public class HeaderModel
     {
         public string Language { get; set; }

@@ -121,6 +121,7 @@ namespace RealEstateNet.Controllers
             model.New = getLatestUpdatesForFooter(language, "new");
             model.Latest = getLatestUpdatesForFooter(language, "all");
             model.Constraction = getLatestUpdatesForFooter(language, "underConstruction");
+            model.Translation = TranslateProperty(language);
             return View(model);
         }
         public UserDetails getUserDetails()
@@ -1286,6 +1287,37 @@ namespace RealEstateNet.Controllers
             search.Area = TranslateContent("Search_Area", lang);
             search.Hide = TranslateContent("Search_hide", lang);
             return search;
+        }
+
+        private PropertyPageModel TranslateProperty(string lang)
+        {
+            PropertyPageModel property = new PropertyPageModel();
+            property.Property_SqMtr = TranslateContent("Property_SqMtr", lang);
+            property.Property_Description = TranslateContent("Property_Description", lang);
+            property.Property_Details = TranslateContent("Property_Details", lang);
+            property.Cadastral_Code = TranslateContent("Property_CadastralCode", lang);
+            property.Property_Status = TranslateContent("Property_Status", lang);
+            property.Property_Garage = TranslateContent("Property_Garage", lang);
+            property.Property_CeilingSize = TranslateContent("Property_CeilingSize", lang);
+            property.Property_ListedBy = TranslateContent("Property_ListedBy", lang);
+            property.Property_subject = TranslateContent("Property_subject", lang);
+            property.Property_Email = TranslateContent("Property_Email", lang);
+            property.Property_Body = TranslateContent("Property_Body", lang);
+            property.Property_SendEmail = TranslateContent("Property_SendEmail", lang);
+            property.Property_Features = TranslateContent("Property_Features", lang);
+            property.Property_PaymentCalculator = TranslateContent("Property_PaymentCalculator", lang);
+            property.Property_Reviews = TranslateContent("Property_Reviews", lang);
+            property.Property_WriteReview = TranslateContent("Property_WriteReview", lang);
+            property.Property_Similar = TranslateContent("Property_Similar", lang);
+            property.Property_RecentlyViewed = TranslateContent("Property_RecentlyViewed", lang);
+            property.Search_Bed = TranslateContent("Search_Bed", lang);
+            property.Search_Bath = TranslateContent("Search_Bath", lang);
+            property.Search_Price = TranslateContent("Search_Price", lang);
+            property.Search_Area = TranslateContent("Search_Area", lang);
+            property.Search_State = TranslateContent("Search_State", lang);
+            property.Search_type = TranslateContent("Search_type", lang);
+            property.Search_Location = TranslateContent("Search_Location", lang);
+            return property;
         }
 
         private List<Property> PropertiesByType(string type)
