@@ -39,6 +39,8 @@ namespace RealEstateNet.Controllers
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
             model.Activities = MyActivities();
+            HomeController home = new HomeController();
+            model.HeaderTranslation = home.TranslateHeader(language);
             return View(model);
         }
 
@@ -58,6 +60,8 @@ namespace RealEstateNet.Controllers
             model.Property = PrePropertyUpdate(propertyId);
             model.User = getUserDetails();
             model.Services = GetServices();
+            HomeController home = new HomeController();
+            model.HeaderTranslation = home.TranslateHeader(language);
             return View(model);
         }
 
@@ -210,6 +214,8 @@ namespace RealEstateNet.Controllers
             model.User = getUserDetails();
             model.Contacts = MyContacts(email);
             model.Chat = GetMessages(chatId);
+            HomeController home = new HomeController();
+            model.HeaderTranslation = home.TranslateHeader(language);
             return View(model);
         }
 
@@ -222,6 +228,8 @@ namespace RealEstateNet.Controllers
             model.Page = propertiesPages;
             model.Search = search;
             model.User = getUserDetails();
+            HomeController home = new HomeController();
+            model.HeaderTranslation = home.TranslateHeader(language);
             return View(model);
         }
 
@@ -233,6 +241,8 @@ namespace RealEstateNet.Controllers
             model.Favorites = GetFavorites(page);
             model.Page = favoritesPages;
             model.User = getUserDetails();
+            HomeController home = new HomeController();
+            model.HeaderTranslation = home.TranslateHeader(language);
             return View(model);
         }
 
@@ -242,6 +252,8 @@ namespace RealEstateNet.Controllers
                 language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
+            HomeController home = new HomeController();
+            model.HeaderTranslation = home.TranslateHeader(language);
             return View(model);
         }
 
@@ -253,6 +265,8 @@ namespace RealEstateNet.Controllers
             model.Role = GetUserRole();
             model.UserDetails = GetAgent();
             model.User = getUserDetails();
+            HomeController home = new HomeController();
+            model.HeaderTranslation = home.TranslateHeader(language);
             return View(model);
         }
         public ActionResult Saved_Search()
@@ -261,6 +275,8 @@ namespace RealEstateNet.Controllers
                 language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
+            HomeController home = new HomeController();
+            model.HeaderTranslation = home.TranslateHeader(language);
             return View(model);
         }
         public ActionResult Reviews()
@@ -269,6 +285,8 @@ namespace RealEstateNet.Controllers
                 language = Request.Cookies["lang"].Value;
             dynamic model = new ExpandoObject();
             model.User = getUserDetails();
+            HomeController home = new HomeController();
+            model.HeaderTranslation = home.TranslateHeader(language);
             return View(model);
         }
 
@@ -814,11 +832,13 @@ namespace RealEstateNet.Controllers
                         AddressGE.Text = model.AddressGE;
                         AddressRU.Text = model.AddressGE;
                         //Edit Detailed info
+                        int currencyId = context.Currencies.FirstOrDefault(c => c.Symbol.Equals(model.Currency)).Id;
                         property.CadastralCode = model.CadastralCode;
                         property.Bedrooms = model.Bedrooms;
                         property.Bathrooms = model.Bathrooms;
                         property.Garages = model.Garages;
                         property.CeilingSize = model.CeilingSize;
+                        property.CurrencyId = currencyId;
                         var stateContent = context.Translations.FirstOrDefault(c => c.Text.Equals(model.State)).ContentId;
                         var stateId = context.States.FirstOrDefault(c => c.ContentId == stateContent).Id;
                         property.StateId = stateId;
@@ -950,6 +970,7 @@ namespace RealEstateNet.Controllers
                         var stateId = context.Status.FirstOrDefault(c => c.ContentId == propertyState).Id;
                         var userId = User.Identity.GetUserId();
                         int userDetailsId = context.UserDetails.FirstOrDefault(c => c.UserId.Equals(userId)).Id;
+                        int currencyId = context.Currencies.FirstOrDefault(c => c.Symbol.Equals(model.Currency)).Id;
                         property.PropertyTypeId = propertyTypeId;
                         property.StatusId = statusId;
                         property.StateId = stateId;
@@ -966,6 +987,7 @@ namespace RealEstateNet.Controllers
                         property.DatePublished = DateTime.Now;
                         property.WholePrice = model.Price;
                         property.CurrentStatusId = 2;
+                        property.CurrencyId = currencyId;
                         context.Properties.Add(property);
                         context.SaveChanges();
 
@@ -1191,7 +1213,6 @@ namespace RealEstateNet.Controllers
                             context.PropertyServices.Add(service);
                             context.SaveChanges();
                         }
-
 
                         //Add Media
                         saveMedia(model.media, property.Id.ToString());

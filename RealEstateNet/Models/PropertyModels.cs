@@ -104,6 +104,7 @@ namespace RealEstateNet.Models
         public string VipPlus { get; set; }
         public string Update { get; set; }
         public string Color { get; set; }
+        public string Currency { get; set; }
         public List<string> pictures { get; set; }
     }
 
@@ -132,6 +133,7 @@ namespace RealEstateNet.Models
         public string PropertyStatus { get; set; }
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
+        public string Currency { get; set; }
     }
 
     public class SinglePropertyFeature
@@ -157,6 +159,7 @@ namespace RealEstateNet.Models
         public int Id { get; set; }
         public string ImageUrl { get; set; }
         public decimal Price { get; set; }
+        public string Currency { get; set; }
         public string Type { get; set; }
         public string Status { get; set; }
         public string Name { get; set; }
@@ -223,6 +226,7 @@ namespace RealEstateNet.Models
         public int Beds { get; set; }
         public int? Baths { get; set; }
         public decimal Area { get; set; }
+        public string Currency { get; set; }
     }
 
     public class ReviewModel

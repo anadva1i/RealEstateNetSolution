@@ -105,6 +105,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ContentId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Currencies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CurrencyName" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Symbol" Type="nvarchar" MaxLength="5" Nullable="false" />
+        </EntityType>
         <EntityType Name="CurrentStatus">
           <Key>
             <PropertyRef Name="Id" />
@@ -199,6 +207,7 @@
           <Property Name="Garages" Type="int" />
           <Property Name="LocationId" Type="int" />
           <Property Name="CurrentStatusId" Type="int" />
+          <Property Name="CurrencyId" Type="int" />
         </EntityType>
         <EntityType Name="PropertyContent">
           <Key>
@@ -550,6 +559,18 @@
             </Principal>
             <Dependent Role="Messages">
               <PropertyRef Name="SenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Property_Currencies">
+          <End Role="Currencies" Type="Self.Currencies" Multiplicity="0..1" />
+          <End Role="Property" Type="Self.Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currencies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Property">
+              <PropertyRef Name="CurrencyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -937,6 +958,7 @@
           <EntitySet Name="ConnectedUsers" EntityType="Self.ConnectedUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Currencies" EntityType="Self.Currencies" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CurrentStatus" EntityType="Self.CurrentStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Favorites" EntityType="Self.Favorites" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Features" EntityType="Self.Features" Schema="dbo" store:Type="Tables" />
@@ -1034,6 +1056,10 @@
           <AssociationSet Name="FK_Messages_UserDetails" Association="Self.FK_Messages_UserDetails">
             <End Role="UserDetails" EntitySet="UserDetails" />
             <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Property_Currencies" Association="Self.FK_Property_Currencies">
+            <End Role="Currencies" EntitySet="Currencies" />
+            <End Role="Property" EntitySet="Property" />
           </AssociationSet>
           <AssociationSet Name="FK_Property_CurrentStatus" Association="Self.FK_Property_CurrentStatus">
             <End Role="CurrentStatus" EntitySet="CurrentStatus" />
@@ -1353,6 +1379,8 @@
           <Property Name="CurrentStatusId" Type="Int32" />
           <NavigationProperty Name="CurrentStatu" Relationship="DB_RealEstateModel.FK_Property_CurrentStatus" FromRole="Property" ToRole="CurrentStatu" />
           <NavigationProperty Name="UserActivities" Relationship="DB_RealEstateModel.FK_UserActivities_Property" FromRole="Property" ToRole="UserActivity" />
+          <Property Name="CurrencyId" Type="Int32" />
+          <NavigationProperty Name="Currency" Relationship="DB_RealEstateModel.FK_Property_Currencies" FromRole="Property" ToRole="Currency" />
         </EntityType>
         <EntityType Name="PropertyContent">
           <Key>
@@ -2118,6 +2146,11 @@
             <End Role="UserDetail" EntitySet="UserDetails" />
             <End Role="Message" EntitySet="Messages" />
           </AssociationSet>
+          <EntitySet Name="Currencies" EntityType="DB_RealEstateModel.Currency" />
+          <AssociationSet Name="FK_Property_Currencies" Association="DB_RealEstateModel.FK_Property_Currencies">
+            <End Role="Currency" EntitySet="Currencies" />
+            <End Role="Property" EntitySet="Properties" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Favorite">
           <Key>
@@ -2344,6 +2377,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CurrencyName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Symbol" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Properties" Relationship="DB_RealEstateModel.FK_Property_Currencies" FromRole="Currency" ToRole="Property" />
+        </EntityType>
+        <Association Name="FK_Property_Currencies">
+          <End Type="DB_RealEstateModel.Currency" Role="Currency" Multiplicity="0..1" />
+          <End Type="DB_RealEstateModel.Property" Role="Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Property">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2480,6 +2534,7 @@
           <EntitySetMapping Name="Properties">
             <EntityTypeMapping TypeName="DB_RealEstateModel.Property">
               <MappingFragment StoreEntitySet="Property">
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
                 <ScalarProperty Name="CurrentStatusId" ColumnName="CurrentStatusId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
@@ -2687,6 +2742,15 @@
                 <ScalarProperty Name="Message1" ColumnName="Message" />
                 <ScalarProperty Name="SenderId" ColumnName="SenderId" />
                 <ScalarProperty Name="ConnectedUserId" ColumnName="ConnectedUserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Currencies">
+            <EntityTypeMapping TypeName="DB_RealEstateModel.Currency">
+              <MappingFragment StoreEntitySet="Currencies">
+                <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+                <ScalarProperty Name="CurrencyName" ColumnName="CurrencyName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

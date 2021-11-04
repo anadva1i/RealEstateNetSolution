@@ -100,6 +100,14 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ContentId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="Currencies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CurrencyName" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="Symbol" Type="nvarchar" MaxLength="5" Nullable="false" />
+  </EntityType>
   <EntityType Name="CurrentStatus">
     <Key>
       <PropertyRef Name="Id" />
@@ -194,6 +202,7 @@
     <Property Name="Garages" Type="int" />
     <Property Name="LocationId" Type="int" />
     <Property Name="CurrentStatusId" Type="int" />
+    <Property Name="CurrencyId" Type="int" />
   </EntityType>
   <EntityType Name="PropertyContent">
     <Key>
@@ -545,6 +554,18 @@
       </Principal>
       <Dependent Role="Messages">
         <PropertyRef Name="SenderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Property_Currencies">
+    <End Role="Currencies" Type="Self.Currencies" Multiplicity="0..1" />
+    <End Role="Property" Type="Self.Property" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Currencies">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Property">
+        <PropertyRef Name="CurrencyId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -932,6 +953,7 @@
     <EntitySet Name="ConnectedUsers" EntityType="Self.ConnectedUsers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Currencies" EntityType="Self.Currencies" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CurrentStatus" EntityType="Self.CurrentStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Favorites" EntityType="Self.Favorites" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Features" EntityType="Self.Features" Schema="dbo" store:Type="Tables" />
@@ -1029,6 +1051,10 @@
     <AssociationSet Name="FK_Messages_UserDetails" Association="Self.FK_Messages_UserDetails">
       <End Role="UserDetails" EntitySet="UserDetails" />
       <End Role="Messages" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Property_Currencies" Association="Self.FK_Property_Currencies">
+      <End Role="Currencies" EntitySet="Currencies" />
+      <End Role="Property" EntitySet="Property" />
     </AssociationSet>
     <AssociationSet Name="FK_Property_CurrentStatus" Association="Self.FK_Property_CurrentStatus">
       <End Role="CurrentStatus" EntitySet="CurrentStatus" />

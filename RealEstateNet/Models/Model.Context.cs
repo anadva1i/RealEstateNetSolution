@@ -57,5 +57,6 @@ namespace RealEstateNet.Models
         public virtual DbSet<UserActivity> UserActivities { get; set; }
         public virtual DbSet<ConnectedUser> ConnectedUsers { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Currency> Currencies { get; set; }
     }
 }

@@ -324,7 +324,7 @@
             <div class="col-lg-5 col-xl-4">
                 <div class="single_property_social_share">
                     <div class="price float-left fn-400">
-                        <h2>₾<span id="propertyPrice">@Model.Details.Price</span></h2>
+                        <h2>@Model.Details.Currency<span id="propertyPrice">@Model.Details.Price</span></h2>
                     </div>
                     <div class="spss mt20 text-right tal-400">
                         <span id="favorite" style="display: none">@Model.Details.IsFavorite</span>
@@ -379,7 +379,7 @@
                                     </ul>
                                     <ul class="list-inline-item">
                                         <li><p><span>@Model.Details.CadastralCode</span></p></a></li>
-                                        <li><p><span>$@Model.Details.Price</span></p></a></li>
+                                        <li><p><span>@Model.Details.Currency@Model.Details.Price</span></p></a></li>
                                         <li><p><span>@Model.Details.PropertySize Sq Ft</span></p></a></li>
                                         <li><p><span>@Model.Details.PropertyState</span></p></a></li>
                                     </ul>
@@ -605,7 +605,7 @@
                                             <li class="list-inline-item"><a href="#"><span class="flaticon-transfer-1"></span></a></li>
                                             <li class="list-inline-item"><a href="#"><span class="flaticon-heart"></span></a></li>
                                         </ul>
-                                        <a class="fp_price" href="#">@similar.Price<small>/mo</small></a>
+                                        <a class="fp_price" href="#">@similar.Price<small>@similar.Currency</small></a>
                                     </div>
                                 </div>
                                 <div class="details">
@@ -779,7 +779,7 @@
                             <img style="width: 80px" class="align-self-start mr-3" src="@view.Image" alt="fls1.jpg">
                             <div class="media-body">
                                 <h5 class="mt-0 post_title">@view.Name</h5>
-                                <a href="#">₾@view.Price/<small>/mo</small></a>
+                                <a href="#">@view.Currency@view.Price/<small>/mo</small></a>
                                 <ul class="mb0">
                                     <li class="list-inline-item">@Model.Translation.Search_Bed: @view.Beds</li>
                                     <li class="list-inline-item">@Model.Translation.Search_Bath: @view.Baths</li>

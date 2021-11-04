@@ -225,6 +225,7 @@ namespace RealEstateNet.Controllers
                     property.Baths = s.Bathrooms;
                     property.Beds = s.Bedrooms;
                     property.DatePublished = s.DatePublished.ToString("MMMM dd");
+                    property.Currency = context.Currencies.FirstOrDefault(c => c.Id == s.CurrencyId).Symbol;
                     var media = context.Media.FirstOrDefault(c => c.PropertyId == s.Id);
                     property.ImageUrl = media.MediaUrl;
                     var typeContentId = context.PropertyTypes.FirstOrDefault(c => c.Id == s.PropertyTypeId).ContentId;
@@ -424,6 +425,7 @@ namespace RealEstateNet.Controllers
                         property.IsFavorite = true;
                 }
                 property.Id = propertyId;
+                property.Currency = context.Currencies.FirstOrDefault(c => c.Id == db_property.CurrencyId).Symbol;
                 property.Description = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentDescription).Text;
                 property.Address = context.Translations.FirstOrDefault(c => c.LanguageId == langId && c.ContentId == contentAddress).Text;
                 property.Price = db_property.Price;
@@ -515,6 +517,7 @@ namespace RealEstateNet.Controllers
                                 recentlyViewed.Image = picture;
                                 recentlyViewed.Name = name;
                                 recentlyViewed.Price = property.Price;
+                                recentlyViewed.Currency = context.Currencies.FirstOrDefault(c => c.Id == property.CurrencyId).Symbol;
                                 viewed.Add(recentlyViewed);
                             }
                         }
@@ -705,6 +708,7 @@ namespace RealEstateNet.Controllers
                     property.Id = PropertyId;
                     if (hasMedia)
                         property.ImageUrl = context.Media.FirstOrDefault(c => c.PropertyId == PropertyId).MediaUrl;
+                    property.Currency = context.Currencies.FirstOrDefault(c => c.Id == DbProperty.CurrencyId).Symbol;
                     property.Type = PropertyType;
                     property.Status = PropertyStatus;
                     property.Beds = DbProperty.Bedrooms;
@@ -762,6 +766,7 @@ namespace RealEstateNet.Controllers
                     property.Type = PropertyType;
                     property.Status = PropertyStatus;
                     property.Beds = DbProperty.Bedrooms;
+                    property.Currency = context.Currencies.FirstOrDefault(c => c.Id == DbProperty.CurrencyId).Symbol;
                     property.Baths = DbProperty.Bathrooms;
                     property.Area = DbProperty.PropertySize;
                     property.Price = DbProperty.Price;
@@ -790,6 +795,7 @@ namespace RealEstateNet.Controllers
                     var DbProperty = context.Properties.FirstOrDefault(c => c.Id == PropertyId);
                     var langId = context.Languages.FirstOrDefault(c => c.Abbr.Equals(lang)).Id;
                     var PropertyTypeId = DbProperty.PropertyTypeId;
+                    property.Currency = context.Currencies.FirstOrDefault(c => c.Id == DbProperty.CurrencyId).Symbol;
                     bool hasContent = context.PropertyContents.Any(c => c.propertyId == PropertyId);
                     bool hasMedia = context.Media.Any(c => c.PropertyId == PropertyId);
                     var TypeContent = context.PropertyTypes.FirstOrDefault(c => c.Id == PropertyTypeId).ContentId;
@@ -869,6 +875,7 @@ namespace RealEstateNet.Controllers
                         property.ImageUrl = context.Media.FirstOrDefault(c => c.PropertyId == PropertyId).MediaUrl;
                     property.Type = PropertyType;
                     property.Status = PropertyStatus;
+                    property.Currency = context.Currencies.FirstOrDefault(c => c.Id == DbProperty.CurrencyId).Symbol;
                     property.Beds = DbProperty.Bedrooms;
                     property.Baths = DbProperty.Bathrooms;
                     property.Area = DbProperty.PropertySize;
@@ -1026,6 +1033,7 @@ namespace RealEstateNet.Controllers
                     property.Type = similar.Type;
                     property.Status = PropertyStatus;
                     property.Beds = p.Bedrooms;
+                    property.Currency = context.Currencies.FirstOrDefault(c => c.Id == p.CurrencyId).Symbol;
                     property.Baths = p.Bathrooms;
                     property.Area = p.PropertySize;
                     property.Price = p.Price;
@@ -1232,6 +1240,7 @@ namespace RealEstateNet.Controllers
                     thisProperty.Baths = p.Bathrooms;
                     thisProperty.Area = p.PropertySize;
                     thisProperty.Price = p.Price;
+                    thisProperty.Currency = context.Currencies.FirstOrDefault(c => c.Id == p.CurrencyId).Symbol;
                     thisProperty.AgentName = Agent.Name + " " + Agent.LastName;
                     thisProperty.AgentPic = Agent.Picture;
                     thisProperty.DatePublished = p.DatePublished.ToString("MMMM dd");

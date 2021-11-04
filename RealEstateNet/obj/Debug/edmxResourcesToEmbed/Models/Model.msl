@@ -131,6 +131,7 @@
     <EntitySetMapping Name="Properties">
       <EntityTypeMapping TypeName="DB_RealEstateModel.Property">
         <MappingFragment StoreEntitySet="Property">
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
           <ScalarProperty Name="CurrentStatusId" ColumnName="CurrentStatusId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Price" ColumnName="Price" />
@@ -338,6 +339,15 @@
           <ScalarProperty Name="Message1" ColumnName="Message" />
           <ScalarProperty Name="SenderId" ColumnName="SenderId" />
           <ScalarProperty Name="ConnectedUserId" ColumnName="ConnectedUserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Currencies">
+      <EntityTypeMapping TypeName="DB_RealEstateModel.Currency">
+        <MappingFragment StoreEntitySet="Currencies">
+          <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+          <ScalarProperty Name="CurrencyName" ColumnName="CurrencyName" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

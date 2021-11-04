@@ -48,6 +48,7 @@ namespace RealEstateNet.Models
         public Nullable<int> Garages { get; set; }
         public Nullable<int> LocationId { get; set; }
         public Nullable<int> CurrentStatusId { get; set; }
+        public Nullable<int> CurrencyId { get; set; }
     
         public virtual Location Location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -71,5 +72,6 @@ namespace RealEstateNet.Models
         public virtual CurrentStatu CurrentStatu { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserActivity> UserActivities { get; set; }
+        public virtual Currency Currency { get; set; }
     }
 }

@@ -84,6 +84,8 @@
         <AssociationConnector Association="DB_RealEstateModel.FK_ConnectedUsers_UserDetails1" />
         <AssociationConnector Association="DB_RealEstateModel.FK_Messages_ConnectedUsers" />
         <AssociationConnector Association="DB_RealEstateModel.FK_Messages_UserDetails" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.Currency" Width="1.5" PointX="0.75" PointY="3.875" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_Property_Currencies" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

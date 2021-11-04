@@ -189,6 +189,8 @@
     <Property Name="CurrentStatusId" Type="Int32" />
     <NavigationProperty Name="CurrentStatu" Relationship="DB_RealEstateModel.FK_Property_CurrentStatus" FromRole="Property" ToRole="CurrentStatu" />
     <NavigationProperty Name="UserActivities" Relationship="DB_RealEstateModel.FK_UserActivities_Property" FromRole="Property" ToRole="UserActivity" />
+    <Property Name="CurrencyId" Type="Int32" />
+    <NavigationProperty Name="Currency" Relationship="DB_RealEstateModel.FK_Property_Currencies" FromRole="Property" ToRole="Currency" />
   </EntityType>
   <EntityType Name="PropertyContent">
     <Key>
@@ -954,6 +956,11 @@
       <End Role="UserDetail" EntitySet="UserDetails" />
       <End Role="Message" EntitySet="Messages" />
     </AssociationSet>
+    <EntitySet Name="Currencies" EntityType="DB_RealEstateModel.Currency" />
+    <AssociationSet Name="FK_Property_Currencies" Association="DB_RealEstateModel.FK_Property_Currencies">
+      <End Role="Currency" EntitySet="Currencies" />
+      <End Role="Property" EntitySet="Properties" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Favorite">
     <Key>
@@ -1177,6 +1184,27 @@
       </Principal>
       <Dependent Role="Message">
         <PropertyRef Name="SenderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Currency">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CurrencyName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Symbol" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Properties" Relationship="DB_RealEstateModel.FK_Property_Currencies" FromRole="Currency" ToRole="Property" />
+  </EntityType>
+  <Association Name="FK_Property_Currencies">
+    <End Type="DB_RealEstateModel.Currency" Role="Currency" Multiplicity="0..1" />
+    <End Type="DB_RealEstateModel.Property" Role="Property" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Currency">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Property">
+        <PropertyRef Name="CurrencyId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
