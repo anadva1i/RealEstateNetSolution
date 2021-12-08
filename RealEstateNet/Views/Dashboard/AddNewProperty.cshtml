@@ -350,24 +350,24 @@
                                         <h4>VIP Services</h4>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
-                                        <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" type="checkbox" name="SuperVip" id="flexRadioDefault1">
+                                        <div class="custom-control custom-checkbox ui_kit_checkbox">
+                                            <input class="custom-control-input service-check" type="checkbox" name="SuperVip" id="flexRadioDefault1">
                                             <label class="custom-control-label" for="flexRadioDefault1">
                                                 @Model.Services.SuperVip
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
-                                        <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" type="checkbox" name="VipPlus" id="flexRadioDefault2">
+                                        <div class="custom-control custom-checkbox ui_kit_checkbox">
+                                            <input class="custom-control-input service-check" type="checkbox" name="VipPlus" id="flexRadioDefault2">
                                             <label class="custom-control-label" for="flexRadioDefault2">
                                                 @Model.Services.VipPlus
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
-                                        <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" type="checkbox" name="Vip" id="flexRadioDefault3">
+                                        <div class="custom-control custom-checkbox ui_kit_checkbox">
+                                            <input class="custom-control-input service-check" type="checkbox" name="Vip" id="flexRadioDefault3">
                                             <label class="custom-control-label" for="flexRadioDefault3">
                                                 @Model.Services.Vip
                                             </label>
@@ -377,9 +377,9 @@
                                     <div class="col-xl-12" style="margin-top: 20px">
                                         <h4>Update</h4>
                                     </div>
-                                    <div class="col-lg-6 col-xl-4">
+                                    <div class="col-lg-6 col-xl-4 ui_kit_checkbox">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" type="checkbox" name="Update" id="flexRadioDefault4">
+                                            <input class="custom-control-input service-check" type="checkbox" name="Update" id="flexRadioDefault4">
                                             <label class="custom-control-label" for="flexRadioDefault4">
                                                 @Model.Services.Update
                                             </label>
@@ -389,13 +389,18 @@
                                     <div class="col-xl-12" style="margin-top: 20px">
                                         <h4>Add Color</h4>
                                     </div>
-                                    <div class="col-lg-6 col-xl-4">
+                                    <div class="col-lg-6 col-xl-4 ui_kit_checkbox">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" type="checkbox" name="Color" id="flexRadioDefault5">
+                                            <input class="custom-control-input service-check" type="checkbox" name="Color" id="flexRadioDefault5">
                                             <label class="custom-control-label" for="flexRadioDefault5">
                                                 @Model.Services.Border
                                             </label>
                                         </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label style="float: right; text-align: right">
+                                            Total: <b id="service-total">0.0</b> ₾ 
+                                        </label>
                                     </div>
                                 </div>
                             </div>

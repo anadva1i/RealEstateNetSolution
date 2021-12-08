@@ -181,7 +181,6 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ServicesId" ColumnName="ServicesId" />
           <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
-          <ScalarProperty Name="ActivationDate" ColumnName="ActivationDate" />
           <ScalarProperty Name="Active" ColumnName="Active" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -348,6 +347,56 @@
         <MappingFragment StoreEntitySet="Currencies">
           <ScalarProperty Name="Symbol" ColumnName="Symbol" />
           <ScalarProperty Name="CurrencyName" ColumnName="CurrencyName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BogCardTypes">
+      <EntityTypeMapping TypeName="DB_RealEstateModel.BogCardType">
+        <MappingFragment StoreEntitySet="BogCardTypes">
+          <ScalarProperty Name="cardType" ColumnName="cardType" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="bogOrders">
+      <EntityTypeMapping TypeName="DB_RealEstateModel.bogOrder">
+        <MappingFragment StoreEntitySet="bogOrders">
+          <ScalarProperty Name="pan" ColumnName="pan" />
+          <ScalarProperty Name="transactionId" ColumnName="transactionId" />
+          <ScalarProperty Name="bogCardTypeId" ColumnName="bogCardTypeId" />
+          <ScalarProperty Name="bogPaymentMethodId" ColumnName="bogPaymentMethodId" />
+          <ScalarProperty Name="shopOrderId" ColumnName="shopOrderId" />
+          <ScalarProperty Name="statusDescription" ColumnName="statusDescription" />
+          <ScalarProperty Name="bogStatusId" ColumnName="bogStatusId" />
+          <ScalarProperty Name="ipayPaymentId" ColumnName="ipayPaymentId" />
+          <ScalarProperty Name="paymentHash" ColumnName="paymentHash" />
+          <ScalarProperty Name="orderId" ColumnName="orderId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BogPaymentMethods">
+      <EntityTypeMapping TypeName="DB_RealEstateModel.BogPaymentMethod">
+        <MappingFragment StoreEntitySet="BogPaymentMethods">
+          <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BogStatuses">
+      <EntityTypeMapping TypeName="DB_RealEstateModel.BogStatus">
+        <MappingFragment StoreEntitySet="BogStatuses">
+          <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServiceOrders">
+      <EntityTypeMapping TypeName="DB_RealEstateModel.ServiceOrder">
+        <MappingFragment StoreEntitySet="ServiceOrders">
+          <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

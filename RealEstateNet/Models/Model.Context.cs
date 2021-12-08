@@ -58,5 +58,10 @@ namespace RealEstateNet.Models
         public virtual DbSet<ConnectedUser> ConnectedUsers { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
+        public virtual DbSet<BogCardType> BogCardTypes { get; set; }
+        public virtual DbSet<bogOrder> bogOrders { get; set; }
+        public virtual DbSet<BogPaymentMethod> BogPaymentMethods { get; set; }
+        public virtual DbSet<BogStatus> BogStatuses { get; set; }
+        public virtual DbSet<ServiceOrder> ServiceOrders { get; set; }
     }
 }

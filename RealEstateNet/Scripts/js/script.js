@@ -1489,3 +1489,13 @@ function setLanguage(lang) {
     document.cookie = "lang=" + lang;
     location.reload();
 }
+let TotalSC = 0;
+$(".service-check").on("click", function () {
+    var label = $("label[for='" + $(this).attr('id') + "']").text();
+    label = label.substring(label.indexOf("-") + 1, label.indexOf("₾"));
+    let x = Number(label);
+    if ($(this).is(':checked'))
+        TotalSC += x;
+    else TotalSC -= x;
+    $("#service-total").text(TotalSC);
+});

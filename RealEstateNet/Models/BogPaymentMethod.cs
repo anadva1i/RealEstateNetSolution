@@ -12,14 +12,18 @@ namespace RealEstateNet.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PropertyService
+    public partial class BogPaymentMethod
     {
-        public int Id { get; set; }
-        public int ServicesId { get; set; }
-        public int PropertyId { get; set; }
-        public bool Active { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public BogPaymentMethod()
+        {
+            this.bogOrders = new HashSet<bogOrder>();
+        }
     
-        public virtual Property Property { get; set; }
-        public virtual Service Service { get; set; }
+        public int Id { get; set; }
+        public string PaymentMethod { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<bogOrder> bogOrders { get; set; }
     }
 }

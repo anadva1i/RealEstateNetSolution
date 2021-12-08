@@ -1153,63 +1153,64 @@ namespace RealEstateNet.Controllers
                         context.SaveChanges();
 
                         //Add Services
+                        double totalPrice = 0;
                         if (model.Vip != null)
                         {
                             var vipContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ServiceVIP")).Id;
-                            var vip = context.Services.FirstOrDefault(c => c.ContentId == vipContent).Id;
+                            var vip = context.Services.FirstOrDefault(c => c.ContentId == vipContent);
                             PropertyService service = new PropertyService();
-                            service.ServicesId = vip;
+                            totalPrice += (double) vip.Price;
+                            service.ServicesId = vip.Id;
                             service.PropertyId = property.Id;
-                            service.ActivationDate = DateTime.Now;
-                            service.Active = true;
+                            service.Active = false;
                             context.PropertyServices.Add(service);
                             context.SaveChanges();
                         }
                         if (model.SuperVip != null)
                         {
                             var superVipContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ServiceSuperVIP")).Id;
-                            var superVip = context.Services.FirstOrDefault(c => c.ContentId == superVipContent).Id;
+                            var superVip = context.Services.FirstOrDefault(c => c.ContentId == superVipContent);
                             PropertyService service = new PropertyService();
-                            service.ServicesId = superVip;
+                            totalPrice += (double) superVip.Price;
+                            service.ServicesId = superVip.Id;
                             service.PropertyId = property.Id;
-                            service.ActivationDate = DateTime.Now;
-                            service.Active = true;
+                            service.Active = false;
                             context.PropertyServices.Add(service);
                             context.SaveChanges();
                         }
                         if (model.VipPlus != null)
                         {
                             var vipPlusContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ServiceVIP+")).Id;
-                            var vipPlus = context.Services.FirstOrDefault(c => c.ContentId == vipPlusContent).Id;
+                            var vipPlus = context.Services.FirstOrDefault(c => c.ContentId == vipPlusContent);
                             PropertyService service = new PropertyService();
-                            service.ServicesId = vipPlus;
+                            totalPrice += (double) vipPlus.Price;
+                            service.ServicesId = vipPlus.Id;
                             service.PropertyId = property.Id;
-                            service.ActivationDate = DateTime.Now;
-                            service.Active = true;
+                            service.Active = false;
                             context.PropertyServices.Add(service);
                             context.SaveChanges();
                         }
                         if (model.Color != null)
                         {
                             var borderContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ServiceBorder")).Id;
-                            var border = context.Services.FirstOrDefault(c => c.ContentId == borderContent).Id;
+                            var border = context.Services.FirstOrDefault(c => c.ContentId == borderContent);
                             PropertyService service = new PropertyService();
-                            service.ServicesId = border;
+                            totalPrice += (double)border.Price;
+                            service.ServicesId = border.Id;
                             service.PropertyId = property.Id;
-                            service.ActivationDate = DateTime.Now;
-                            service.Active = true;
+                            service.Active = false;
                             context.PropertyServices.Add(service);
                             context.SaveChanges();
                         }
                         if (model.Update != null)
                         {
                             var updateContent = context.Contents.FirstOrDefault(c => c.Type.Equals("ServiceAutomaticUpdate")).Id;
-                            var update = context.Services.FirstOrDefault(c => c.ContentId == updateContent).Id;
+                            var update = context.Services.FirstOrDefault(c => c.ContentId == updateContent);
                             PropertyService service = new PropertyService();
-                            service.ServicesId = update;
+                            totalPrice += (double) update.Price;
+                            service.ServicesId = update.Id;
                             service.PropertyId = property.Id;
-                            service.ActivationDate = DateTime.Now;
-                            service.Active = true;
+                            service.Active = false;
                             context.PropertyServices.Add(service);
                             context.SaveChanges();
                         }

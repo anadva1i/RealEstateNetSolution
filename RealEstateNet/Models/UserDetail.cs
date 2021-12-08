@@ -26,6 +26,7 @@ namespace RealEstateNet.Models
             this.ConnectedUsers = new HashSet<ConnectedUser>();
             this.ConnectedUsers1 = new HashSet<ConnectedUser>();
             this.Messages = new HashSet<Message>();
+            this.ServiceOrders = new HashSet<ServiceOrder>();
         }
     
         public int Id { get; set; }
@@ -60,5 +61,7 @@ namespace RealEstateNet.Models
         public virtual ICollection<ConnectedUser> ConnectedUsers1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message> Messages { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ServiceOrder> ServiceOrders { get; set; }
     }
 }

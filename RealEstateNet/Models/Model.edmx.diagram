@@ -86,6 +86,16 @@
         <AssociationConnector Association="DB_RealEstateModel.FK_Messages_UserDetails" />
         <EntityTypeShape EntityType="DB_RealEstateModel.Currency" Width="1.5" PointX="0.75" PointY="3.875" />
         <AssociationConnector Association="DB_RealEstateModel.FK_Property_Currencies" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.BogCardType" Width="1.5" PointX="15" PointY="9.875" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.bogOrder" Width="1.5" PointX="17.25" PointY="18.125" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.BogPaymentMethod" Width="1.5" PointX="15" PointY="7.125" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.BogStatus" Width="1.5" PointX="15" PointY="30.5" />
+        <EntityTypeShape EntityType="DB_RealEstateModel.ServiceOrder" Width="1.5" PointX="12" PointY="19" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_Table_1_BogCardTypes" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_bogOrders_Services" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_Table_1_BogPaymentMethods" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_Table_1_BogStatuses" />
+        <AssociationConnector Association="DB_RealEstateModel.FK_ServiceOrders_UserDetails" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -220,7 +220,6 @@
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ServicesId" Type="Int32" Nullable="false" />
     <Property Name="PropertyId" Type="Int32" Nullable="false" />
-    <Property Name="ActivationDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Property" Relationship="Self.FK_PropertyServices_Property" FromRole="PropertyServices" ToRole="Property" />
     <NavigationProperty Name="Service" Relationship="Self.FK_PropertyServices_Services" FromRole="PropertyServices" ToRole="Services" />
@@ -330,6 +329,7 @@
     <NavigationProperty Name="ConnectedUsers" Relationship="DB_RealEstateModel.FK_ConnectedUsers_UserDetails" FromRole="UserDetail" ToRole="ConnectedUser" />
     <NavigationProperty Name="ConnectedUsers1" Relationship="DB_RealEstateModel.FK_ConnectedUsers_UserDetails1" FromRole="UserDetail" ToRole="ConnectedUser" />
     <NavigationProperty Name="Messages" Relationship="DB_RealEstateModel.FK_Messages_UserDetails" FromRole="UserDetail" ToRole="Message" />
+    <NavigationProperty Name="ServiceOrders" Relationship="DB_RealEstateModel.FK_ServiceOrders_UserDetails" FromRole="UserDetail" ToRole="ServiceOrder" />
   </EntityType>
   <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
     <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -961,6 +961,31 @@
       <End Role="Currency" EntitySet="Currencies" />
       <End Role="Property" EntitySet="Properties" />
     </AssociationSet>
+    <EntitySet Name="BogCardTypes" EntityType="DB_RealEstateModel.BogCardType" />
+    <EntitySet Name="bogOrders" EntityType="DB_RealEstateModel.bogOrder" />
+    <EntitySet Name="BogPaymentMethods" EntityType="DB_RealEstateModel.BogPaymentMethod" />
+    <EntitySet Name="BogStatuses" EntityType="DB_RealEstateModel.BogStatus" />
+    <EntitySet Name="ServiceOrders" EntityType="DB_RealEstateModel.ServiceOrder" />
+    <AssociationSet Name="FK_Table_1_BogCardTypes" Association="DB_RealEstateModel.FK_Table_1_BogCardTypes">
+      <End Role="BogCardType" EntitySet="BogCardTypes" />
+      <End Role="bogOrder" EntitySet="bogOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_bogOrders_Services" Association="DB_RealEstateModel.FK_bogOrders_Services">
+      <End Role="ServiceOrder" EntitySet="ServiceOrders" />
+      <End Role="bogOrder" EntitySet="bogOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_1_BogPaymentMethods" Association="DB_RealEstateModel.FK_Table_1_BogPaymentMethods">
+      <End Role="BogPaymentMethod" EntitySet="BogPaymentMethods" />
+      <End Role="bogOrder" EntitySet="bogOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_1_BogStatuses" Association="DB_RealEstateModel.FK_Table_1_BogStatuses">
+      <End Role="BogStatus" EntitySet="BogStatuses" />
+      <End Role="bogOrder" EntitySet="bogOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ServiceOrders_UserDetails" Association="DB_RealEstateModel.FK_ServiceOrders_UserDetails">
+      <End Role="UserDetail" EntitySet="UserDetails" />
+      <End Role="ServiceOrder" EntitySet="ServiceOrders" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Favorite">
     <Key>
@@ -1205,6 +1230,120 @@
       </Principal>
       <Dependent Role="Property">
         <PropertyRef Name="CurrencyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="BogCardType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cardType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="bogOrders" Relationship="DB_RealEstateModel.FK_Table_1_BogCardTypes" FromRole="BogCardType" ToRole="bogOrder" />
+  </EntityType>
+  <EntityType Name="bogOrder">
+    <Key>
+      <PropertyRef Name="orderId" />
+    </Key>
+    <Property Name="orderId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="paymentHash" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="ipayPaymentId" Type="Binary" MaxLength="150" FixedLength="false" />
+    <Property Name="bogStatusId" Type="Int32" Nullable="false" />
+    <Property Name="statusDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="shopOrderId" Type="Int64" Nullable="false" />
+    <Property Name="bogPaymentMethodId" Type="Int32" Nullable="false" />
+    <Property Name="bogCardTypeId" Type="Int32" Nullable="false" />
+    <Property Name="transactionId" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="pan" Type="String" MaxLength="16" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="BogCardType" Relationship="DB_RealEstateModel.FK_Table_1_BogCardTypes" FromRole="bogOrder" ToRole="BogCardType" />
+    <NavigationProperty Name="ServiceOrder" Relationship="DB_RealEstateModel.FK_bogOrders_Services" FromRole="bogOrder" ToRole="ServiceOrder" />
+    <NavigationProperty Name="BogPaymentMethod" Relationship="DB_RealEstateModel.FK_Table_1_BogPaymentMethods" FromRole="bogOrder" ToRole="BogPaymentMethod" />
+    <NavigationProperty Name="BogStatus" Relationship="DB_RealEstateModel.FK_Table_1_BogStatuses" FromRole="bogOrder" ToRole="BogStatus" />
+  </EntityType>
+  <EntityType Name="BogPaymentMethod">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaymentMethod" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="bogOrders" Relationship="DB_RealEstateModel.FK_Table_1_BogPaymentMethods" FromRole="BogPaymentMethod" ToRole="bogOrder" />
+  </EntityType>
+  <EntityType Name="BogStatus">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StatusName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="bogOrders" Relationship="DB_RealEstateModel.FK_Table_1_BogStatuses" FromRole="BogStatus" ToRole="bogOrder" />
+  </EntityType>
+  <EntityType Name="ServiceOrder">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="bogOrders" Relationship="DB_RealEstateModel.FK_bogOrders_Services" FromRole="ServiceOrder" ToRole="bogOrder" />
+    <NavigationProperty Name="UserDetail" Relationship="DB_RealEstateModel.FK_ServiceOrders_UserDetails" FromRole="ServiceOrder" ToRole="UserDetail" />
+    <Property Name="TotalPrice" Type="Decimal" Precision="5" Scale="2" />
+  </EntityType>
+  <Association Name="FK_Table_1_BogCardTypes">
+    <End Type="DB_RealEstateModel.BogCardType" Role="BogCardType" Multiplicity="1" />
+    <End Type="DB_RealEstateModel.bogOrder" Role="bogOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BogCardType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bogOrder">
+        <PropertyRef Name="bogCardTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_bogOrders_Services">
+    <End Type="DB_RealEstateModel.ServiceOrder" Role="ServiceOrder" Multiplicity="1" />
+    <End Type="DB_RealEstateModel.bogOrder" Role="bogOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ServiceOrder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bogOrder">
+        <PropertyRef Name="shopOrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_1_BogPaymentMethods">
+    <End Type="DB_RealEstateModel.BogPaymentMethod" Role="BogPaymentMethod" Multiplicity="1" />
+    <End Type="DB_RealEstateModel.bogOrder" Role="bogOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BogPaymentMethod">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bogOrder">
+        <PropertyRef Name="bogPaymentMethodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_1_BogStatuses">
+    <End Type="DB_RealEstateModel.BogStatus" Role="BogStatus" Multiplicity="1" />
+    <End Type="DB_RealEstateModel.bogOrder" Role="bogOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BogStatus">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bogOrder">
+        <PropertyRef Name="bogStatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ServiceOrders_UserDetails">
+    <End Type="DB_RealEstateModel.UserDetail" Role="UserDetail" Multiplicity="1" />
+    <End Type="DB_RealEstateModel.ServiceOrder" Role="ServiceOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserDetail">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ServiceOrder">
+        <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -70,6 +70,42 @@
     <Property Name="AccessFailedCount" Type="int" Nullable="false" />
     <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
   </EntityType>
+  <EntityType Name="BogCardTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cardType" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="bogOrders">
+    <Key>
+      <PropertyRef Name="orderId" />
+    </Key>
+    <Property Name="orderId" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="paymentHash" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="ipayPaymentId" Type="varbinary" MaxLength="150" />
+    <Property Name="bogStatusId" Type="int" Nullable="false" />
+    <Property Name="statusDescription" Type="nvarchar" MaxLength="150" />
+    <Property Name="shopOrderId" Type="bigint" Nullable="false" />
+    <Property Name="bogPaymentMethodId" Type="int" Nullable="false" />
+    <Property Name="bogCardTypeId" Type="int" Nullable="false" />
+    <Property Name="transactionId" Type="varchar" MaxLength="150" />
+    <Property Name="pan" Type="char" MaxLength="16" />
+  </EntityType>
+  <EntityType Name="BogPaymentMethods">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PaymentMethod" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BogStatuses">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StatusName" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
   <EntityType Name="Cities">
     <Key>
       <PropertyRef Name="Id" />
@@ -226,9 +262,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ServicesId" Type="int" Nullable="false" />
+    <Property Name="ServicesId" Type="bigint" Nullable="false" />
     <Property Name="PropertyId" Type="int" Nullable="false" />
-    <Property Name="ActivationDate" Type="datetime" Nullable="false" />
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="PropertyType">
@@ -257,11 +292,20 @@
     <Property Name="PropertyId" Type="int" Nullable="false" />
     <Property Name="Stars" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="ServiceOrders">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="OrderDate" Type="datetime" Nullable="false" />
+    <Property Name="TotalPrice" Type="decimal" Precision="5" Scale="2" />
+  </EntityType>
   <EntityType Name="Services">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ContentId" Type="int" Nullable="false" />
     <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
@@ -330,6 +374,18 @@
       </Principal>
       <Dependent Role="Activities">
         <PropertyRef Name="ContentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_bogOrders_Services">
+    <End Role="ServiceOrders" Type="Self.ServiceOrders" Multiplicity="1" />
+    <End Role="bogOrders" Type="Self.bogOrders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ServiceOrders">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bogOrders">
+        <PropertyRef Name="shopOrderId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -797,6 +853,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_ServiceOrders_UserDetails">
+    <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+    <End Role="ServiceOrders" Type="Self.ServiceOrders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserDetails">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ServiceOrders">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Services_Content">
     <End Role="Content" Type="Self.Content" Multiplicity="1" />
     <End Role="Services" Type="Self.Services" Multiplicity="*" />
@@ -830,6 +898,42 @@
       </Principal>
       <Dependent Role="Status">
         <PropertyRef Name="ContentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_1_BogCardTypes">
+    <End Role="BogCardTypes" Type="Self.BogCardTypes" Multiplicity="1" />
+    <End Role="bogOrders" Type="Self.bogOrders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BogCardTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bogOrders">
+        <PropertyRef Name="bogCardTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_1_BogPaymentMethods">
+    <End Role="BogPaymentMethods" Type="Self.BogPaymentMethods" Multiplicity="1" />
+    <End Role="bogOrders" Type="Self.bogOrders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BogPaymentMethods">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bogOrders">
+        <PropertyRef Name="bogPaymentMethodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_1_BogStatuses">
+    <End Role="BogStatuses" Type="Self.BogStatuses" Multiplicity="1" />
+    <End Role="bogOrders" Type="Self.bogOrders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BogStatuses">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bogOrders">
+        <PropertyRef Name="bogStatusId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -949,6 +1053,10 @@
     <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BogCardTypes" EntityType="Self.BogCardTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="bogOrders" EntityType="Self.bogOrders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BogPaymentMethods" EntityType="Self.BogPaymentMethods" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BogStatuses" EntityType="Self.BogStatuses" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ConnectedUsers" EntityType="Self.ConnectedUsers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
@@ -969,6 +1077,7 @@
     <EntitySet Name="PropertyType" EntityType="Self.PropertyType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PropertyViews" EntityType="Self.PropertyViews" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ServiceOrders" EntityType="Self.ServiceOrders" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SocialMediaLinks" EntityType="Self.SocialMediaLinks" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
@@ -979,6 +1088,10 @@
     <AssociationSet Name="FK_Activities_Content" Association="Self.FK_Activities_Content">
       <End Role="Content" EntitySet="Content" />
       <End Role="Activities" EntitySet="Activities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_bogOrders_Services" Association="Self.FK_bogOrders_Services">
+      <End Role="ServiceOrders" EntitySet="ServiceOrders" />
+      <End Role="bogOrders" EntitySet="bogOrders" />
     </AssociationSet>
     <AssociationSet Name="FK_Cities_Content" Association="Self.FK_Cities_Content">
       <End Role="Content" EntitySet="Content" />
@@ -1132,6 +1245,10 @@
       <End Role="UserDetails" EntitySet="UserDetails" />
       <End Role="Reviews" EntitySet="Reviews" />
     </AssociationSet>
+    <AssociationSet Name="FK_ServiceOrders_UserDetails" Association="Self.FK_ServiceOrders_UserDetails">
+      <End Role="UserDetails" EntitySet="UserDetails" />
+      <End Role="ServiceOrders" EntitySet="ServiceOrders" />
+    </AssociationSet>
     <AssociationSet Name="FK_Services_Content" Association="Self.FK_Services_Content">
       <End Role="Content" EntitySet="Content" />
       <End Role="Services" EntitySet="Services" />
@@ -1143,6 +1260,18 @@
     <AssociationSet Name="FK_Status_Content" Association="Self.FK_Status_Content">
       <End Role="Content" EntitySet="Content" />
       <End Role="Status" EntitySet="Status" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_1_BogCardTypes" Association="Self.FK_Table_1_BogCardTypes">
+      <End Role="BogCardTypes" EntitySet="BogCardTypes" />
+      <End Role="bogOrders" EntitySet="bogOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_1_BogPaymentMethods" Association="Self.FK_Table_1_BogPaymentMethods">
+      <End Role="BogPaymentMethods" EntitySet="BogPaymentMethods" />
+      <End Role="bogOrders" EntitySet="bogOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_1_BogStatuses" Association="Self.FK_Table_1_BogStatuses">
+      <End Role="BogStatuses" EntitySet="BogStatuses" />
+      <End Role="bogOrders" EntitySet="bogOrders" />
     </AssociationSet>
     <AssociationSet Name="FK_Translations_Content" Association="Self.FK_Translations_Content">
       <End Role="Content" EntitySet="Content" />
